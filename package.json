@@ -1,0 +1,40 @@
+{
+  "name": "vue-global-config",
+  "version": "0.0.1",
+  "author": "cloydlau",
+  "description": "",
+  "keywords": [
+  ],
+  "private": false,
+  "license": "MIT",
+  "main": "./dist/vue-global-config.umd.js",
+  "module": "./dist/vue-global-config.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-global-config.es.js",
+      "require": "./dist/vue-global-config.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "c": "rd /s /q .\\node_modules",
+    "ri": "npm run c && pnpm i",
+    "u": "node scripts/upgrade.js",
+    "r": "node scripts/release.js",
+    "rs": "node scripts/release.js --straightforward"
+  },
+  "dependencies": {
+    "kayran": "latest",
+    "lodash-es": "latest"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.2",
+    "enquirer": "latest",
+    "execa": "^4.1.0",
+    "minimist": "latest",
+    "semver": "latest",
+    "vite": "latest"
+  }
+}
