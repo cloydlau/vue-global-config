@@ -1,10 +1,10 @@
 {
   "name": "vue-global-config",
+  "consolePrefix": "[vue-global-config]",
   "version": "0.0.1",
   "author": "cloydlau",
   "description": "",
-  "keywords": [
-  ],
+  "keywords": [],
   "private": false,
   "license": "MIT",
   "main": "./dist/vue-global-config.umd.js",
@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "kayran": "latest",
-    "lodash-es": "latest"
+    "lodash-es": "latest",
+    "vue-demi": "latest"
   },
   "devDependencies": {
     "chalk": "^4.1.2",

@@ -1,22 +1,11 @@
 import { notEmpty } from 'kayran'
-import { getFinalProp as evaluateProp } from 'kayran'
 import { mapKeys } from 'lodash-es'
+import { isVue3 } from 'vue-demi'
+import evaluateProp from './evaluateProp'
 
-// 可以同时触发实例事件和全局事件的事件监听器
-// 仅用于 Vue 2，Vue 3 将 $listeners 移除
-export function evaluateListeners (globalEvents: { [key: string]: Function }) {
-  return notEmpty(globalEvents) ? evaluateProp([this.$listeners], {
-    default: globalEvents,
-    mergeFunction: (event, globalEvent) => (...args) => {
-      event.apply(this, args)
-      globalEvent?.apply(this, args)
-    },
-  }) : this.$listeners
-}
-
-// 仅用于 Vue 3，Vue 3 中事件监听器是以 on 为前缀的 attribute，即 $attrs 对象的一部分
-export function evaluateAttrs (globalEvents: { [key: string]: Function }, attrs: object) {
-  const GlobalEvents = mapKeys(globalEvents, (v: any, k: string) => {
+// 将对象中的键名 '@xxx' 转换为 'onXxx'
+function atToOn (obj: object) {
+  return mapKeys(obj, (v: any, k: string) => {
     const keyArray = Array.from(k)
     keyArray.shift()
     keyArray[0] = keyArray[0].toUpperCase()
@@ -24,12 +13,24 @@ export function evaluateAttrs (globalEvents: { [key: string]: Function }, attrs:
     keyArray.unshift('o')
     return keyArray.join('')
   })
+}
 
-  return notEmpty(globalEvents) ? evaluateProp([attrs], {
-    default: GlobalEvents,
-    mergeFunction: (event, globalEvent) => (...args) => {
+// 可以同时触发 实例事件 和 全局事件 的事件监听器
+export default function evaluateListeners (
+  globalEvents: { [key: string]: Function },
+  // Vue 2 传 this.$listeners
+  // Vue 3 传 this.$attrs
+  // Vue 3 将 $listeners 移除
+  // Vue 3 中事件监听器是以 on 为前缀的 attribute，为 $attrs 对象的一部分
+  listeners: object
+) {
+  return notEmpty(globalEvents) ? evaluateProp([listeners], {
+    default: isVue3 ? atToOn(globalEvents) : globalEvents,
+    mergeFunction: (event, globalEvent) => (...args: any) => {
+      // @ts-ignore
       event.apply(this, args)
+      // @ts-ignore
       globalEvent?.apply(this, args)
     },
-  }) : attrs
+  }) : listeners
 }

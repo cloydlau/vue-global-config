@@ -1,4 +1,9 @@
-export default function classifyGlobalConfig (globalConfig: { [key: string]: any }, localProps: string[] | object = []) {
+//import { consolePrefix } from '../package.json'
+
+export default function useGlobalConfig (
+  globalConfig: { [key: string]: any },
+  localProps: string[] | object = []
+) {
   let
     globalProps: { [key: string]: any } = {},
     globalAttrs: { [key: string]: any } = {},
@@ -9,20 +14,15 @@ export default function classifyGlobalConfig (globalConfig: { [key: string]: any
 
   for (let k in globalConfig) {
     if (k.startsWith('@')) {
-      const eventName = k.substring(1)
-      if (eventName) {
-        if (eventName.startsWith('hook:')) {
-          globalHooks[eventName] = globalConfig[k]
-        } else {
-          globalEvents[eventName] = globalConfig[k]
-        }
+      if (k.startsWith('hook:')) {
+        globalHooks[k] = globalConfig[k]
       } else {
-        console.warn('[vue-global-props] Empty event name!')
+        globalEvents[k] = globalConfig[k]
       }
     } else if (localPropsArray.includes(k)) {
-      globalAttrs[k] = globalConfig[k]
-    } else {
       globalProps[k] = globalConfig[k]
+    } else {
+      globalAttrs[k] = globalConfig[k]
     }
   }
 
