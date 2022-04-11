@@ -17,14 +17,15 @@
     "@vitejs/plugin-vue": "latest",
     "@vue/test-utils": "^2.0.0-rc.18",
     "@vue/tsconfig": "latest",
-    "change-case": "^4.1.2",
+    "change-case": "latest",
+    "element-plus": "latest",
     "jsdom": "latest",
-    "kayran": "^0.4.9",
-    "lodash-es": "^4.17.21",
+    "kayran": "latest",
+    "lodash-es": "latest",
     "typescript": "latest",
     "vite": "latest",
     "vitest": "latest",
-    "vue-demi": "^0.12.5",
+    "vue-demi": "latest",
     "vue-tsc": "latest"
   }
 }

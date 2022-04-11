@@ -1,4 +1,13 @@
 //import { consolePrefix } from '../package.json'
+import { isVue3 } from 'vue-demi'
+
+function atToOn (eventName: string) {
+  const keyArray = Array.from(eventName)
+  keyArray[0] = keyArray[0].toUpperCase()
+  keyArray.unshift('n')
+  keyArray.unshift('o')
+  return keyArray.join('')
+}
 
 export default function useGlobalConfig (
   globalConfig: { [key: string]: any },
@@ -14,10 +23,23 @@ export default function useGlobalConfig (
 
   for (let k in globalConfig) {
     if (k.startsWith('@')) {
-      if (k.startsWith('hook:')) {
-        globalHooks[k] = globalConfig[k]
+      const eventName = k.substring(1)
+      if (isVue3) {
+        if (eventName.startsWith('vnode')) {
+          globalHooks[atToOn(eventName)] = globalConfig[k]
+        } else {
+          // Vue 3
+          // @xxx → onXxx
+          globalEvents[atToOn(eventName)] = globalConfig[k]
+        }
       } else {
-        globalEvents[k] = globalConfig[k]
+        if (eventName.startsWith('hook:')) {
+          globalHooks[eventName] = globalConfig[k]
+        } else {
+          // Vue 2
+          // @xxx → xxx
+          globalEvents[eventName] = globalConfig[k]
+        }
       }
     } else if (localPropsArray.includes(k)) {
       globalProps[k] = globalConfig[k]
@@ -30,6 +52,6 @@ export default function useGlobalConfig (
     props: globalProps,
     attrs: globalAttrs,
     events: globalEvents,
-    hooks: globalHooks // 仅用于 Vue 2，Vue 3 不支持 @hook:xxx
+    hooks: globalHooks
   }
 }

@@ -1,21 +1,36 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+import { ElMessage } from 'element-plus'
+import { ref, computed } from 'vue'
+
+const enableLocalConfig = ref(false)
+const parentLocalConfig = computed(() =>
+  enableLocalConfig.value ? {
+    'parentProp': '传给 Parent 的实例 prop',
+    'childAttr': '传给 Child 的实例 attr',
+    '@childEvent' () {ElMessage.info('传给 Child 的实例 event')},
+    '@vnodeMounted' () {ElMessage.info('传给 Parent 的实例 hook')},
+  } : undefined
+)
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125"/>
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="You did it!"/>
     </div>
-
-    <GlobalComponent/>
   </header>
 
   <main>
-    <TheWelcome />
+    <TheWelcome/>
+    <Parent v-bind="parentLocalConfig" @vnodeMounted="() => { $message.info('Parent 的实例 hook') }"/>
+    <p>
+      传递实例参数：
+      <el-switch v-model="enableLocalConfig"/>
+    </p>
   </main>
 </template>
 

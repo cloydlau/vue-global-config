@@ -1,6 +1,6 @@
-let globalProps = {}, globalAttrs = {}, globalEvents = {}
+let globalProps = {}, globalAttrs = {}, globalEvents = {}, globalHooks = {}
 import { useGlobalConfig } from '../../vue-global-config'
-import Component, { props as localProps } from './index.vue'
+import Component from './index.vue'
 
 Component.install = (app: any, options = {}) => {
   if (!Component.name) {
@@ -10,16 +10,17 @@ Component.install = (app: any, options = {}) => {
     return
   }
 
-  const { props, attrs, events } = useGlobalConfig(options, localProps)
+  const { props, attrs, events, hooks } = useGlobalConfig(options, Component.props)
   globalProps = props
   globalAttrs = attrs
   globalEvents = events
+  globalHooks = hooks
 
-  console.log(props, attrs, events)
+  console.log(props, attrs, events, hooks)
 
   app.component(Component.name, Component)
   Component.install.installed = true
 }
 
 export default Component
-export { globalProps, globalAttrs, globalEvents }
+export { globalProps, globalAttrs, globalEvents, globalHooks }
