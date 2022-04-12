@@ -1,9 +1,9 @@
 import useGlobalConfig from './useGlobalConfig'
-import evaluateProp from './evaluateProp'
+import conclude from './conclude'
 import listenGlobalHooks from './listenGlobalHooks'
 
 export {
   useGlobalConfig,
-  evaluateProp,
+  conclude,
   listenGlobalHooks,
 }

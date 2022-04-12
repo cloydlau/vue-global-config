@@ -12,7 +12,12 @@ function atToOn (eventName: string) {
 export default function useGlobalConfig (
   globalConfig: { [key: string]: any },
   localProps: string[] | object = []
-) {
+): {
+  props: object,
+  attrs: object,
+  events: object,
+  hooks: object
+} {
   let
     globalProps: { [key: string]: any } = {},
     globalAttrs: { [key: string]: any } = {},

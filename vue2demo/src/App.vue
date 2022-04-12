@@ -16,7 +16,7 @@
 export default {
   data () {
     return {
-      enableLocalConfig: false,
+      enableLocalConfig: true,
       mount: true,
     }
   },
@@ -33,7 +33,7 @@ export default {
           console.log('传给 el-input 的实例 event', this)
         },
         'hook:mounted' () {
-          console.log('传给 GlobalComponent 的实例 hook', this)
+          console.log('传给 el-input 的实例 hook', this)
         },
       } : {}
     }
