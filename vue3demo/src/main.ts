@@ -3,16 +3,19 @@ import App from './App.vue'
 
 import 'element-plus/dist/index.css'
 import ElementPlus from 'element-plus'
-import { ElMessage } from 'element-plus'
 
-import Parent from './components/Parent'
+import GlobalComponent from './components/GlobalComponent'
 
 createApp(App)
 .use(ElementPlus)
-.use(Parent, {
-  'parentProp': '传给 Parent 的全局 prop',
-  'childAttr': '传给 Child 的全局 attr',
-  '@childEvent' () {ElMessage.info('传给 Child 的全局 event')},
-  '@vnodeMounted' () {ElMessage.info('Parent 的全局 hook')},
+.use(GlobalComponent, {
+  'msg': '传给 GlobalComponent 的全局 prop',
+  'placeholder': '传给 el-input 的全局 attr',
+  '@blur' () {
+    console.log('传给 el-input 的全局 event', this)
+  },
+  '@vnodeMounted' () {
+    console.log('传给 GlobalComponent 的全局 hook', this)
+  },
 })
 .mount('#app')

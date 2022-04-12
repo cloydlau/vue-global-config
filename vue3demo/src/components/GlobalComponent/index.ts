@@ -16,8 +16,6 @@ Component.install = (app: any, options = {}) => {
   globalEvents = events
   globalHooks = hooks
 
-  console.log(props, attrs, events, hooks)
-
   app.component(Component.name, Component)
   Component.install.installed = true
 }

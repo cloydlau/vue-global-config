@@ -50,11 +50,12 @@ $ npm add vue-global-config
 
 ## 全局 props
 
+### Vue 3（\<script setup>）
+
 ```vue
-<!-- Vue 3（script setup） -->
 
 <template>
-  {{ Title }}
+  {{ Msg }}
 </template>
 
 <script setup>
@@ -62,16 +63,43 @@ import { computed } from 'vue'
 import { evaluateProp } from 'vue-global-config'
 import { globalProps } from './index' // 全局注册入口
 
-defineProps(['title'])
-const Title = computed(() => evaluateProp([this.title, globalProps.title])) // 权重高的放在前面)
+const props = defineProps(['msg'])
+const Msg = computed(() => evaluateProp([this.msg, globalProps.msg])) // 权重高的放在前面)
 </script>
 ```
 
+### Vue 3（Composition API）
+
 ```vue
-<!-- Vue 2 & Vue 3（选项式） -->
 
 <template>
-  {{ Title }}
+  {{ Msg }}
+</template>
+
+<script>
+import { computed } from 'vue'
+import { evaluateProp } from 'vue-global-config'
+import { globalProps } from './index' // 全局注册入口
+
+export default {
+  props: ['msg'],
+  setup () {
+    const Msg = computed(() => evaluateProp([this.msg, globalProps.msg])) // 权重高的放在前面
+
+    return {
+      Msg,
+    }
+  }
+}
+</script>
+```
+
+### Vue 2 / Vue 3（Options API）
+
+```vue
+
+<template>
+  {{ Msg }}
 </template>
 
 <script>
@@ -79,10 +107,10 @@ import { evaluateProp } from 'vue-global-config'
 import { globalProps } from './index' // 全局注册入口
 
 export default {
-  props: ['title'],
+  props: ['msg'],
   computed: {
-    Title () {
-      return evaluateProp([this.title, globalProps.title]) // 权重高的放在前面
+    Msg () {
+      return evaluateProp([this.msg, globalProps.msg]) // 权重高的放在前面
     },
   }
 }
@@ -93,13 +121,14 @@ export default {
 
 ## 全局 attrs
 
-attrs 通常用于高阶组件，即二次封装。
+attrs 通常用于高阶组件。
+
+### Vue 3（\<script setup>）
 
 ```vue
-<!-- Vue 3（script setup） -->
 
 <template>
-  <el-button v-bind="Attrs"/>
+  <el-input v-bind="Attrs"/>
 </template>
 
 <script setup>
@@ -107,11 +136,13 @@ import { computed, useAttrs } from 'vue'
 import { evaluateProp } from 'vue-global-config'
 import { globalAttrs } from './index' // 全局注册入口
 
-// 在 Vue 3 中，attrs 同时包含了 attrs 和 events
 const Attrs = computed(() => evaluateProp([useAttrs()], {
+  // 在 Vue 3 中，attrs 同时包含了 attrs 和 events
+  // 如果要同时使用全局 attrs 和全局 events 的话：
+  // default: { ...globalAttrs, ...globalEvents },
   default: globalAttrs,
-  // mergeFunction 的作用是让全局事件和实例事件都执行，互不冲突
-  // 如果想让实例事件覆盖全局事件，则不需要 mergeFunction
+  // mergeFunction 的作用是让全局 events 和实例 events 都执行，互不冲突
+  // 如果想让实例 events 覆盖全局 events，则不需要 mergeFunction
   mergeFunction: (event, globalEvent) => (...args) => {
     event.apply(this, args)
     globalEvent?.apply(this, args)
@@ -120,11 +151,48 @@ const Attrs = computed(() => evaluateProp([useAttrs()], {
 </script>
 ```
 
+### Vue 3（Composition API）
+
 ```vue
-<!-- Vue 2 & Vue 3（选项式） -->
 
 <template>
-  <el-button v-bind="Attrs"/>
+  <el-input v-bind="Attrs"/>
+</template>
+
+<script>
+import { computed, useAttrs } from 'vue'
+import { evaluateProp } from 'vue-global-config'
+import { globalAttrs } from './index' // 全局注册入口
+
+export default {
+  setup () {
+    const Attrs = computed(() => evaluateProp([useAttrs()], {
+      // 在 Vue 3 中，attrs 同时包含了 attrs 和 events
+      // 如果要同时使用全局 attrs 和全局 events 的话：
+      // default: { ...globalAttrs, ...globalEvents },
+      default: globalAttrs,
+      // mergeFunction 的作用是让全局 events 和实例 events 都执行，互不冲突
+      // 如果想让实例 events 覆盖全局 events，则不需要 mergeFunction
+      mergeFunction: (event, globalEvent) => (...args) => {
+        event.apply(this, args)
+        globalEvent?.apply(this, args)
+      }
+    }))
+
+    return {
+      Attrs,
+    }
+  }
+}
+</script>
+```
+
+### Vue 2 / Vue 3（Options API）
+
+```vue
+
+<template>
+  <el-input v-bind="Attrs"/>
 </template>
 
 <script>
@@ -136,8 +204,8 @@ export default {
     Attrs () {
       return evaluateProp([this.$attrs], {
         default: globalAttrs,
-        // mergeFunction 的作用是让全局事件和实例事件都执行，互不冲突
-        // 如果想让实例事件覆盖全局事件，则不需要 mergeFunction
+        // mergeFunction 的作用是让全局 events 和实例 events 都执行，互不冲突
+        // 如果想让实例 events 覆盖全局 events，则不需要 mergeFunction
         mergeFunction: (event, globalEvent) => (...args) => {
           event.apply(this, args)
           globalEvent?.apply(this, args)
@@ -153,4 +221,210 @@ export default {
 
 ## 全局 events
 
+### Vue 3（\<script setup>）
 
+```vue
+
+<template>
+  <el-input v-bind="Attrs"/>
+</template>
+
+<script setup>
+import { computed, useAttrs } from 'vue'
+import { evaluateProp } from 'vue-global-config'
+import { globalEvents } from './index' // 全局注册入口
+
+const Attrs = computed(() => evaluateProp([useAttrs()], {
+  // 在 Vue 3 中，attrs 同时包含了 attrs 和 events
+  // 如果要同时使用全局 attrs 和全局 events 的话：
+  // default: { ...globalAttrs, ...globalEvents },
+  default: globalEvents,
+  // mergeFunction 的作用是让全局 events 和实例 events 都执行，互不冲突
+  // 如果想让实例 events 覆盖全局 events，则不需要 mergeFunction
+  mergeFunction: (event, globalEvent) => (...args) => {
+    event.apply(this, args)
+    globalEvent?.apply(this, args)
+  }
+}))
+</script>
+```
+
+### Vue 3（Composition API）
+
+```vue
+
+<template>
+  <el-input v-bind="Attrs"/>
+</template>
+
+<script>
+import { computed } from 'vue'
+import { evaluateProp } from 'vue-global-config'
+import { globalEvents } from './index' // 全局注册入口
+
+export default {
+  setup (props, { attrs }) {
+    const Attrs = computed(() => evaluateProp([attrs], {
+      // 在 Vue 3 中，attrs 同时包含了 attrs 和 events
+      // 如果要同时使用全局 attrs 和全局 events 的话：
+      // default: { ...globalAttrs, ...globalEvents },
+      default: globalEvents,
+      // mergeFunction 的作用是让全局 events 和实例 events 都执行，互不冲突
+      // 如果想让实例 events 覆盖全局 events，则不需要 mergeFunction
+      mergeFunction: (event, globalEvent) => (...args) => {
+        event.apply(this, args)
+        globalEvent?.apply(this, args)
+      }
+    }))
+
+    return {
+      Attrs,
+    }
+  }
+}
+</script>
+```
+
+### Vue 3（Options API）
+
+```vue
+
+<template>
+  <el-input v-bind="Attrs"/>
+</template>
+
+<script>
+import { evaluateProp } from 'vue-global-config'
+import { globalEvents } from './index' // 全局注册入口
+
+export default {
+  computed: {
+    Attrs () {
+      return evaluateProp([this.$attrs], {
+        // 在 Vue 3 中，attrs 同时包含了 attrs 和 events
+        // 如果要同时使用全局 attrs 和全局 events 的话：
+        // default: { ...globalAttrs, ...globalEvents },
+        default: globalEvents,
+        // mergeFunction 的作用是让全局 events 和实例 events 都执行，互不冲突
+        // 如果想让实例 events 覆盖全局 events，则不需要 mergeFunction
+        mergeFunction: (event, globalEvent) => (...args) => {
+          event.apply(this, args)
+          globalEvent?.apply(this, args)
+        }
+      })
+    },
+  }
+}
+</script>
+```
+
+### Vue 2
+
+```vue
+
+<template>
+  <el-input v-on="Listeners"/>
+</template>
+
+<script>
+import { evaluateProp } from 'vue-global-config'
+import { globalEvents } from './index' // 全局注册入口
+
+export default {
+  computed: {
+    Listeners () {
+      return evaluateProp([this.$listeners], {
+        default: globalEvents,
+        // mergeFunction 的作用是让全局 events 和实例 events 都执行，互不冲突
+        // 如果想让实例 events 覆盖全局 events，则不需要 mergeFunction
+        mergeFunction: (event, globalEvent) => (...args) => {
+          event.apply(this, args)
+          globalEvent?.apply(this, args)
+        }
+      })
+    },
+  }
+}
+</script>
+```
+
+<br>
+
+## 全局 hooks
+
+### Vue 3（\<script setup>）
+
+```vue
+
+<template>
+  <el-input v-bind="globalHooks"/>
+</template>
+
+<script setup>
+import { computed, useAttrs } from 'vue'
+import { evaluateProp } from 'vue-global-config'
+import { globalHooks } from './index' // 全局注册入口
+</script>
+```
+
+### Vue 3（Composition API）
+
+```vue
+
+<template>
+  <el-input v-bind="globalHooks"/>
+</template>
+
+<script>
+import { globalHooks } from './index' // 全局注册入口
+
+export default {
+  setup () {
+    return {
+      globalHooks,
+    }
+  }
+}
+</script>
+```
+
+### Vue 3（Options API）
+
+```vue
+
+<template>
+  <el-input v-bind="globalHooks"/>
+</template>
+
+<script>
+import { globalHooks } from './index' // 全局注册入口
+
+export default {
+  data () {
+    return {
+      globalHooks,
+    }
+  }
+}
+</script>
+```
+
+### Vue 2
+
+```vue
+
+<template>
+  <el-input/>
+</template>
+
+<script>
+import { listenGlobalHooks } from 'vue-global-config'
+import { globalHooks } from './index' // 全局注册入口
+
+export default {
+  created () {
+    listenGlobalHooks.call(this, globalHooks)
+  },
+}
+</script>
+```
