@@ -15,13 +15,13 @@ export default function useGlobalConfig (
 ): {
   props: object,
   attrs: object,
-  events: object,
+  listeners: object,
   hooks: object
 } {
   let
     globalProps: { [key: string]: any } = {},
     globalAttrs: { [key: string]: any } = {},
-    globalEvents: { [key: string]: Function } = {},
+    globalListeners: { [key: string]: Function } = {},
     globalHooks: { [key: string]: Function } = {}
 
   const localPropsArray = Array.isArray(localProps) ? localProps : Object.keys(localProps)
@@ -35,7 +35,7 @@ export default function useGlobalConfig (
         } else {
           // Vue 3
           // @xxx → onXxx
-          globalEvents[atToOn(eventName)] = globalConfig[k]
+          globalListeners[atToOn(eventName)] = globalConfig[k]
         }
       } else {
         if (eventName.startsWith('hook:')) {
@@ -43,7 +43,7 @@ export default function useGlobalConfig (
         } else {
           // Vue 2
           // @xxx → xxx
-          globalEvents[eventName] = globalConfig[k]
+          globalListeners[eventName] = globalConfig[k]
         }
       }
     } else if (localPropsArray.includes(k)) {
@@ -56,7 +56,7 @@ export default function useGlobalConfig (
   return {
     props: globalProps,
     attrs: globalAttrs,
-    events: globalEvents,
+    listeners: globalListeners,
     hooks: globalHooks
   }
 }

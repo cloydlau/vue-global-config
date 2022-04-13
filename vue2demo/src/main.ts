@@ -14,10 +14,10 @@ Vue.use(GlobalComponent, {
   'msg': '传给 GlobalComponent 的全局 prop',
   'placeholder': '传给 el-input 的全局 attr',
   '@blur' () {
-    console.log('传给 el-input 的全局 event', this)
+    console.log('传给 el-input 的全局 listener', this)
   },
   '@hook:mounted' () {
-    console.log('传给 el-input 的全局 hook', this)
+    console.log('传给 el-input 的全局 listener', this)
   },
 })
 

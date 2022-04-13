@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import { globalProps, globalAttrs, globalEvents, globalHooks } from './index'
-import { conclude, listenGlobalHooks } from '../../vue-global-config'
+import { globalProps, globalAttrs, globalListeners, globalHooks } from './index'
+import { conclude, getLocalListeners, listenGlobalHooks } from '../../vue-global-config'
 
 export default {
   name: 'GlobalComponent',
@@ -23,20 +23,14 @@ export default {
       return conclude([this.$attrs, globalAttrs])
     },
     Listeners () {
-      // 非必须：给 globalEvents 绑定 this，以便在全局配置中访问 this
-      for (const k in globalEvents) {
-        globalEvents[k] = globalEvents[k].bind(this)
+      for (const k in globalListeners) {
+        globalListeners[k] = globalListeners[k].bind(this)
       }
-
-      console.log(this.$listeners)
-
-      return conclude([this.$listeners], {
-        default: globalEvents,
-        // mergeFunction 的作用是让全局 events 和实例 events 都执行，互不冲突
-        // 如果想让实例 events 覆盖全局 events，则不需要 mergeFunction
-        mergeFunction: (localEvent, globalEvent) => (...args) => {
-          localEvent(args)
-          globalEvent?.(args)
+      return conclude([getLocalListeners(this.$listeners)], {
+        default: globalListeners,
+        mergeFunction: (localEventListener, globalEventListener) => (...args) => {
+          localEventListener(args)
+          globalEventListener?.(args)
         },
       })
     }

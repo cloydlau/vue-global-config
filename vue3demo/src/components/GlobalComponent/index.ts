@@ -1,4 +1,4 @@
-let globalProps = {}, globalAttrs = {}, globalEvents = {}, globalHooks = {}
+let globalProps = {}, globalAttrs = {}, globalListeners = {}, globalHooks = {}
 import { useGlobalConfig } from '../../vue-global-config'
 import Component from './index.vue'
 
@@ -10,10 +10,10 @@ Component.install = (app: any, options = {}) => {
     return
   }
 
-  const { props, attrs, events, hooks } = useGlobalConfig(options, Component.props)
+  const { props, attrs, listeners, hooks } = useGlobalConfig(options, Component.props)
   globalProps = props
   globalAttrs = attrs
-  globalEvents = events
+  globalListeners = listeners
   globalHooks = hooks
 
   app.component(Component.name, Component)
@@ -21,4 +21,4 @@ Component.install = (app: any, options = {}) => {
 }
 
 export default Component
-export { globalProps, globalAttrs, globalEvents, globalHooks }
+export { globalProps, globalAttrs, globalListeners, globalHooks }

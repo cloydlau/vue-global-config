@@ -9,14 +9,14 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 
-const enableLocalConfig = ref(false)
+const enableLocalConfig = ref(true)
 const mount = ref(true)
 const localConfig = computed(() =>
   enableLocalConfig.value ? {
     'msg': '传给 GlobalComponent 的实例 prop',
     'placeholder': '传给 el-input 的实例 attr',
     'onBlur' () {
-      console.log('传给 el-input 的实例 event', this)
+      console.log('传给 el-input 的实例 listener', this)
     },
     'onVnodeMounted' () {
       console.log('传给 GlobalComponent 的实例 hook', this)

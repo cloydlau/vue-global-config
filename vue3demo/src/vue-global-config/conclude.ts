@@ -51,7 +51,7 @@ function MergeFunction (sources, {
 }
 
 /**
- * @param {any[]} propSequence - prop序列（优先级从高到低，最后是默认值）
+ * @param {any[]} configSequence - prop序列（优先级从高到低，最后是默认值）
  * @param {object} [config] - 配置
  * @param {string} [config.name] - prop名称，用于报错提示
  * @param {string|string[]} [config.type] - 数据类型校验
@@ -66,8 +66,8 @@ function MergeFunction (sources, {
  * @param {boolean} [config.mergeFunctionApplyOnlyToDefault = true] - mergeFunction仅作用于default
  * @returns {any} 最终的prop
  */
-export default function evaluateProp (
-  propSequence: any[], config: {
+export default function conclude (
+  configSequence: any[], config: {
     name?: string,
     type?: string | string[],
     default?: any,
@@ -81,7 +81,7 @@ export default function evaluateProp (
     mergeFunctionApplyOnlyToDefault?: boolean,
   } = {}
 ): any {
-  //console.log('传参：', propSequence)
+  //console.log('传参：', configSequence)
 
   let {
     name = '',
@@ -103,9 +103,9 @@ export default function evaluateProp (
     if (typeOf(defaultValue) !== 'function') {
       throw Error(`${name}动态生成默认值时，默认值需为函数类型`)
     }
-    propSequenceCopy = [...propSequence]
+    propSequenceCopy = [...configSequence]
   } else {
-    propSequenceCopy = [...propSequence, defaultValue]
+    propSequenceCopy = [...configSequence, defaultValue]
   }
 
   let result, isPlainObjectArray = false, isFunctionArray = false
@@ -175,8 +175,8 @@ export default function evaluateProp (
   }
 
   if (defaultIsDynamic) {
-    return evaluateProp(
-      propSequence, {
+    return conclude(
+      configSequence, {
         ...config,
         default: defaultValue(result),
         defaultIsDynamic: false
