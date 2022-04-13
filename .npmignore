@@ -41,3 +41,5 @@ windi.config.ts
 /dist/favicon.ico
 /pnpm-lock.yaml
 /scripts/
+/vue2demo/
+/vue3demo/

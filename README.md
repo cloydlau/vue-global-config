@@ -11,7 +11,7 @@ Vue 提供了注册全局组件的功能，但不支持全局参数配置。
 在业界，ElementPlus
 贴心地提供了[部分参数的全局配置](https://element-plus.org/zh-CN/component/config-provider.html#config-provider-%E5%B1%9E%E6%80%A7) 。
 
-但仅仅是部分参数，且没有全局事件、没有全局钩子。
+但仅支持部分 props，不支持全局 attrs、不支持全局事件监听、不支持全局生命周期钩子。
 
 让自己封装的组件支持全局参数，是一件不难实现但颇为繁琐的苦差事。
 
@@ -27,9 +27,10 @@ Vue 提供了注册全局组件的功能，但不支持全局参数配置。
 - 提供参数权重算法，解决全局参数与实例参数的取舍、融合问题
 - 支持全局配置 [props](https://staging-cn.vuejs.org/guide/components/props.html#props)
 - 支持全局配置 [attrs](https://staging-cn.vuejs.org/guide/components/attrs.html)
-- 支持全局配置 [listeners](https://staging-cn.vuejs.org/guide/essentials/event-handling.html#listening-to-listeners)
-    - 支持同名全局事件与实例事件共存，也支持同名全局事件与实例事件二选一
-- 支持全局配置 hooks（内部 API）
+- 支持全局配置 [事件监听](https://staging-cn.vuejs.org/guide/essentials/event-handling.html#listening-to-listeners)
+    - 支持同名的全局监听器与实例监听器共存（既触发全局监听的回调，也触发实例监听的回调）
+    - 支持同名的全局监听器与实例监听器二选一（只触发全局监听和实例监听的其中一个回调）
+- 支持全局配置生命周期钩子（内部 API）
     - Vue 3 中语法为 `@vnodeMounted`，参见 https://github.com/vuejs/core/issues/4457
     - Vue 2 中语法为 `@hook:mounted`，参见 https://github.com/vuejs/vue/issues/10312
 - 支持深合并、浅合并和直接覆盖 `plain object` 类型的参数
@@ -50,7 +51,7 @@ $ npm add vue-global-config
 ## 使用
 
 1. 首先要为组件提供一个[全局注册的入口](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts) ，以便该组件能被全局注册，这是基础
-2. 使用 [useGlobalConfig](#useGlobalConfig) 对组件使用者的传参进行处理，得到四种全局参数 props、attrs、listeners、hooks
+2. 使用 [useGlobalConfig](#useGlobalConfig) 对组件使用者的传参进行处理，得到四项全局参数 props、attrs、listeners、hooks
 3. 组件引入这些全局参数，使用 [conclude](#conclude) 与组件的实例参数进行权重判定、融合，得到最终的参数值
 
 [Vue 3 示例代码](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent)

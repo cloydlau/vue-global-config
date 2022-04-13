@@ -1,5 +1,5 @@
 let globalProps = {}, globalAttrs = {}, globalListeners = {}, globalHooks = {}
-import { useGlobalConfig } from '../../vue-global-config'
+import { useGlobalConfig } from 'vue-global-config'
 import Component from './index.vue'
 
 Component.install = (app: any, options = {}) => {
