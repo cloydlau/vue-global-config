@@ -15,7 +15,7 @@ Vue 提供了注册全局组件的功能，但不支持全局参数配置。
 
 让自己封装的组件支持全局参数，是一件不难实现但颇为繁琐的苦差事。
 
-纠结于全局参数与实例参数的权衡，哪个值最终生效？对象的话应该覆盖、浅合并还是深合并？同名参数的驼峰和短横线形式同时出现如何处理？
+纠结于全局参数与实例参数的权衡，最终采用哪个值？对象类型应该覆盖、浅合并还是深合并？同名参数的驼峰和短横线形式同时出现如何取舍？
 
 **PS：实例参数即局部参数**
 
@@ -49,8 +49,8 @@ $ npm add vue-global-config
 
 ## 使用
 
-1. 首先要为组件提供一个全局注册的入口，以便该组件能够便全局注册，这是基础
-2. 使用 `useGlobalConfig` 对组件使用者的传参进行处理，得到全局的 `{ globalProps, globalAttrs, globalEvents, globalHooks }`
+1. 首先要为组件提供一个[全局注册的入口](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts) ，以便该组件能被全局注册，这是基础
+2. 使用 [useGlobalConfig](#useGlobalConfig) 对组件使用者的传参进行处理，得到全局的 `{ globalProps, globalAttrs, globalEvents, globalHooks }`
 3. 组件引入上述四种全局参数，与组件的实例参数进行权重判定、融合，得到最终的参数值
 
 [Vue 3 示例代码](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent)
@@ -228,6 +228,8 @@ export default {
 ```
 
 <br>
+
+<a name="useGlobalConfig"></a>
 
 ## useGlobalConfig
 
