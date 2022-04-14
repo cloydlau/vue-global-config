@@ -14,7 +14,7 @@ export default {
 <script setup>
 import { getCurrentInstance, computed, useAttrs } from 'vue'
 import { globalProps, globalAttrs, globalListeners, globalHooks } from './index'
-import { conclude } from 'vue-global-config'
+import { conclude } from '../../../../src'
 
 const currentInstance = getCurrentInstance()
 

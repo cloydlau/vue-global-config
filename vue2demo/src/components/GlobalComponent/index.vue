@@ -10,7 +10,7 @@
 
 <script>
 import { globalProps, globalAttrs, globalListeners, globalHooks } from './index'
-import { conclude, getLocalListeners, listenGlobalHooks } from 'vue-global-config'
+import { conclude, getLocalListeners, listenGlobalHooks } from '../../../../src'
 
 export default {
   name: 'GlobalComponent',
