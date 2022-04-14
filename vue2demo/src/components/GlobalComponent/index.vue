@@ -29,8 +29,8 @@ export default {
       return conclude([getLocalListeners(this.$listeners)], {
         default: globalListeners,
         mergeFunction: (localEventListener, globalEventListener) => (...args) => {
-          localEventListener(args)
-          globalEventListener?.(args)
+          localEventListener(...args)
+          globalEventListener?.(...args)
         },
       })
     }

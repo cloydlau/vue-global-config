@@ -105,8 +105,8 @@ const Attrs = computed(() => conclude([useAttrs()], {
   // mergeFunction 的作用是让全局和实例 listeners 都执行，互不冲突
   // 如果想让实例 listeners 覆盖全局 listeners，则不需要 mergeFunction
   mergeFunction: (localEventListener, globalEventListener) => (...args) => {
-    localEventListener(args)
-    globalEventListener?.(args)
+    localEventListener(...args)
+    globalEventListener?.(...args)
   },
 }))
 </script>
@@ -209,8 +209,8 @@ export default {
         // mergeFunction 的作用是让全局和实例 listeners 都执行，互不冲突
         // 如果想让实例 listeners 覆盖全局 listeners，则不需要 mergeFunction
         mergeFunction: (localEventListener, globalEventListener) => (...args) => {
-          localEventListener(args)
-          globalEventListener?.(args)
+          localEventListener(...args)
+          globalEventListener?.(...args)
         },
       })
     },
