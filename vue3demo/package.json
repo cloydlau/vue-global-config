@@ -9,7 +9,8 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
   },
   "dependencies": {
-    "vue": "latest"
+    "vue": "latest",
+    "vue-global-config": "latest"
   },
   "devDependencies": {
     "@types/jsdom": "latest",
@@ -17,15 +18,11 @@
     "@vitejs/plugin-vue": "latest",
     "@vue/test-utils": "^2.0.0-rc.20",
     "@vue/tsconfig": "latest",
-    "change-case": "latest",
     "element-plus": "latest",
     "jsdom": "latest",
-    "kayran": "latest",
-    "lodash-es": "latest",
     "typescript": "latest",
     "vite": "latest",
     "vitest": "latest",
-    "vue-demi": "latest",
     "vue-tsc": "latest"
   }
 }

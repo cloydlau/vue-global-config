@@ -17,7 +17,7 @@ Vue.use(GlobalComponent, {
     console.log('传给 el-input 的全局 listener', this)
   },
   '@hook:mounted' () {
-    console.log('传给 el-input 的全局 listener', this)
+    console.log('传给 el-input 的全局 hook', this)
   },
 })
 

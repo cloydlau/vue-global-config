@@ -30,7 +30,7 @@ export default {
     localEventsAndHooks () {
       return this.enableLocalConfig ? {
         'blur' () {
-          console.log('传给 el-input 的实例 event', this)
+          console.log('传给 el-input 的实例 listener', this)
         },
         'hook:mounted' () {
           console.log('传给 el-input 的实例 hook', this)

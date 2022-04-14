@@ -469,7 +469,7 @@ conclude([{
 
 在 Vue 3 中，`attrs` 包含 attrs 和 listeners。
 
-所以在 Vue 2 中，通过实例传递的 hooks 会被 `this.$listeners` 错误地传递给组件内部的子组件，导致 hooks 被多次触发。
+所以在 Vue 2 中，通过实例传递的 hooks 会被 `this.$listeners` 错误地传递给组件内部的子组件，导致 hooks 被重复触发。
 
 调用 `getLocalListeners(this.$listeners)` 能够得到去除 hooks 只包含 listeners 的监听器。
 
