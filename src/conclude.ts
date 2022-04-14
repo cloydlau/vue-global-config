@@ -184,8 +184,12 @@ export default function conclude (
   } else {
     //console.log('生效：', result)
     return camelCase && isPlainObject(result) ?
-      mapKeys(result, (v, k) => changeCase.camelCase(k, {
-        stripRegexp: new RegExp() // 不过滤任何字符
+      // 只有最外层的键会被转换
+      // changeCase.camelCase 默认会把键中包含字母数字之外的任意字符如 $ _ 的键值对干掉
+      // attrs 的命名正好不允许包含 $ _
+      // 但是 props、listeners 允许
+      mapKeys(result, (v: any, k: any) => changeCase.camelCase(k, {
+        stripRegexp: /-/g // 只过滤短横线，以便 kebab-case 转换为 camelCase
       })) :
       result
   }
