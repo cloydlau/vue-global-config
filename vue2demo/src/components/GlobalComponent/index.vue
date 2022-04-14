@@ -30,7 +30,7 @@ export default {
         default: globalListeners,
         mergeFunction: (localEventListener, globalEventListener) => (...args) => {
           localEventListener(...args)
-          globalEventListener?.(...args)
+          globalEventListener(...args)
         },
       })
     }

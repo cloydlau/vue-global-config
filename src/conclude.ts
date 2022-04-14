@@ -33,7 +33,7 @@ function MergeObject (sources, {
 }) {
   const customizer = mergeFunction ?
     (objValue, srcValue) =>
-      (typeOf(objValue) === 'function' || typeOf(srcValue) === 'function') ?
+      (typeOf(objValue) === 'function' && typeOf(srcValue) === 'function') ?
         mergeFunction(srcValue, objValue) :
         undefined
     : undefined
@@ -97,20 +97,20 @@ export default function conclude (
     mergeFunctionApplyOnlyToDefault = true,
   } = config
 
-  let propSequenceCopy
+  let configSequenceCopy
 
   if (defaultIsDynamic) {
     if (typeOf(defaultValue) !== 'function') {
       throw Error(`${name}动态生成默认值时，默认值需为函数类型`)
     }
-    propSequenceCopy = [...configSequence]
+    configSequenceCopy = [...configSequence]
   } else {
-    propSequenceCopy = [...configSequence, defaultValue]
+    configSequenceCopy = [...configSequence, defaultValue]
   }
 
   let result, isPlainObjectArray = false, isFunctionArray = false
-  for (let i = 0; i < propSequenceCopy.length; i++) {
-    const v = propSequenceCopy[i]
+  for (let i = 0; i < configSequenceCopy.length; i++) {
+    const v = configSequenceCopy[i]
     if (v !== undefined) {
       validateProp({
         type, name, prop: v, validator
@@ -129,7 +129,7 @@ export default function conclude (
   }
 
   if (isPlainObjectArray) {
-    propSequenceCopy = cloneDeep(propSequenceCopy)
+    configSequenceCopy = cloneDeep(configSequenceCopy)
   } else {
     // 只有纯粹的po数组才能进行对象合并
     mergeObject = false
@@ -140,10 +140,10 @@ export default function conclude (
     }
   }
 
-  for (let i = 0; i < propSequenceCopy.length; i++) {
-    const prop = propSequenceCopy[i]
+  for (let i = 0; i < configSequenceCopy.length; i++) {
+    const prop = configSequenceCopy[i]
     if (prop !== undefined) {
-      if (i === propSequenceCopy.length - 1) {
+      if (i === configSequenceCopy.length - 1) {
         result = prop
       } else if (mergeObject) {
         result = MergeObject(mergeObjectApplyOnlyToDefault ?
@@ -151,7 +151,7 @@ export default function conclude (
           [defaultValue, prop] :
           // 依次合并（一次性完成，跳出循环）
           // reverse会改变原始对象
-          [...propSequenceCopy].reverse(), {
+          [...configSequenceCopy].reverse(), {
           mergeObject,
           mergeFunction
         })
@@ -160,7 +160,7 @@ export default function conclude (
           // 直接将权重最高的prop与默认值进行融合
           [prop, defaultValue] :
           // 依次融合（一次性完成，跳出循环）
-          propSequenceCopy, {
+          configSequenceCopy, {
           mergeFunction,
         })
       } else {

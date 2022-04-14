@@ -34,7 +34,7 @@ const Attrs = computed(() => conclude([useAttrs()], {
   default: { ...globalAttrs, ...globalListeners },
   mergeFunction: (localEventListener, globalEventListener) => (...args) => {
     localEventListener(...args)
-    globalEventListener?.(...args)
+    globalEventListener(...args)
   },
 }))
 

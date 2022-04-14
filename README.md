@@ -50,7 +50,11 @@ $ npm add vue-global-config
 
 ## 使用
 
-1. 首先要为组件提供一个[全局注册的入口](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts) ，以便该组件能被全局注册，这是基础
+1.
+
+首先要为组件提供一个[全局注册的入口](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts)
+，以便该组件能被全局注册，这是基础
+
 2. 使用 [useGlobalConfig](#useGlobalConfig) 对组件使用者的传参进行处理，得到四项全局参数 props、attrs、listeners、hooks
 3. 组件引入这些全局参数，使用 [conclude](#conclude) 与组件的实例参数进行权重判定、融合，得到最终的参数值
 
@@ -106,7 +110,7 @@ const Attrs = computed(() => conclude([useAttrs()], {
   // 如果想让实例 listeners 覆盖全局 listeners，则不需要 mergeFunction
   mergeFunction: (localEventListener, globalEventListener) => (...args) => {
     localEventListener(...args)
-    globalEventListener?.(...args)
+    globalEventListener(...args)
   },
 }))
 </script>
@@ -201,7 +205,7 @@ export default {
       for (const k in globalListeners) {
         globalListeners[k] = globalListeners[k].bind(this)
       }
-      
+
       // getLocalListeners 的作用是去掉 this.$listeners 中的 hooks
       // 去掉的原因见 getLocalListeners 章节
       return conclude([getLocalListeners(this.$listeners)], {
@@ -210,7 +214,7 @@ export default {
         // 如果想让实例 listeners 覆盖全局 listeners，则不需要 mergeFunction
         mergeFunction: (localEventListener, globalEventListener) => (...args) => {
           localEventListener(...args)
-          globalEventListener?.(...args)
+          globalEventListener(...args)
         },
       })
     },
@@ -372,7 +376,8 @@ mergeFunction 提供定制化的方式来融合函数类型的 prop。
 - prop 本身是函数
 - prop 是含有函数属性的对象
 
-conclude 内部使用 [Array.prototype.reduce](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
+conclude
+内部使用 [Array.prototype.reduce](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
 来执行函数融合，mergeFunction 将被用作参数1。
 
 ```ts
@@ -411,7 +416,8 @@ conclude([
 
 ### config.default
 
-显式指定默认值，如果没有开启 `mergeObjectApplyOnlyToDefault` 或 `mergeFunctionApplyOnlyToDefault` 的话，则没有必要使用该参数，将默认值放在 `propSequence` 的末尾即可。
+显式指定默认值，如果没有开启 `mergeObjectApplyOnlyToDefault` 或 `mergeFunctionApplyOnlyToDefault` 的话，则没有必要使用该参数，将默认值放在 `configSequence`
+的末尾即可。
 
 ### config.camelCase
 
