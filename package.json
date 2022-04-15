@@ -1,6 +1,6 @@
 {
   "name": "vue-global-config",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "cloydlau",
   "description": "Let your Vue Components support global config",
   "keywords": [
