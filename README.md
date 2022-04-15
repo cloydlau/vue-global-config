@@ -50,11 +50,9 @@ $ npm add vue-global-config
 
 ## 使用
 
-1.
-
-首先要为组件提供一个[全局注册的入口](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts)
-，以便该组件能被全局注册，这是基础
-
+1. 首先要为组件提供一个
+   [全局注册的入口](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts)
+   ，以便该组件能被全局注册，这是基础
 2. 使用 [useGlobalConfig](#useGlobalConfig) 对组件使用者的传参进行处理，得到四项全局参数 props、attrs、listeners、hooks
 3. 组件引入这些全局参数，使用 [conclude](#conclude) 与组件的实例参数进行权重判定、融合，得到最终的参数值
 
