@@ -10,7 +10,7 @@
 
 <script>
 import { globalProps, globalAttrs, globalListeners, globalHooks } from './index'
-import { conclude, getLocalListeners, listenGlobalHooks } from '../../../../src'
+import { conclude, getLocalListeners, listenGlobalHooks } from 'vue-global-config'
 
 export default {
   name: 'GlobalComponent',
@@ -26,6 +26,7 @@ export default {
       for (const k in globalListeners) {
         globalListeners[k] = globalListeners[k].bind(this)
       }
+
       return conclude([getLocalListeners(this.$listeners)], {
         default: globalListeners,
         mergeFunction: (localEventListener, globalEventListener) => (...args) => {

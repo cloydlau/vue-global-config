@@ -16,7 +16,7 @@
     "@types/node": "latest",
     "@vitejs/plugin-legacy": "latest",
     "@vue/runtime-dom": "latest",
-    "element-ui": "^2.15.6",
+    "element-ui": "^2.15.8",
     "typescript": "latest",
     "unplugin-vue2-script-setup": "latest",
     "vite": "latest",
