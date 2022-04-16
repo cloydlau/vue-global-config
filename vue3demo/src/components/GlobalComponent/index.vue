@@ -5,16 +5,14 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'GlobalComponent',
-}
-</script>
-
 <script setup>
 import { getCurrentInstance, computed, useAttrs } from 'vue'
 import { globalProps, globalAttrs, globalListeners, globalHooks } from './index'
 import { conclude } from 'vue-global-config'
+
+defineOptions({
+  name: 'GlobalComponent',
+})
 
 const currentInstance = getCurrentInstance()
 
