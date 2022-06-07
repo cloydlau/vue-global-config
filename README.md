@@ -43,6 +43,7 @@ Vue 提供了注册全局组件的功能，但不支持全局参数配置。
 ![NPM](https://nodei.co/npm/vue-global-config.png)
 
 ``` bash
+# vue@2.6 或更早版本需要额外安装 @vue/composition-api
 $ npm add vue-global-config
 ```
 
@@ -267,6 +268,10 @@ export default {
 
 ```ts
 // 示例
+
+// vue@2.6 或更早版本需要额外安装 @vue/composition-api
+// import VCA from '@vue/composition-api'
+// Vue.use(VCA)
 
 import { useGlobalConfig } from 'vue-global-config'
 
