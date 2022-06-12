@@ -2,7 +2,7 @@
   "name": "vue-global-config",
   "version": "0.0.2",
   "author": "cloydlau",
-  "description": "Let your Vue Components support global configuration",
+  "description": "Configure your Vue Components globally",
   "keywords": [
     "global config",
     "global configuration",

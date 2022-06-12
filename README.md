@@ -1,6 +1,6 @@
 # vue-global-config
 
-让你的 Vue 组件参数支持全局配置！
+让你的 Vue 2 & 3 组件参数支持全局配置！
 
 ```ts
 app.use(YourComponent, {
