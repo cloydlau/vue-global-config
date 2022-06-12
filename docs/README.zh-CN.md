@@ -1,95 +1,97 @@
-English | [中文](./docs/README.zh-CN.md)
-
 # vue-global-config
 
-Configure your Vue 2 & 3 Components globally!
+让你的 Vue 2 & 3 组件支持全局配置！
 
 ```ts
 app.use(YourComponent, {
-  // global prop
+  // 全局 prop
   'message': 'Hello World',
 
-  // global attr
+  // 全局 attr
   'placeholder': 'Please enter',
 
-  // global listeners
+  // 全局 listeners
   '@blur' (e) {
-    console.log(e) // event is accessible
-    console.log(this) // 'this' is accessible
+    console.log(e) // 可获取到 event
+    console.log(this) // 可获取到 this
   },
 
-  // global hook（Vue 3）
+  // 全局 hook（Vue 3）
   '@vnodeMounted' () {
-    console.log(this) // 'this' is accessible
+    console.log(this) // 可获取到 this
   },
 
-  // global hook（Vue 2）
+  // 全局 hook（Vue 2）
   '@hook:mounted' () {
-    console.log(this) // 'this' is accessible
+    console.log(this) // 可获取到 this
   },
 })
 ```
 
 <br>
 
-## Why
+## 初衷
 
-Vue provides support for globally registering components, but no configuration.
+Vue 提供了注册全局组件的功能，但不支持全局参数配置。
 
-In the industry, ElementPlus
-thoughtfully provides [config-provider](https://element-plus.org/en-US/component/config-provider.html#config-provider-attributes) .
+在业界，ElementPlus
+贴心地提供了[部分参数的全局配置](https://element-plus.org/zh-CN/component/config-provider.html#config-provider-%E5%B1%9E%E6%80%A7) 。
 
-But note that it's only for **partial props**. Global attrs, global listeners & global hooks are all **not** supported.
+但仅支持部分 props，不支持全局 attrs、不支持全局事件监听、不支持全局生命周期钩子。
 
-Make your components capable of globally configuring, is a not-that-hard but tiresome drudgery.
+让自己封装的组件支持全局参数，是一件不难实现但颇为繁琐的苦差事。
 
-Entangled in global/local/default parameters, which one to choose? It should be replaced or shallow merged or deep merged when it comes to plain object type? What if I want all functions triggered instead of ony one when it comes to function type? How to decide when both camel case and kebab case of a same parameter come together?
+纠结于全局参数与实例参数的权衡，最终采用哪个值？对象类型应该覆盖、浅合并还是深合并？同名参数的驼峰和短横线形式同时出现如何取舍？
 
-<br>
-
-## Features
-
-- Support both Vue 2 & 3
-- Provide weight algorithm to deal with trade-off and merging issues of global/local/default parameters.
-- Support global [props](https://staging.vuejs.org/guide/components/props.html#props)
-- Support global [attrs](https://staging.vuejs.org/guide/components/attrs.html)
-- Support global [listeners](https://staging.vuejs.org/guide/essentials/event-handling.html#listening-to-listeners)
-    - Support triggering both global listener & local listener.
-    - Support triggering either global listener or local listener.
-- Support global hooks (internal API)
-    - Such as `@vnodeMounted` in Vue 3, see https://github.com/vuejs/core/issues/4457
-    - Such as `@hook:mounted` in Vue 2, see https://github.com/vuejs/vue/issues/10312
-- Support deep merge, shallow merge or directly replace plain object type values
-- Support merge or directly replace function type values
+**PS：实例参数即局部参数**
 
 <br>
 
-## Installation
+## 特性
+
+- 兼容 Vue 2 & Vue 3
+- 提供参数权重算法，解决全局参数与实例参数的取舍、融合问题
+- 支持全局配置 [props](https://staging-cn.vuejs.org/guide/components/props.html#props)
+- 支持全局配置 [attrs](https://staging-cn.vuejs.org/guide/components/attrs.html)
+- 支持全局配置 [事件监听](https://staging-cn.vuejs.org/guide/essentials/event-handling.html#listening-to-listeners)
+    - 支持同名的全局监听器与实例监听器共存（既触发全局监听的回调，也触发实例监听的回调）
+    - 支持同名的全局监听器与实例监听器二选一（只触发全局监听和实例监听的其中一个回调）
+- 支持全局配置生命周期钩子（内部 API）
+    - Vue 3 中语法为 `@vnodeMounted`，参见 https://github.com/vuejs/core/issues/4457
+    - Vue 2 中语法为 `@hook:mounted`，参见 https://github.com/vuejs/vue/issues/10312
+- 支持深合并、浅合并和直接覆盖 `plain object` 类型的参数
+- 支持融合、直接覆盖 `function` 类型的参数
+
+<br>
+
+## 安装
 
 ![NPM](https://nodei.co/npm/vue-global-config.png)
 
 ``` bash
-# Vue version before 2.7 should add an extra @vue/composition-api
+# vue@2.6 或更早版本需要额外安装 @vue/composition-api
 $ npm add vue-global-config
 ```
 
 <br>
 
-## Usage
+## 使用
 
-1. Firstly provide an [entrance](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts) for your component to register globally, this is the foundation.
-2. Use [useGlobalConfig](#useGlobalConfig) to handle parameters passed by component user, get global props, global attrs, global listeners & global hooks.
-3. Import those global parameters, meet them with local/default parameters and determine the final value using [conclude](#conclude) .
+1. 首先要为组件提供一个
+   [全局注册的入口](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts)
+   ，以便该组件能被全局注册，这是基础
+2. 使用 [useGlobalConfig](#useGlobalConfig) 对组件使用者的传参进行处理，得到四项全局参数 props、attrs、listeners、hooks
+3. 组件引入这些全局参数，使用 [conclude](#conclude) 与组件的实例参数进行权重判定、融合，得到最终的参数值
 
-[Vue 3 demo](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent)
+[Vue 3 示例代码](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent)
 
-[Vue 2 demo](https://github.com/cloydlau/vue-global-config/tree/main/vue2demo/src/components/GlobalComponent)
+[Vue 2 示例代码](https://github.com/cloydlau/vue-global-config/tree/main/vue2demo/src/components/GlobalComponent)
 
 <br>
 
 ## Vue 3
 
-### Global props
+### 全局 props
 
 ```vue
 
@@ -100,16 +102,16 @@ $ npm add vue-global-config
 <script setup>
 import { computed } from 'vue'
 import { conclude } from 'vue-global-config'
-import { globalProps } from './index' // Entrance for registering globally
+import { globalProps } from './index' // 全局注册入口
 
 const props = defineProps(['msg'])
-const Msg = computed(() => conclude([props.msg, globalProps.msg])) // Place the prop of higher priority in the front
+const Msg = computed(() => conclude([props.msg, globalProps.msg])) // 权重高的放在前面
 </script>
 ```
 
-### Global attrs & listeners
+### 全局 attrs & listeners
 
-> In Vue 3, `attrs` includes both attrs & listeners
+> 在 Vue 3 中，attrs 同时包含了 attrs 和 listeners
 
 ```vue
 
@@ -120,18 +122,18 @@ const Msg = computed(() => conclude([props.msg, globalProps.msg])) // Place the 
 <script setup>
 import { computed, useAttrs, getCurrentInstance } from 'vue'
 import { conclude } from 'vue-global-config'
-import { globalAttrs, globalListeners } from './index' // Entrance for registering globally
+import { globalAttrs, globalListeners } from './index' // 全局注册入口
 
 const currentInstance = getCurrentInstance()
 
-// Not required: Bind 'this' to globalListeners, if you need it in the global configuration
+// 非必须：给 globalListeners 绑定 this，以便在全局配置中访问 this
 for (const k in globalListeners) {
   globalListeners[k] = globalListeners[k].bind(currentInstance)
 }
 const Attrs = computed(() => conclude([useAttrs()], {
   default: { ...globalAttrs, ...globalListeners },
-  // mergeFunction's role is to trigger both global and local listener
-  // do not use it if you want global listener replaced by local one
+  // mergeFunction 的作用是让全局和实例 listeners 都执行，互不冲突
+  // 如果想让实例 listeners 覆盖全局 listeners，则不需要 mergeFunction
   mergeFunction: (localEventListener, globalEventListener) => (...args) => {
     localEventListener(...args)
     globalEventListener(...args)
@@ -140,7 +142,7 @@ const Attrs = computed(() => conclude([useAttrs()], {
 </script>
 ```
 
-### Global hooks
+### 全局 hooks
 
 ```vue
 
@@ -150,11 +152,11 @@ const Attrs = computed(() => conclude([useAttrs()], {
 
 <script setup>
 import { getCurrentInstance } from 'vue'
-import { globalHooks } from './index' // Entrance for registering globally
+import { globalHooks } from './index' // 全局注册入口
 
 const currentInstance = getCurrentInstance()
 
-// Not required: Bind 'this' to globalHooks, if you need it in the global configuration
+// 给 globalHooks 绑定 this，以便在全局配置中访问 this
 for (const k in globalHooks) {
   globalHooks[k] = globalHooks[k].bind(currentInstance)
 }
@@ -165,7 +167,7 @@ for (const k in globalHooks) {
 
 ## Vue 2
 
-### Global props
+### 全局 props
 
 ```vue
 
@@ -175,20 +177,20 @@ for (const k in globalHooks) {
 
 <script>
 import { conclude } from 'vue-global-config'
-import { globalProps } from './index' // Entrance for registering globally
+import { globalProps } from './index' // 全局注册入口
 
 export default {
   props: ['msg'],
   computed: {
     Msg () {
-      return conclude([this.msg, globalProps.msg]) // Place the prop of higher priority in the front
+      return conclude([this.msg, globalProps.msg]) // 权重高的放在前面
     },
   }
 }
 </script>
 ```
 
-### Global attrs
+### 全局 attrs
 
 ```vue
 
@@ -198,19 +200,19 @@ export default {
 
 <script>
 import { conclude } from 'vue-global-config'
-import { globalAttrs } from './index' // Entrance for registering globally
+import { globalAttrs } from './index' // 全局注册入口
 
 export default {
   computed: {
     Attrs () {
-      return conclude([this.$attrs, globalAttrs]) // Place the prop of higher priority in the front
+      return conclude([this.$attrs, globalAttrs]) // 权重高的放在前面
     },
   }
 }
 </script>
 ```
 
-### Global listeners
+### 全局 listeners
 
 ```vue
 
@@ -220,22 +222,22 @@ export default {
 
 <script>
 import { conclude, getLocalListeners } from 'vue-global-config'
-import { globalListeners } from './index' // Entrance for registering globally
+import { globalListeners } from './index' // 全局注册入口
 
 export default {
   computed: {
     Listeners () {
-      // Not required: Bind 'this' to globalListeners, if you need it in the global configuration
+      // 非必须：给 globalListeners 绑定 this，以便在全局配置中访问 this
       for (const k in globalListeners) {
         globalListeners[k] = globalListeners[k].bind(this)
       }
 
-      // getLocalListeners's role is to remove hooks in this.$listeners
-      // Check the getLocalListeners chapter for details
+      // getLocalListeners 的作用是去掉 this.$listeners 中的 hooks
+      // 去掉的原因见 getLocalListeners 章节
       return conclude([getLocalListeners(this.$listeners)], {
         default: globalListeners,
-        // mergeFunction's role is to trigger both global and local listener
-        // do not use it if you want global listener replaced by local one
+        // mergeFunction 的作用是让全局和实例 listeners 都执行，互不冲突
+        // 如果想让实例 listeners 覆盖全局 listeners，则不需要 mergeFunction
         mergeFunction: (localEventListener, globalEventListener) => (...args) => {
           localEventListener(...args)
           globalEventListener(...args)
@@ -247,7 +249,7 @@ export default {
 </script>
 ```
 
-### Global hooks
+### 全局 hooks
 
 ```vue
 
@@ -257,11 +259,11 @@ export default {
 
 <script>
 import { listenGlobalHooks } from 'vue-global-config'
-import { globalHooks } from './index' // Entrance for registering globally
+import { globalHooks } from './index' // 全局注册入口
 
 export default {
   created () {
-    // listen global hooks
+    // 监听全局 hooks
     listenGlobalHooks.call(this, globalHooks)
   },
 }
@@ -274,27 +276,27 @@ export default {
 
 ## useGlobalConfig
 
-Get global props, attrs, listeners & hooks by analysing global parameters passed by component user.
+分析组件使用者传递的全局参数，得到全局的 props、attrs、listeners、hooks
 
 ### Param
 
 ```ts
 /**
- * @param {object} globalConfig - global parameters
- * @param {string[] | object} [localProps] - local props, for the purpose of differentiating between props and attrs
+ * @param {object} globalConfig - 全局参数
+ * @param {string[] | object} [localProps] - 实例 props，用于区分 props 和 attrs
  * @returns {{
  *   props: object,
  *   attrs: object,
  *   listeners: object,
  *   hooks: object
- * }} global props, attrs, listeners & hooks
+ * }} 全局的 props、attrs、listeners、hooks
  */
 ```
 
 ```ts
-// Example
+// 示例
 
-// Vue version before 2.7 should add an extra @vue/composition-api
+// vue@2.6 或更早版本需要额外安装 @vue/composition-api
 // import VCA from '@vue/composition-api'
 // Vue.use(VCA)
 
@@ -497,20 +499,20 @@ conclude([{
 
 ## getLocalListeners
 
-Vue 2 only. For the purpose of listening local hooks.
+仅用于 Vue 2，监听实例 hooks 时需要。
 
-In Vue 2, `this.$listeners` includes listeners & hooks.
+在 Vue 2 中，`this.$listeners` 包含 listeners 和 hooks。
 
-In Vue 3, `attrs` includes attrs and listeners.
+在 Vue 3 中，`attrs` 包含 attrs 和 listeners。
 
-As a result in Vue 2, hooks passed locally will be improperly passed to the child component within your component, making hook triggered repeatedly.
+所以在 Vue 2 中，通过实例传递的 hooks 会被 `this.$listeners` 错误地传递给组件内部的子组件，导致 hooks 被重复触发。
 
-By using `getLocalListeners(this.$listeners)`, your can get pure listeners without any hook.
+调用 `getLocalListeners(this.$listeners)` 能够得到去除 hooks 只包含 listeners 的监听器。
 
 <br>
 
 ## listenGlobalHooks
 
-Vue 2 only. For the purpose of listening global hooks.
+仅用于 Vue 2，监听全局 hooks 时需要
 
-In Vue 2, only Vue components can trigger a hook, HTML elements don't. So triggering both global & local hooks needs hijacking `emit`.
+在 Vue 2 中，只有组件才能触发 hooks，原生元素不行，所以需要通过劫持 emit 来实现同时触发全局 hooks 和实例 hooks
