@@ -111,6 +111,8 @@ const Msg = computed(() => conclude([props.msg, globalProps.msg])) // 权重高�
 
 ### 全局 attrs & listeners
 
+> 在 Vue 3 中，attrs 同时包含了 attrs 和 listeners
+
 ```vue
 
 <template>
@@ -129,7 +131,6 @@ for (const k in globalListeners) {
   globalListeners[k] = globalListeners[k].bind(currentInstance)
 }
 const Attrs = computed(() => conclude([useAttrs()], {
-  // 在 Vue 3 中，attrs 同时包含了 attrs 和 listeners
   default: { ...globalAttrs, ...globalListeners },
   // mergeFunction 的作用是让全局和实例 listeners 都执行，互不冲突
   // 如果想让实例 listeners 覆盖全局 listeners，则不需要 mergeFunction
