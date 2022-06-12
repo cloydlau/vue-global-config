@@ -1,6 +1,32 @@
 # vue-global-config
 
-让你的组件参数支持全局配置！
+让你的 Vue 组件参数支持全局配置！
+
+```ts
+app.use(YourComponent, {
+  // 全局 prop
+  'message': 'Hello World',
+
+  // 全局 attr
+  'placeholder': 'Please enter',
+
+  // 全局 listeners
+  '@blur' (e) {
+    console.log(e) // event is accessible
+    console.log(this) // 'this' is accessible
+  },
+
+  // 全局 hook（Vue 3）
+  '@vnodeMounted' () {
+    console.log(this) // 'this' is accessible
+  },
+
+  // 全局 hook（Vue 2）
+  '@hook:mounted' () {
+    console.log(this) // 'this' is accessible
+  },
+})
+```
 
 <br>
 
