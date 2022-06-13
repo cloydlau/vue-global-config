@@ -12,7 +12,7 @@ app.use(YourComponent, {
   // global attr
   'placeholder': 'Please enter',
 
-  // global listeners
+  // global listener
   '@blur' (e) {
     console.log(e) // event is accessible
     console.log(this) // 'this' is accessible

@@ -10,7 +10,7 @@ app.use(YourComponent, {
   // 全局 attr
   'placeholder': 'Please enter',
 
-  // 全局 listeners
+  // 全局 listener
   '@blur' (e) {
     console.log(e) // 可获取到 event
     console.log(this) // 可获取到 this
