@@ -18,7 +18,7 @@ app.use(YourComponent, {
     console.log(this) // 可获取到 this
   },
 
-  // 全局 hooks
+  // 全局 hook
   '@vnodeMounted'() {
     console.log(this) // 可获取到 this
   },
