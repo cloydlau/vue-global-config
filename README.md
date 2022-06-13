@@ -5,6 +5,8 @@ English | [中文](./docs/README.zh-CN.md)
 Configure your Vue 2 & 3 components globally!
 
 ```ts
+// Vue 3
+
 app.use(YourComponent, {
   // global prop
   'message': 'Hello World',
@@ -13,18 +15,36 @@ app.use(YourComponent, {
   'placeholder': 'Please enter',
 
   // global listener
-  '@blur' (e) {
+  '@blur'(e) {
     console.log(e) // event is accessible
     console.log(this) // 'this' is accessible
   },
 
-  // global hook（Vue 3）
-  '@vnodeMounted' () {
+  // global hook
+  '@vnodeMounted'() {
+    console.log(this) // 'this' is accessible
+  },
+})
+```
+
+```ts
+// Vue 2
+
+Vue.use(YourComponent, {
+  // global prop
+  'message': 'Hello World',
+
+  // global attr
+  'placeholder': 'Please enter',
+
+  // global listener
+  '@blur'(e) {
+    console.log(e) // event is accessible
     console.log(this) // 'this' is accessible
   },
 
-  // global hook（Vue 2）
-  '@hook:mounted' () {
+  // global hook
+  '@hook:mounted'() {
     console.log(this) // 'this' is accessible
   },
 })
