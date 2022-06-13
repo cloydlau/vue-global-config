@@ -2,7 +2,7 @@ English | [中文](./docs/README.zh-CN.md)
 
 # vue-global-config
 
-Configure your Vue 2 & 3 Components globally!
+Configure your Vue 2 & 3 components globally!
 
 ```ts
 app.use(YourComponent, {
