@@ -29,7 +29,8 @@
     "ri": "npm run clean && pnpm i",
     "u": "node scripts/upgrade.js",
     "r": "node scripts/release.js",
-    "rs": "node scripts/release.js --straightforward"
+    "rs": "node scripts/release.js --straightforward",
+    "prepare": "husky install"
   },
   "dependencies": {
     "change-case": "latest",
@@ -44,6 +45,7 @@
     "chalk": "^4.1.2",
     "enquirer": "latest",
     "execa": "^4.1.0",
+    "husky": "latest",
     "minimist": "latest",
     "semver": "latest",
     "vite": "latest",
