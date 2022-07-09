@@ -43,3 +43,4 @@ windi.config.ts
 /scripts/
 /vue2demo/
 /vue3demo/
+.husky
