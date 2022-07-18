@@ -3,6 +3,8 @@
 让你的 Vue 2 & 3 组件支持全局配置！
 
 ```ts
+// Vue 3
+
 app.use(YourComponent, {
   // 全局 prop
   'message': 'Hello World',
@@ -11,18 +13,36 @@ app.use(YourComponent, {
   'placeholder': 'Please enter',
 
   // 全局 listener
-  '@blur' (e) {
+  '@blur'(e) {
     console.log(e) // 可获取到 event
     console.log(this) // 可获取到 this
   },
 
-  // 全局 hook（Vue 3）
-  '@vnodeMounted' () {
+  // 全局 hook
+  '@vnodeMounted'() {
+    console.log(this) // 可获取到 this
+  },
+})
+```
+
+```ts
+// Vue 2
+
+Vue.use(YourComponent, {
+  // 全局 prop
+  'message': 'Hello World',
+
+  // 全局 attr
+  'placeholder': 'Please enter',
+
+  // 全局 listener
+  '@blur'(e) {
+    console.log(e) // 可获取到 event
     console.log(this) // 可获取到 this
   },
 
-  // 全局 hook（Vue 2）
-  '@hook:mounted' () {
+  // 全局 hook
+  '@hook:mounted'() {
     console.log(this) // 可获取到 this
   },
 })
