@@ -14,10 +14,10 @@
   "private": false,
   "license": "MIT",
   "main": "./dist/vue-global-config.umd.js",
-  "module": "./dist/vue-global-config.es.js",
+  "module": "./dist/vue-global-config.mjs",
   "exports": {
     ".": {
-      "import": "./dist/vue-global-config.es.js",
+      "import": "./dist/vue-global-config.mjs",
       "require": "./dist/vue-global-config.umd.js"
     }
   },
