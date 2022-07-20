@@ -33,12 +33,8 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write"
-    ],
-    "*.ts?(x)": [
-      "eslint",
-      "prettier --parser=typescript --write"
+    "*.{js,ts,tsx,vue,md}": [
+      "eslint --fix"
     ]
   },
   "dependencies": {
@@ -51,20 +47,16 @@
     "vue": "^2.0.0 || >=3.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "latest",
-    "@typescript-eslint/parser": "latest",
+    "@antfu/eslint-config": "latest",
     "chalk": "^4.1.2",
     "enquirer": "latest",
     "eslint": "latest",
-    "eslint-config-prettier": "latest",
-    "eslint-plugin-prettier": "latest",
-    "eslint-plugin-vue": "latest",
     "execa": "^4.1.0",
     "husky": "latest",
     "lint-staged": "latest",
     "minimist": "latest",
-    "prettier": "latest",
     "semver": "latest",
+    "typescript": "latest",
     "vite": "latest",
     "vue": "latest"
   }
