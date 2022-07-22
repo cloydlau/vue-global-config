@@ -1,8 +1,10 @@
 {
   "name": "vue-global-config",
   "version": "0.0.2",
-  "author": "cloydlau",
+  "private": false,
   "description": "Configure your Vue 2 & 3 Components globally",
+  "author": "cloydlau",
+  "license": "MIT",
   "keywords": [
     "global config",
     "global configuration",
@@ -11,16 +13,14 @@
     "component",
     "sfc"
   ],
-  "private": false,
-  "license": "MIT",
-  "main": "./dist/vue-global-config.umd.js",
-  "module": "./dist/vue-global-config.mjs",
   "exports": {
     ".": {
-      "import": "./dist/vue-global-config.mjs",
-      "require": "./dist/vue-global-config.umd.js"
+      "require": "./dist/vue-global-config.umd.js",
+      "import": "./dist/vue-global-config.mjs"
     }
   },
+  "main": "./dist/vue-global-config.umd.js",
+  "module": "./dist/vue-global-config.mjs",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -31,14 +31,19 @@
     "r": "node scripts/release.js",
     "rs": "node scripts/release.js --straightforward"
   },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
+  },
+  "peerDependencies": {
+    "vue": "^2.0.0 || >=3.0.0"
+  },
   "dependencies": {
     "change-case": "latest",
     "kayran": "latest",
     "lodash-es": "latest",
     "vue-demi": "latest"
-  },
-  "peerDependencies": {
-    "vue": "^2.0.0 || >=3.0.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "latest",
@@ -50,6 +55,7 @@
     "lint-staged": "latest",
     "minimist": "latest",
     "semver": "latest",
+    "typescript": "latest",
     "vite": "latest",
     "vue": "latest"
   },
