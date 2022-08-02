@@ -22,7 +22,12 @@
   "main": "./dist/vue-global-config.umd.js",
   "module": "./dist/vue-global-config.mjs",
   "scripts": {
-    "dev": "vite",
+    "dev": "pnpm switch3 && vite --config ./demo/vue3/vite.config.ts --open",
+    "dev2.7": "pnpm switch2.7 && vite --config ./demo/vue2.7/vite.config.ts --open",
+    "dev2": "pnpm switch2 && vite --config ./demo/vue2/vite.config.ts --open",
+    "switch3": "deno run --allow-run --allow-read --allow-write ./scripts/switch-vue.js 3",
+    "switch2.7": "deno run --allow-run --allow-read --allow-write ./scripts/switch-vue.js 2.7",
+    "switch2": "deno run --allow-run --allow-read --allow-write ./scripts/switch-vue.js 2",
     "build": "vite build",
     "serve": "vite preview",
     "clean": "rd /s /q .\\node_modules",
@@ -31,13 +36,13 @@
     "r": "node scripts/release.js",
     "rs": "node scripts/release.js --straightforward"
   },
+  "peerDependencies": {
+    "vue": "^2.0.0 || >=3.0.0"
+  },
   "peerDependenciesMeta": {
     "@vue/composition-api": {
       "optional": true
     }
-  },
-  "peerDependencies": {
-    "vue": "^2.0.0 || >=3.0.0"
   },
   "dependencies": {
     "change-case": "latest",
@@ -57,7 +62,11 @@
     "semver": "latest",
     "typescript": "latest",
     "vite": "latest",
-    "vue": "latest"
+    "vue-global-config": "latest",
+    "@vitejs/plugin-vue2": "latest",
+    "@vue/test-utils": "1",
+    "element-ui": "latest",
+    "vue": "^2.7"
   },
   "lint-staged": {
     "*.{js,ts,tsx,vue,md}": [
