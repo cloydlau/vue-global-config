@@ -16,7 +16,8 @@
   "exports": {
     ".": {
       "require": "./dist/vue-global-config.umd.js",
-      "import": "./dist/vue-global-config.mjs"
+      "import": "./dist/vue-global-config.mjs",
+      "browser": "./dist/vue-global-config.mjs"
     }
   },
   "main": "./dist/vue-global-config.umd.js",
