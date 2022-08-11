@@ -5,6 +5,7 @@
   "description": "Configure your Vue 2 & 3 Components globally",
   "author": "cloydlau",
   "license": "MIT",
+  "repository": "https://github.com/cloydlau/vue-global-config",
   "keywords": [
     "global config",
     "global configuration",
@@ -36,7 +37,8 @@
     "serve": "vite preview"
   },
   "peerDependencies": {
-    "vue": "^2.0.0 || >=3.0.0"
+    "@vue/composition-api": "1",
+    "vue": "2 || 3"
   },
   "peerDependenciesMeta": {
     "@vue/composition-api": {
