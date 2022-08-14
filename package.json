@@ -56,15 +56,15 @@
     "@cloydlau/scripts": "latest",
     "@vitejs/plugin-vue": "latest",
     "@vue/compiler-sfc": "latest",
-    "@vue/test-utils": "latest",
     "element-plus": "latest",
     "eslint": "latest",
     "husky": "latest",
     "lint-staged": "latest",
     "typescript": "latest",
     "vite": "latest",
-    "vue": "latest",
-    "vue-global-config": "latest"
+    "vue-global-config": "latest",
+    "@vue/test-utils": "latest",
+    "vue": "latest"
   },
   "lint-staged": {
     "*.{js,ts,tsx,vue,md}": [

@@ -361,7 +361,7 @@ conclude 的作用就是帮助你计算出最终的配置。
  * @param {any[]} configSequence - config 序列（优先级从高到低，最后是默认值）
  * @param {object} [config] - 配置
  * @param {string} [config.name] - config 名称，用于报错提示
- * @param {string|string[]} [config.type] - 数据类型校验
+ * @param {PropType} [config.type] - 数据类型校验
  * @param {any} [config.default] - 默认值（显式）
  * @param {boolean} [config.defaultIsDynamic = false] - 动态生成默认值
  * @param {boolean} [config.required = false] - 是否必传校验
@@ -386,6 +386,12 @@ conclude([1, 2, undefined]) // 1
 ### 怎么判断某个 prop 有没有传？
 
 以该 prop 是否全等于 `undefined` 作为标识
+
+### config.type
+
+与 [Vue 3 的 Prop 类型校验](https://cn.vuejs.org/guide/components/props.html#prop-validation) 一致，
+
+Vue 3 与 Vue 2 的 Prop 类型校验基本一致，Vue 3 中，值为 `null` 的 Prop 不会参与类型校验，这一点与 Vue 2 不同。
 
 ### config.mergeObject
 

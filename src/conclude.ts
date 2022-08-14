@@ -1,33 +1,111 @@
-import { assignInWith, cloneDeep, isPlainObject, mapKeys, mergeWith } from 'lodash-es'
+import { assignInWith, cloneDeep, isPlainObject, mapKeys, mergeWith, isObject } from 'lodash-es'
 import * as changeCase from 'change-case'
-import { typeOf } from 'kayran'
 
-// isPlainObject Vue及Vue实例返回false
-// cloneDeep不完全支持Vue实例
+// isPlainObject Vue 及 Vue 实例返回 false
+// cloneDeep 不完全支持 Vue 实例
 
 enum MergeObjectOptions {
   deep = 'deep',
   shallow = 'shallow',
 }
 
+type PropType<T> = PropConstructor<T> | PropConstructor<T>[]
+
+type PropConstructor<T = any> =
+  | { new(...args: any[]): T & {} }
+  | { (): T }
+  | PropMethod<T>
+
+type PropMethod<T, TConstructor = any> = [T] extends [
+  ((...args: any) => any) | undefined
+] // if is function with args, allowing non-required functions
+  ? { new(): TConstructor; (): T; readonly prototype: TConstructor } // Create Function like constructor
+  : never
+
+/**
+ * Make a map and return a function for checking if a key
+ * is in that map.
+ * IMPORTANT: all calls of this function must be prefixed with
+ * \/\*#\_\_PURE\_\_\*\/
+ * So that rollup can tree-shake them if necessary.
+ */
+export function makeMap(
+  str: string,
+  expectsLowerCase?: boolean
+): (key: string) => boolean {
+  const map: Record<string, boolean> = Object.create(null)
+  const list: Array<string> = str.split(',')
+  for (let i = 0; i < list.length; i++) {
+    map[list[i]] = true
+  }
+  return expectsLowerCase ? val => !!map[val.toLowerCase()] : val => !!map[val]
+}
+
+const isSimpleType = /*#__PURE__*/ makeMap(
+  'String,Number,Boolean,Function,Symbol,BigInt'
+)
+
+// 不使用 ctor.name 的原因：
+// use function string name to check type constructors
+// so that it works across vms / iframes.
+function getType(ctor: any): string {
+  const match = ctor && ctor.toString().match(/^\s*function (\w+)/)
+  return match ? match[1] : ctor === null ? 'null' : ''
+}
+
+type AssertionResult = {
+  valid: boolean
+  expectedType: string
+}
+
+function assertType(value: unknown, type: PropConstructor): AssertionResult {
+  let valid
+  // Number → 'Number'
+  const expectedType = getType(type)
+  if (isSimpleType(expectedType)) {
+    const t = typeof value
+    valid = t === expectedType.toLowerCase()
+    // for primitive wrapper objects
+    if (!valid && t === 'object') {
+      valid = value instanceof type
+    }
+  } else if (expectedType === 'Object') {
+    valid = isObject(value)
+  } else if (expectedType === 'Array') {
+    valid = Array.isArray(value)
+  } else if (expectedType === 'null') {
+    valid = value === null
+  } else {
+    valid = value instanceof type
+  }
+  return {
+    valid,
+    expectedType
+  }
+}
+
 function validateProp({
-  type, name, prop, validator,
+  prop, type, validator,
 }: {
   type: any
-  name: any
   prop: any
   validator: any
 }) {
-  if (type) {
-    if (typeOf(type) === 'string')
-      type = [type]
+  if (![void 0, null].includes(prop) && type) {
+    let isValid = false
+    const types = Array.isArray(type) ? type : [type], expectedTypes = []
 
-    const actualType = typeOf(prop)
-    if (!type.includes(actualType))
-      throw new Error(`${name} should be ${type.toString()} type, receiving ${actualType}`)
+    for (let i = 0; i < types.length && !isValid; i++) {
+      const { valid, expectedType } = assertType(prop, types[i])
+      expectedTypes.push(expectedType || '')
+      isValid = valid
+    }
+
+    if (!isValid)
+      throw new Error(`Invalid prop: type check failed, expecting [${expectedTypes.join(', ')}], receiving: ${prop}`)
   }
   if (validator && !validator(prop))
-    throw new Error(`${name} not legal`)
+    throw new Error(`Invalid prop: validator check failed, receiving: ${prop}`)
 }
 
 function MergeObject(sources: any[], {
@@ -36,10 +114,10 @@ function MergeObject(sources: any[], {
 }: { mergeObject: string; mergeFunction: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function) }) {
   const customizer = mergeFunction
     ? (objValue: any, srcValue: any) =>
-        (typeOf(objValue) === 'function' && typeOf(srcValue) === 'function')
-          ? mergeFunction(srcValue, objValue)
-          : undefined
-    : undefined
+      (objValue instanceof Function && srcValue instanceof Function)
+        ? mergeFunction(srcValue, objValue)
+        : void 0
+    : void 0
 
   // merge, assignIn会改变原始对象
   return mergeObject === MergeObjectOptions.deep
@@ -56,8 +134,7 @@ function MergeFunction(sources: any[], {
 /**
  * @param {any[]} configSequence - prop序列（优先级从高到低，最后是默认值）
  * @param {object} [config] - 配置
- * @param {string} [config.name] - prop名称，用于报错提示
- * @param {string|string[]} [config.type] - 数据类型校验
+ * @param {PropType<any>} [config.type] - 数据类型校验
  * @param {any} [config.default] - 默认值（显式）
  * @param {boolean} [config.defaultIsDynamic = false] - 动态生成默认值
  * @param {boolean} [config.required = false] - 是否必传校验
@@ -71,8 +148,7 @@ function MergeFunction(sources: any[], {
  */
 export default function conclude(
   configSequence: any[], config: {
-    name?: string
-    type?: string | string[]
+    type?: PropType<any>
     default?: any
     defaultIsDynamic?: boolean
     required?: boolean
@@ -87,7 +163,6 @@ export default function conclude(
   // console.log('传参：', configSequence)
 
   const {
-    name = '',
     type,
     default: defaultValue,
     defaultIsDynamic = false,
@@ -106,8 +181,8 @@ export default function conclude(
   let configSequenceCopy
 
   if (defaultIsDynamic) {
-    if (typeOf(defaultValue) !== 'function')
-      throw new Error(`${name} when defaultIsDynamic enabled, default value should be function type`)
+    if (!(defaultValue instanceof Function))
+      throw new Error(`Invalid option: default. config.default should be Function when config.defaultIsDynamic enabled, receiving: ${defaultValue}`)
 
     configSequenceCopy = [...configSequence]
   }
@@ -118,13 +193,13 @@ export default function conclude(
   let result; let isPlainObjectArray = false; let isFunctionArray = false
   for (let i = 0; i < configSequenceCopy.length; i++) {
     const v = configSequenceCopy[i]
-    if (v !== undefined) {
+    if (v !== void 0) {
       validateProp({
-        type, name, prop: v, validator,
+        type, prop: v, validator,
       })
 
       const itemIsPlainObject = isPlainObject(v)
-      const itemIsFunction = typeOf(v) === 'function'
+      const itemIsFunction = v instanceof Function
       isPlainObjectArray = itemIsPlainObject
       isFunctionArray = itemIsFunction
       // 只要有一项不是po/function，则不是纯粹的po/function数组
@@ -148,7 +223,7 @@ export default function conclude(
 
   for (let i = 0; i < configSequenceCopy.length; i++) {
     const prop = configSequenceCopy[i]
-    if (prop !== undefined) {
+    if (prop !== void 0) {
       if (i === configSequenceCopy.length - 1) {
         result = prop
       }
@@ -179,16 +254,16 @@ export default function conclude(
     }
   }
 
-  if (required && result === undefined)
-    throw new Error(`${name} is required`)
+  if (required && [void 0, null].includes(result))
+    throw new Error('Missing required prop')
 
   if (defaultIsDynamic) {
     return conclude(
       configSequence, {
-        ...config,
-        default: defaultValue(result),
-        defaultIsDynamic: false,
-      })
+      ...config,
+      default: defaultValue(result),
+      defaultIsDynamic: false,
+    })
   }
   else {
     // console.log('生效：', result)
