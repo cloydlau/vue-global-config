@@ -19,10 +19,13 @@
       "require": "./dist/vue-global-config.umd.js",
       "import": "./dist/vue-global-config.mjs",
       "browser": "./dist/vue-global-config.mjs"
-    }
+    },
+    "./*": "./*"
   },
   "main": "./dist/vue-global-config.umd.js",
   "module": "./dist/vue-global-config.mjs",
+  "unpkg": "./dist/vue-global-config.umd.js",
+  "jsdelivr": "./dist/vue-global-config.umd.js",
   "files": [
     "dist"
   ],
