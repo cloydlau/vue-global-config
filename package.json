@@ -2,7 +2,7 @@
   "name": "vue-global-config",
   "version": "0.1.0",
   "private": false,
-  "description": "Configure your Vue 2 & 3 Components globally",
+  "description": "Configure your Vue 2 & 3 components globally. 让你的 Vue 2 & 3 组件支持全局配置。",
   "author": "cloydlau",
   "license": "MIT",
   "repository": "https://github.com/cloydlau/vue-global-config",
@@ -59,15 +59,16 @@
     "@cloydlau/scripts": "latest",
     "@vitejs/plugin-vue": "latest",
     "@vue/compiler-sfc": "latest",
+    "@vue/test-utils": "latest",
+    "case-police": "latest",
     "element-plus": "latest",
     "eslint": "latest",
     "husky": "latest",
     "lint-staged": "latest",
     "typescript": "latest",
     "vite": "latest",
-    "vue-global-config": "latest",
-    "@vue/test-utils": "latest",
-    "vue": "latest"
+    "vue": "latest",
+    "vue-global-config": "latest"
   },
   "lint-staged": {
     "*.{js,ts,tsx,vue,md}": [
