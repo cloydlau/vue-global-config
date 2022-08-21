@@ -2,7 +2,7 @@ English | [中文](./docs/README.zh-CN.md)
 
 # vue-global-config
 
-Configure your Vue 2.6 / 2.7 / 3 components globally!
+Configure your Vue 2.6/2.7/3 components globally!
 
 ```ts
 // Vue 3
@@ -15,13 +15,13 @@ app.use(YourComponent, {
   'placeholder': 'Please enter',
 
   // global listener
-  '@blur'(e) {
+  '@blur': function (e) {
     console.log(e) // event is accessible
     console.log(this) // 'this' is accessible
   },
 
   // global hook
-  '@vnodeMounted'() {
+  '@vnodeMounted': function () {
     console.log(this) // 'this' is accessible
   },
 })
@@ -38,13 +38,13 @@ Vue.use(YourComponent, {
   'placeholder': 'Please enter',
 
   // global listener
-  '@blur'(e) {
+  '@blur': function (e) {
     console.log(e) // event is accessible
     console.log(this) // 'this' is accessible
   },
 
   // global hook
-  '@hook:mounted'() {
+  '@hook:mounted': function () {
     console.log(this) // 'this' is accessible
   },
 })
@@ -69,7 +69,7 @@ Entangled in global/local/default parameters, which one to choose? It should be 
 
 ## Features
 
-- Support Vue 2.6 / 2.7 / 3
+- Support Vue 2.6/2.7/3
 - Provide weight algorithm to deal with trade-off and merging issues of global/local/default parameters.
 - Support global [props](https://staging.vuejs.org/guide/components/props.html#props)
 - Support global [attrs](https://staging.vuejs.org/guide/components/attrs.html)
@@ -112,7 +112,6 @@ $ npm add vue-global-config
 ### Global props
 
 ```vue
-
 <template>
   {{ Msg }}
 </template>
@@ -132,22 +131,21 @@ const Msg = computed(() => conclude([props.msg, globalProps.msg])) // Place the 
 > In Vue 3, `attrs` includes both attrs & listeners
 
 ```vue
-
 <template>
-  <el-input v-bind="Attrs"/>
+  <el-input v-bind="Attrs" />
 </template>
 
 <script setup>
-import { computed, useAttrs, getCurrentInstance } from 'vue'
+import { computed, getCurrentInstance, useAttrs } from 'vue'
 import { conclude } from 'vue-global-config'
 import { globalAttrs, globalListeners } from './index' // Entrance for registering globally
 
 const currentInstance = getCurrentInstance()
 
 // Not required: Bind 'this' to globalListeners, if you need it in the global configuration
-for (const k in globalListeners) {
+for (const k in globalListeners)
   globalListeners[k] = globalListeners[k].bind(currentInstance)
-}
+
 const Attrs = computed(() => conclude([useAttrs()], {
   default: { ...globalAttrs, ...globalListeners },
   // mergeFunction's role is to trigger both global and local listener
@@ -163,9 +161,8 @@ const Attrs = computed(() => conclude([useAttrs()], {
 ### Global hooks
 
 ```vue
-
 <template>
-  <div v-bind="globalHooks"/>
+  <div v-bind="globalHooks" />
 </template>
 
 <script setup>
@@ -175,9 +172,8 @@ import { globalHooks } from './index' // Entrance for registering globally
 const currentInstance = getCurrentInstance()
 
 // Not required: Bind 'this' to globalHooks, if you need it in the global configuration
-for (const k in globalHooks) {
+for (const k in globalHooks)
   globalHooks[k] = globalHooks[k].bind(currentInstance)
-}
 </script>
 ```
 
@@ -188,7 +184,6 @@ for (const k in globalHooks) {
 ### Global props
 
 ```vue
-
 <template>
   {{ Msg }}
 </template>
@@ -200,7 +195,7 @@ import { globalProps } from './index' // Entrance for registering globally
 export default {
   props: ['msg'],
   computed: {
-    Msg () {
+    Msg() {
       return conclude([this.msg, globalProps.msg]) // Place the prop of higher priority in the front
     },
   }
@@ -211,9 +206,8 @@ export default {
 ### Global attrs
 
 ```vue
-
 <template>
-  <el-input v-bind="Attrs"/>
+  <el-input v-bind="Attrs" />
 </template>
 
 <script>
@@ -222,7 +216,7 @@ import { globalAttrs } from './index' // Entrance for registering globally
 
 export default {
   computed: {
-    Attrs () {
+    Attrs() {
       return conclude([this.$attrs, globalAttrs]) // Place the prop of higher priority in the front
     },
   }
@@ -233,9 +227,8 @@ export default {
 ### Global listeners
 
 ```vue
-
 <template>
-  <el-input v-on="Listeners"/>
+  <el-input v-on="Listeners" />
 </template>
 
 <script>
@@ -244,11 +237,10 @@ import { globalListeners } from './index' // Entrance for registering globally
 
 export default {
   computed: {
-    Listeners () {
+    Listeners() {
       // Not required: Bind 'this' to globalListeners, if you need it in the global configuration
-      for (const k in globalListeners) {
+      for (const k in globalListeners)
         globalListeners[k] = globalListeners[k].bind(this)
-      }
 
       // getLocalListeners's role is to remove hooks in this.$listeners
       // Check the getLocalListeners chapter for details
@@ -270,9 +262,8 @@ export default {
 ### Global hooks
 
 ```vue
-
 <template>
-  <div/>
+  <div />
 </template>
 
 <script>
@@ -280,7 +271,7 @@ import { listenGlobalHooks } from 'vue-global-config'
 import { globalHooks } from './index' // Entrance for registering globally
 
 export default {
-  created () {
+  created() {
     // listen global hooks
     listenGlobalHooks.call(this, globalHooks)
   },
@@ -323,8 +314,8 @@ import { useGlobalConfig } from 'vue-global-config'
 useGlobalConfig({
   'msg': 'some prop',
   'placeholder': 'some attr',
-  '@blur' () {},
-  '@hook:mounted' () {},
+  '@blur': function () {},
+  '@hook:mounted': function () {},
 })
 ```
 
@@ -453,7 +444,7 @@ conclude([
   mergeFunctionApplyOnlyToDefault: false,
 })()
 
-// 结果会打印 '我是显式默认值' '我是参数2' '我是参数1' 
+// 结果会打印 '我是显式默认值' '我是参数2' '我是参数1'
 ```
 
 ### config.mergeFunctionApplyOnlyToDefault
