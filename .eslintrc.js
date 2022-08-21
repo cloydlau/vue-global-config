@@ -5,11 +5,12 @@
  *   2. npx husky add .husky/pre-commit "npx lint-staged"
  */
 
- module.exports = {
+module.exports = {
   extends: '@antfu',
   rules: {
     'vue/component-tags-order': ['error', {
       order: [['script', 'template'], 'style'],
     }],
+    'vue/no-deprecated-v-bind-sync': 1,
   },
 }
