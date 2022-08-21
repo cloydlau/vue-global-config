@@ -2,7 +2,7 @@ English | [中文](./docs/README.zh-CN.md)
 
 # vue-global-config
 
-Configure your Vue 2.6/2.7/3 components globally!
+Configure your Vue 2.6 / 2.7 / 3 components globally!
 
 ```ts
 // Vue 3
@@ -69,7 +69,7 @@ Entangled in global/local/default parameters, which one to choose? It should be 
 
 ## Features
 
-- Support Vue 2.6/2.7/3
+- Support Vue 2.6 / 2.7 / 3
 - Provide weight algorithm to deal with trade-off and merging issues of global/local/default parameters.
 - Support global [props](https://staging.vuejs.org/guide/components/props.html#props)
 - Support global [attrs](https://staging.vuejs.org/guide/components/attrs.html)

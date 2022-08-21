@@ -1,6 +1,6 @@
 # vue-global-config
 
-让你的 Vue 2.6/2.7/3 组件支持全局配置！
+让你的 Vue 2.6 / 2.7 / 3 组件支持全局配置！
 
 ```ts
 // Vue 3
@@ -69,7 +69,7 @@ Vue 提供了注册全局组件的功能，但不支持全局参数配置。
 
 ## 特性
 
-- Vue 2.6/2.7/3 通用
+- Vue 2.6 / 2.7 / 3 通用
 - 提供参数权重算法，解决全局参数与实例参数的取舍、融合问题
 - 支持全局配置 [props](https://staging-cn.vuejs.org/guide/components/props.html#props)
 - 支持全局配置 [attrs](https://staging-cn.vuejs.org/guide/components/attrs.html)
