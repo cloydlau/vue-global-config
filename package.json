@@ -2,7 +2,7 @@
   "name": "vue-global-config",
   "version": "0.1.0",
   "private": false,
-  "description": "Configure your Vue 2.6/2.7/3 components globally. 让你的 Vue 2.6/2.7/3 组件支持全局配置。",
+  "description": "Configure your Vue 2.6/2.7/3 components globally.",
   "author": "cloydlau",
   "license": "MIT",
   "repository": "https://github.com/cloydlau/vue-global-config",
