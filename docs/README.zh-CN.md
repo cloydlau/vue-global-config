@@ -1,6 +1,6 @@
 # vue-global-config
 
-让你的 Vue 2 & 3 组件支持全局配置！
+让你的 Vue 2.6 / 2.7 / 3 组件支持全局配置！
 
 ```ts
 // Vue 3
@@ -13,13 +13,13 @@ app.use(YourComponent, {
   'placeholder': 'Please enter',
 
   // 全局 listener
-  '@blur'(e) {
+  '@blur': function (e) {
     console.log(e) // 可获取到 event
     console.log(this) // 可获取到 this
   },
 
   // 全局 hook
-  '@vnodeMounted'() {
+  '@vnodeMounted': function () {
     console.log(this) // 可获取到 this
   },
 })
@@ -36,13 +36,13 @@ Vue.use(YourComponent, {
   'placeholder': 'Please enter',
 
   // 全局 listener
-  '@blur'(e) {
+  '@blur': function (e) {
     console.log(e) // 可获取到 event
     console.log(this) // 可获取到 this
   },
 
   // 全局 hook
-  '@hook:mounted'() {
+  '@hook:mounted': function () {
     console.log(this) // 可获取到 this
   },
 })
@@ -69,7 +69,7 @@ Vue 提供了注册全局组件的功能，但不支持全局参数配置。
 
 ## 特性
 
-- 兼容 Vue 2 & Vue 3
+- Vue 2.6 / 2.7 / 3 通用
 - 提供参数权重算法，解决全局参数与实例参数的取舍、融合问题
 - 支持全局配置 [props](https://staging-cn.vuejs.org/guide/components/props.html#props)
 - 支持全局配置 [attrs](https://staging-cn.vuejs.org/guide/components/attrs.html)
@@ -114,7 +114,6 @@ $ npm add vue-global-config
 ### 全局 props
 
 ```vue
-
 <template>
   {{ Msg }}
 </template>
@@ -134,22 +133,21 @@ const Msg = computed(() => conclude([props.msg, globalProps.msg])) // 权重高�
 > 在 Vue 3 中，attrs 同时包含了 attrs 和 listeners
 
 ```vue
-
 <template>
-  <el-input v-bind="Attrs"/>
+  <el-input v-bind="Attrs" />
 </template>
 
 <script setup>
-import { computed, useAttrs, getCurrentInstance } from 'vue'
+import { computed, getCurrentInstance, useAttrs } from 'vue'
 import { conclude } from 'vue-global-config'
 import { globalAttrs, globalListeners } from './index' // 全局注册入口
 
 const currentInstance = getCurrentInstance()
 
 // 非必须：给 globalListeners 绑定 this，以便在全局配置中访问 this
-for (const k in globalListeners) {
+for (const k in globalListeners)
   globalListeners[k] = globalListeners[k].bind(currentInstance)
-}
+
 const Attrs = computed(() => conclude([useAttrs()], {
   default: { ...globalAttrs, ...globalListeners },
   // mergeFunction 的作用是让全局和实例 listeners 都执行，互不冲突
@@ -165,9 +163,8 @@ const Attrs = computed(() => conclude([useAttrs()], {
 ### 全局 hooks
 
 ```vue
-
 <template>
-  <div v-bind="globalHooks"/>
+  <div v-bind="globalHooks" />
 </template>
 
 <script setup>
@@ -177,9 +174,8 @@ import { globalHooks } from './index' // 全局注册入口
 const currentInstance = getCurrentInstance()
 
 // 给 globalHooks 绑定 this，以便在全局配置中访问 this
-for (const k in globalHooks) {
+for (const k in globalHooks)
   globalHooks[k] = globalHooks[k].bind(currentInstance)
-}
 </script>
 ```
 
@@ -190,7 +186,6 @@ for (const k in globalHooks) {
 ### 全局 props
 
 ```vue
-
 <template>
   {{ Msg }}
 </template>
@@ -202,7 +197,7 @@ import { globalProps } from './index' // 全局注册入口
 export default {
   props: ['msg'],
   computed: {
-    Msg () {
+    Msg() {
       return conclude([this.msg, globalProps.msg]) // 权重高的放在前面
     },
   }
@@ -213,9 +208,8 @@ export default {
 ### 全局 attrs
 
 ```vue
-
 <template>
-  <el-input v-bind="Attrs"/>
+  <el-input v-bind="Attrs" />
 </template>
 
 <script>
@@ -224,7 +218,7 @@ import { globalAttrs } from './index' // 全局注册入口
 
 export default {
   computed: {
-    Attrs () {
+    Attrs() {
       return conclude([this.$attrs, globalAttrs]) // 权重高的放在前面
     },
   }
@@ -235,9 +229,8 @@ export default {
 ### 全局 listeners
 
 ```vue
-
 <template>
-  <el-input v-on="Listeners"/>
+  <el-input v-on="Listeners" />
 </template>
 
 <script>
@@ -246,11 +239,10 @@ import { globalListeners } from './index' // 全局注册入口
 
 export default {
   computed: {
-    Listeners () {
+    Listeners() {
       // 非必须：给 globalListeners 绑定 this，以便在全局配置中访问 this
-      for (const k in globalListeners) {
+      for (const k in globalListeners)
         globalListeners[k] = globalListeners[k].bind(this)
-      }
 
       // getLocalListeners 的作用是去掉 this.$listeners 中的 hooks
       // 去掉的原因见 getLocalListeners 章节
@@ -272,9 +264,8 @@ export default {
 ### 全局 hooks
 
 ```vue
-
 <template>
-  <div/>
+  <div />
 </template>
 
 <script>
@@ -282,7 +273,7 @@ import { listenGlobalHooks } from 'vue-global-config'
 import { globalHooks } from './index' // 全局注册入口
 
 export default {
-  created () {
+  created() {
     // 监听全局 hooks
     listenGlobalHooks.call(this, globalHooks)
   },
@@ -325,8 +316,8 @@ import { useGlobalConfig } from 'vue-global-config'
 useGlobalConfig({
   'msg': 'some prop',
   'placeholder': 'some attr',
-  '@blur' () {},
-  '@hook:mounted' () {},
+  '@blur': function () {},
+  '@hook:mounted': function () {},
 })
 ```
 
@@ -455,7 +446,7 @@ conclude([
   mergeFunctionApplyOnlyToDefault: false,
 })()
 
-// 结果会打印 '我是显式默认值' '我是参数2' '我是参数1' 
+// 结果会打印 '我是显式默认值' '我是参数2' '我是参数1'
 ```
 
 ### config.mergeFunctionApplyOnlyToDefault
