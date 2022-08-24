@@ -1,4 +1,4 @@
-English | [中文](./docs/README.zh-CN.md)
+English | [简体中文](./docs/README.zh-CN.md)
 
 # vue-global-config
 
