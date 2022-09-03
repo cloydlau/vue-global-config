@@ -378,9 +378,7 @@ conclude([1, 2, undefined]) // 1
 
 ### config.type
 
-与 [Vue 3 的 Prop 类型校验](https://vuejs.org/guide/components/props.html#prop-validation) 一致，
-
-Vue 3 与 Vue 2 的 Prop 类型校验基本一致，Vue 3 中，值为 `null` 的 Prop 不会参与类型校验，这一点与 Vue 2 不同。
+与 [Vue 的 Prop 类型校验](https://vuejs.org/guide/components/props.html#prop-validation) 一致。
 
 ### config.mergeObject
 
