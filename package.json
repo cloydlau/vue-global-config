@@ -67,6 +67,7 @@
     "lint-staged": "latest",
     "typescript": "latest",
     "vite": "latest",
+    "vite-plugin-dts": "latest",
     "vue": "latest",
     "vue-global-config": "latest"
   },

@@ -1,15 +1,16 @@
 import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
 import { name } from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   optimizeDeps: {
-    exclude: ['vue-demi']
+    exclude: ['vue-demi'],
   },
   build: {
     lib: {
       name,
-      entry: 'src/index.ts'
+      entry: 'src/index.ts',
     },
     rollupOptions: {
       external: [
@@ -21,8 +22,9 @@ export default defineConfig({
         globals: {
           'vue': 'Vue',
           'vue-demi': 'VueDemi',
-        }
+        },
       },
-    }
-  }
+    },
+  },
+  plugins: [dts()],
 })

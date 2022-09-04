@@ -1,4 +1,4 @@
-import { assignInWith, cloneDeep, isPlainObject, mapKeys, mergeWith, isObject } from 'lodash-es'
+import { assignInWith, cloneDeep, isObject, isPlainObject, mapKeys, mergeWith } from 'lodash-es'
 import * as changeCase from 'change-case'
 
 // isPlainObject Vue 及 Vue 实例返回 false
@@ -17,7 +17,7 @@ type PropConstructor<T = any> =
   | PropMethod<T>
 
 type PropMethod<T, TConstructor = any> = [T] extends [
-  ((...args: any) => any) | undefined
+  ((...args: any) => any) | undefined,
 ] // if is function with args, allowing non-required functions
   ? { new(): TConstructor; (): T; readonly prototype: TConstructor } // Create Function like constructor
   : never
@@ -31,7 +31,7 @@ type PropMethod<T, TConstructor = any> = [T] extends [
  */
 export function makeMap(
   str: string,
-  expectsLowerCase?: boolean
+  expectsLowerCase?: boolean,
 ): (key: string) => boolean {
   const map: Record<string, boolean> = Object.create(null)
   const list: Array<string> = str.split(',')
@@ -41,8 +41,8 @@ export function makeMap(
   return expectsLowerCase ? val => !!map[val.toLowerCase()] : val => !!map[val]
 }
 
-const isSimpleType = /*#__PURE__*/ makeMap(
-  'String,Number,Boolean,Function,Symbol,BigInt'
+const isSimpleType = /* #__PURE__ */ makeMap(
+  'String,Number,Boolean,Function,Symbol,BigInt',
 )
 
 // 不使用 ctor.name 的原因：
@@ -53,7 +53,7 @@ function getType(ctor: any): string {
   return match ? match[1] : ctor === null ? 'null' : ''
 }
 
-type AssertionResult = {
+interface AssertionResult {
   valid: boolean
   expectedType: string
 }
@@ -69,18 +69,22 @@ function assertType(value: unknown, type: PropConstructor): AssertionResult {
     if (!valid && t === 'object') {
       valid = value instanceof type
     }
-  } else if (expectedType === 'Object') {
+  }
+  else if (expectedType === 'Object') {
     valid = isObject(value)
-  } else if (expectedType === 'Array') {
+  }
+  else if (expectedType === 'Array') {
     valid = Array.isArray(value)
-  } else if (expectedType === 'null') {
+  }
+  else if (expectedType === 'null') {
     valid = value === null
-  } else {
+  }
+  else {
     valid = value instanceof type
   }
   return {
     valid,
-    expectedType
+    expectedType,
   }
 }
 
@@ -91,9 +95,9 @@ function validateProp({
   prop: any
   validator: any
 }) {
-  if (![void 0, null].includes(prop) && type) {
+  if (![undefined, null].includes(prop) && type) {
     let isValid = false
-    const types = Array.isArray(type) ? type : [type], expectedTypes = []
+    const types = Array.isArray(type) ? type : [type]; const expectedTypes = []
 
     for (let i = 0; i < types.length && !isValid; i++) {
       const { valid, expectedType } = assertType(prop, types[i])
@@ -114,10 +118,10 @@ function MergeObject(sources: any[], {
 }: { mergeObject: string; mergeFunction: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function) }) {
   const customizer = mergeFunction
     ? (objValue: any, srcValue: any) =>
-      (objValue instanceof Function && srcValue instanceof Function)
-        ? mergeFunction(srcValue, objValue)
-        : void 0
-    : void 0
+        (objValue instanceof Function && srcValue instanceof Function)
+          ? mergeFunction(srcValue, objValue)
+          : undefined
+    : undefined
 
   // merge, assignIn会改变原始对象
   return mergeObject === MergeObjectOptions.deep
@@ -193,7 +197,7 @@ export default function conclude(
   let result; let isPlainObjectArray = false; let isFunctionArray = false
   for (let i = 0; i < configSequenceCopy.length; i++) {
     const v = configSequenceCopy[i]
-    if (v !== void 0) {
+    if (v !== undefined) {
       validateProp({
         type, prop: v, validator,
       })
@@ -223,7 +227,7 @@ export default function conclude(
 
   for (let i = 0; i < configSequenceCopy.length; i++) {
     const prop = configSequenceCopy[i]
-    if (prop !== void 0) {
+    if (prop !== undefined) {
       if (i === configSequenceCopy.length - 1) {
         result = prop
       }
@@ -254,16 +258,16 @@ export default function conclude(
     }
   }
 
-  if (required && [void 0, null].includes(result))
+  if (required && [undefined, null].includes(result))
     throw new Error('Missing required prop')
 
   if (defaultIsDynamic) {
     return conclude(
       configSequence, {
-      ...config,
-      default: defaultValue(result),
-      defaultIsDynamic: false,
-    })
+        ...config,
+        default: defaultValue(result),
+        defaultIsDynamic: false,
+      })
   }
   else {
     // console.log('生效：', result)
