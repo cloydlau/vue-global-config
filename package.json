@@ -37,8 +37,9 @@
     "switch3": "cl switchVue 3 --vue2deps \"element-ui\" --vue3deps \"element-plus\"",
     "switch2.7": "cl switchVue 2.7 --vue2deps \"element-ui\" --vue3deps \"element-plus\"",
     "switch2": "cl switchVue 2 --vue2deps \"element-ui\" --vue3deps \"element-plus\"",
-    "build": "pnpm switch3 && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "build": "vite build",
+    "release": "pnpm switch3 && pnpm build && cl release"
   },
   "peerDependencies": {
     "@vue/composition-api": "1",
