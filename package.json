@@ -50,7 +50,6 @@
   },
   "dependencies": {
     "change-case": "latest",
-    "kayran": "latest",
     "lodash-es": "latest",
     "vue-demi": "latest"
   },
