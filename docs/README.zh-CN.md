@@ -531,3 +531,19 @@ conclude([{
 仅用于 Vue 2，监听全局 hooks 时需要
 
 在 Vue 2 中，只有组件才能触发 hooks，原生元素不行，所以需要通过劫持 emit 来实现同时触发全局 hooks 和实例 hooks
+
+<br>
+
+## Contributing
+
+1. [安装 Deno](https://deno.land/#installation)
+
+2. `npm add @cloydlau/scripts -g`
+
+3. 启动
+
+    - `npm run dev3`
+    - `npm run dev2.7`
+    - `npm run dev2.6`
+
+<br>

@@ -529,3 +529,19 @@ By using `getLocalListeners(this.$listeners)`, your can get pure listeners witho
 Vue 2 only. For the purpose of listening global hooks.
 
 In Vue 2, only Vue components can trigger a hook, HTML elements don't. So triggering both global & local hooks needs hijacking `emit`.
+
+<br>
+
+## Contributing
+
+1. [Install Deno](https://deno.land/#installation)
+
+2. `npm add @cloydlau/scripts -g`
+
+3. Start
+
+    - `npm run dev3`
+    - `npm run dev2.7`
+    - `npm run dev2.6`
+
+<br>

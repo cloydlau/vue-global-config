@@ -16,6 +16,7 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/vue-global-config.umd.js",
       "import": "./dist/vue-global-config.mjs",
       "browser": "./dist/vue-global-config.mjs"
@@ -26,17 +27,18 @@
   "module": "./dist/vue-global-config.mjs",
   "unpkg": "./dist/vue-global-config.umd.js",
   "jsdelivr": "./dist/vue-global-config.umd.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "docs"
   ],
   "scripts": {
-    "dev": "pnpm switch3 && vite --config ./demo/vue3/vite.config.ts --open",
+    "dev3": "pnpm switch3 && vite --config ./demo/vue3/vite.config.ts --open",
     "dev2.7": "pnpm switch2.7 && vite --config ./demo/vue2.7/vite.config.ts --open",
-    "dev2": "pnpm switch2 && vite --config ./demo/vue2/vite.config.ts --open",
+    "dev2.6": "pnpm switch2.6 && vite --config ./demo/vue2.6/vite.config.ts --open",
     "switch3": "cl switchVue 3 --vue2deps \"element-ui\" --vue3deps \"element-plus\"",
     "switch2.7": "cl switchVue 2.7 --vue2deps \"element-ui\" --vue3deps \"element-plus\"",
-    "switch2": "cl switchVue 2 --vue2deps \"element-ui\" --vue3deps \"element-plus\"",
+    "switch2.6": "cl switchVue 2.6 --vue2deps \"element-ui\" --vue3deps \"element-plus\"",
     "serve": "vite preview",
     "build": "vite build",
     "release": "pnpm switch3 && pnpm build && cl release"
@@ -57,7 +59,6 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "latest",
-    "@cloydlau/scripts": "latest",
     "@vitejs/plugin-vue": "latest",
     "@vue/compiler-sfc": "latest",
     "@vue/test-utils": "latest",
@@ -67,6 +68,7 @@
     "husky": "latest",
     "lint-staged": "latest",
     "typescript": "latest",
+    "unplugin-auto-import": "latest",
     "vite": "latest",
     "vite-plugin-dts": "latest",
     "vue": "latest",
@@ -76,5 +78,8 @@
     "*.{js,ts,tsx,vue,md}": [
       "eslint --fix"
     ]
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   }
 }
