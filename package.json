@@ -8,6 +8,7 @@
   "repository": "https://github.com/cloydlau/vue-global-config",
   "keywords": [
     "global config",
+    "global registration",
     "global configuration",
     "global options",
     "vue",
@@ -41,7 +42,7 @@
     "switch2.6": "cl switchVue 2.6 --vue2deps \"element-ui\" --vue3deps \"element-plus\"",
     "serve": "vite preview",
     "build": "vite build",
-    "release": "pnpm switch3 && pnpm build && cl release"
+    "release": "npx case-police --fix && npx lint-staged && pnpm switch3 && pnpm build && cl release"
   },
   "peerDependencies": {
     "@vue/composition-api": "1",
@@ -75,7 +76,7 @@
     "vue-global-config": "latest"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,vue,md}": [
+    "!(demo/**/*)*.{js,ts,tsx,vue,md}": [
       "eslint --fix"
     ]
   },

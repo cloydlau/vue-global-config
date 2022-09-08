@@ -538,7 +538,7 @@ conclude([{
 
 1. [安装 Deno](https://deno.land/#installation)
 
-2. `npm add @cloydlau/scripts -g`
+2. `npm add @cloydlau/scripts pnpm -g`
 
 3. 启动
 

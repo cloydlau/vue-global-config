@@ -536,7 +536,7 @@ In Vue 2, only Vue components can trigger a hook, HTML elements don't. So trigge
 
 1. [Install Deno](https://deno.land/#installation)
 
-2. `npm add @cloydlau/scripts -g`
+2. `npm add @cloydlau/scripts pnpm -g`
 
 3. Start
 
