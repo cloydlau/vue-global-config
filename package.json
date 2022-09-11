@@ -1,6 +1,6 @@
 {
   "name": "vue-global-config",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": false,
   "description": "Configure your Vue 2.6 / 2.7 / 3 components globally.",
   "author": "cloydlau",
@@ -41,7 +41,7 @@
     "build": "vite build",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "release": "npx case-police --fix && npx lint-staged && cl switchVue 3 && pnpm test && pnpm build && cl release"
+    "release": "npx case-police --fix && npx lint-staged && cl switchVue 3 && vitest run && pnpm build && cl release"
   },
   "peerDependencies": {
     "@vue/composition-api": ">=1",
