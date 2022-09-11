@@ -101,35 +101,25 @@ function validateProp({
       isValid = valid
     }
 
-    if (!isValid)
+    if (!isValid) {
       throw new Error(`Invalid prop: type check failed, expecting [${expectedTypes.join(', ')}], receiving: ${prop}`)
+    }
   }
-  if (validator && !validator(prop))
+  if (validator && !validator(prop)) {
     throw new Error(`Invalid prop: validator check failed, receiving: ${prop}`)
+  }
 }
 
 function MergeObject(sources: any[], {
   mergeObject,
   mergeFunction,
-  camelCase,
 }: {
   mergeObject: string
   mergeFunction: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
-  camelCase: boolean
 }) {
   const reversedSource = []
   for (let i = sources.length - 1; i >= 0; i--) {
-    // shallow: 只有最外层的键会被转换
-    // changeCase.camelCase 默认会把键中包含字母数字之外的任意字符如 $ _ 的键值对干掉
-    // attrs 的命名正好不允许包含 $ _，但是 props、listeners 允许
-    // 对于不同 case 的同名属性，覆盖优先级：
-    // 由对象内部属性定义顺序决定，保留后定义的
-    // 注意：合并对象时，属性顺序会被改变，属性顺序以靠后的（优先级低的）对象为优先！
-    reversedSource.push(camelCase
-      ? mapKeys(sources[i], (v: any, k: any) => changeCase.camelCase(k, {
-        stripRegexp: /-/g, // 只过滤短横线，以便 kebab-case 转换为 camelCase
-      }))
-      : sources[i])
+    reversedSource.push(sources[i])
   }
 
   const customizer = mergeFunction
@@ -180,8 +170,6 @@ export default function conclude(
     mergeFunctionApplyOnlyToDefault?: boolean
   } = {},
 ): any {
-  // console.log('传参：', configSequence)
-
   const {
     type,
     default: defaultValue,
@@ -198,40 +186,47 @@ export default function conclude(
     mergeFunction = false,
   } = config
 
-  let configSequenceCopy
+  const configSequenceCopy: any[] = []; let result: any
+  let isPlainObjectArray = false; let isFunctionArray = false
 
-  if (defaultIsDynamic) {
-    if (!(defaultValue instanceof Function)) {
-      throw new TypeError(`Invalid option: default. config.default should be Function when config.defaultIsDynamic enabled, receiving: ${defaultValue}`)
-    }
+  const handleProp = (prop: any) => {
+    if (prop !== undefined) {
+      validateProp({ type, prop, validator })
 
-    configSequenceCopy = [...configSequence]
-  } else {
-    configSequenceCopy = [...configSequence, defaultValue]
-  }
-
-  let result; let isPlainObjectArray = false; let isFunctionArray = false
-  for (let i = 0; i < configSequenceCopy.length; i++) {
-    const v = configSequenceCopy[i]
-    if (v !== undefined) {
-      validateProp({
-        type, prop: v, validator,
-      })
-
-      const itemIsPlainObject = isPlainObject(v)
-      const itemIsFunction = v instanceof Function
+      const itemIsPlainObject = isPlainObject(prop)
+      const itemIsFunction = prop instanceof Function
       isPlainObjectArray = itemIsPlainObject
       isFunctionArray = itemIsFunction
-      // 只要有一项不是 po / function，则不是纯粹的 po / function 数组
-      // 如果两者都不是，则没有继续检查的必要了
-      if (!itemIsPlainObject && !itemIsFunction)
-        break
+
+      // 浅转换: 只有最外层的键会被转换
+      // changeCase.camelCase 默认会把键中包含字母数字之外的任意字符如 $ _ 的键值对干掉
+      // attrs 的命名正好不允许包含 $ _，但是 props、listeners 允许
+      // 对于不同 case 的同名属性，覆盖优先级：
+      // 由对象内部属性定义顺序决定，保留后定义的
+      // 注意：合并对象时，属性顺序会被改变，属性顺序以靠后的（优先级低的）对象为优先！
+      if (itemIsPlainObject) {
+        prop = cloneDeep(prop)
+        return camelCase
+          ? mapKeys(prop, (v: any, k: any) => changeCase.camelCase(k, {
+            stripRegexp: /-/g, // 只过滤短横线，以便 kebab-case 转换为 camelCase
+          }))
+          : prop
+      }
+      return prop
     }
   }
 
-  if (isPlainObjectArray) {
-    configSequenceCopy = cloneDeep(configSequenceCopy)
-  } else {
+  for (const prop of configSequence) {
+    configSequenceCopy.push(handleProp(prop))
+  }
+
+  if (!defaultIsDynamic) {
+    configSequenceCopy.push(handleProp(defaultValue))
+  } else if (!(defaultValue instanceof Function)) {
+    throw new TypeError(`Invalid option: config.default should be Function when config.defaultIsDynamic enabled, receiving: ${defaultValue}`)
+  }
+
+  if (!isPlainObjectArray) {
     // 只有纯粹的 po 数组才能进行对象合并
     mergeObject = false
 
@@ -255,7 +250,6 @@ export default function conclude(
           : configSequenceCopy, {
           mergeObject,
           mergeFunction,
-          camelCase,
         })
       } else if (mergeFunction) {
         result = MergeFunction(mergeFunctionApplyOnlyToDefault

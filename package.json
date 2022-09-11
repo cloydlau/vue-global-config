@@ -39,7 +39,9 @@
     "dev2.6": "cl switchVue 2.6 && vite --config ./demo/vue2.6/vite.config.ts --open",
     "serve": "vite preview",
     "build": "vite build",
-    "release": "npx case-police --fix && npx lint-staged && cl switchVue 3 && pnpm build && cl release"
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "release": "npx case-police --fix && npx lint-staged && cl switchVue 3 && pnpm test && pnpm build && cl release"
   },
   "peerDependencies": {
     "@vue/composition-api": ">=1",
@@ -58,6 +60,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "latest",
     "@vitejs/plugin-vue": "latest",
+    "@vitest/coverage-c8": "latest",
     "@vue/compiler-sfc": "latest",
     "@vue/test-utils": "latest",
     "case-police": "latest",
@@ -69,6 +72,7 @@
     "unplugin-auto-import": "latest",
     "vite": "latest",
     "vite-plugin-dts": "latest",
+    "vitest": "latest",
     "vue": "latest",
     "vue-global-config": "latest"
   },
