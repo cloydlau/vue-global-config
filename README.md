@@ -1,5 +1,3 @@
-English | [简体中文](./docs/README.zh-CN.md)
-
 # vue-global-config
 
 Configure your Vue 2.6 / 2.7 / 3 components globally!
@@ -345,7 +343,7 @@ conclude 的作用就是帮助你计算出最终的配置。
 
 ### Param
 
-```ts 
+```ts
 /**
  * @param {any[]} configSequence - config 序列（优先级从高到低，最后是默认值）
  * @param {object} [config] - 配置
@@ -372,7 +370,7 @@ import { conclude } from 'vue-global-config'
 conclude([1, 2, undefined]) // 1
 ```
 
-### 怎么判断某个 prop 有没有传？
+### How can we know whether a prop is passed or not?
 
 以该 prop 是否全等于 `undefined` 作为标识
 
@@ -464,13 +462,61 @@ conclude([
 
 ### config.camelCase
 
-Vue 的 prop 同时支持驼峰和短横线格式，如果组件使用者同时传了同一个 prop 的两种格式，值还是不相同的，问题来了，此时应该取哪一个值？
+without
 
-在多个配置进行合并时，结果会更加难以预测，所以 conclude 在**合并对象后**默认将对象的键统一为驼峰命名。
+```
+const Props = conclude([...], {
+  default: (userProp) => {
+    if(userProp.beforeClose !== undefined || userProp['before-close'] !== undefined) {
+      ...
+    }
+  },
+  defaultIsDynamic: true,
+})
 
-为什么不默认使用短横线命名？参见 [Vue官方风格指南](https://v3.cn.vuejs.org/style-guide/#prop-%E5%90%8D%E7%A7%B0%E5%BC%BA%E7%83%88%E6%8E%A8%E8%8D%90)
+if(Props.beforeClose !== undefined || Props['before-close'] !== undefined) {
+  ...
+}
+```
 
-### 动态生成默认值
+with
+
+```
+const Props = conclude([...], {
+  default: (userProp) => {
+    if(userProp.beforeClose !== undefined) {
+      ...
+    }
+  },
+  defaultIsDynamic: true,
+})
+
+if(Props.beforeClose !== undefined) {
+  ...
+}
+```
+
+Take a look at this: `<el-select value-key="id" valueKey="code" />`, so is `id` or `code` going to take effect?
+
+The answer is `code` because `valueKey` is latter.
+
+`conclude([{ aB: 1, 'a-b': 2 }])` returns `{ aB: 2 }` in the same way.
+
+With the global config, the situation can be quite complicated.
+
+What does `conclude([{ 'aB': 1, 'a-b': 2 }, { 'a-b': 4, 'aB': 3 }])` return?
+
+`{ aB: 1 }` if `conclude` merge object before unify the keys, because the merge process will change the order of keys.
+
+It will be unpredictable with more props.
+
+So `conclude` choose to unify the keys in advance, so `{ aB: 2 }` will be the answer, it's intuitive.
+
+Why not take kebab-case as default?
+
+- Check [Official Vue style guide](https://v2.vuejs.org/v2/style-guide/index.html#Prop-name-casing-strongly-recommended)
+
+### Dynamic default value
 
 使用场景：需要根据组件使用者传的参数来决定默认值
 

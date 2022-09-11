@@ -69,17 +69,13 @@ function assertType(value: unknown, type: PropConstructor): AssertionResult {
     if (!valid && t === 'object') {
       valid = value instanceof type
     }
-  }
-  else if (expectedType === 'Object') {
+  } else if (expectedType === 'Object') {
     valid = isObject(value)
-  }
-  else if (expectedType === 'Array') {
+  } else if (expectedType === 'Array') {
     valid = Array.isArray(value)
-  }
-  else if (expectedType === 'null') {
+  } else if (expectedType === 'null') {
     valid = value === null
-  }
-  else {
+  } else {
     valid = value instanceof type
   }
   return {
@@ -115,7 +111,27 @@ function validateProp({
 function MergeObject(sources: any[], {
   mergeObject,
   mergeFunction,
-}: { mergeObject: string; mergeFunction: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function) }) {
+  camelCase,
+}: {
+  mergeObject: string
+  mergeFunction: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
+  camelCase: boolean
+}) {
+  const reversedSource = []
+  for (let i = sources.length - 1; i >= 0; i--) {
+    // shallow: 只有最外层的键会被转换
+    // changeCase.camelCase 默认会把键中包含字母数字之外的任意字符如 $ _ 的键值对干掉
+    // attrs 的命名正好不允许包含 $ _，但是 props、listeners 允许
+    // 对于不同 case 的同名属性，覆盖优先级：
+    // 由对象内部属性定义顺序决定，保留后定义的
+    // 注意：合并对象时，属性顺序会被改变，属性顺序以靠后的（优先级低的）对象为优先！
+    reversedSource.push(camelCase
+      ? mapKeys(sources[i], (v: any, k: any) => changeCase.camelCase(k, {
+        stripRegexp: /-/g, // 只过滤短横线，以便 kebab-case 转换为 camelCase
+      }))
+      : sources[i])
+  }
+
   const customizer = mergeFunction
     ? (objValue: any, srcValue: any) =>
         (objValue instanceof Function && srcValue instanceof Function)
@@ -123,10 +139,10 @@ function MergeObject(sources: any[], {
           : undefined
     : undefined
 
-  // merge, assignIn会改变原始对象
+  // merge, assignIn 会改变原始对象
   return mergeObject === MergeObjectOptions.deep
-    ? mergeWith(...sources, customizer)
-    : assignInWith(...sources, customizer)
+    ? mergeWith(...reversedSource, customizer)
+    : assignInWith(...reversedSource, customizer)
 }
 
 function MergeFunction(sources: any[], {
@@ -185,12 +201,12 @@ export default function conclude(
   let configSequenceCopy
 
   if (defaultIsDynamic) {
-    if (!(defaultValue instanceof Function))
-      throw new Error(`Invalid option: default. config.default should be Function when config.defaultIsDynamic enabled, receiving: ${defaultValue}`)
+    if (!(defaultValue instanceof Function)) {
+      throw new TypeError(`Invalid option: default. config.default should be Function when config.defaultIsDynamic enabled, receiving: ${defaultValue}`)
+    }
 
     configSequenceCopy = [...configSequence]
-  }
-  else {
+  } else {
     configSequenceCopy = [...configSequence, defaultValue]
   }
 
@@ -206,7 +222,7 @@ export default function conclude(
       const itemIsFunction = v instanceof Function
       isPlainObjectArray = itemIsPlainObject
       isFunctionArray = itemIsFunction
-      // 只要有一项不是po/function，则不是纯粹的po/function数组
+      // 只要有一项不是 po / function，则不是纯粹的 po / function 数组
       // 如果两者都不是，则没有继续检查的必要了
       if (!itemIsPlainObject && !itemIsFunction)
         break
@@ -215,14 +231,14 @@ export default function conclude(
 
   if (isPlainObjectArray) {
     configSequenceCopy = cloneDeep(configSequenceCopy)
-  }
-  else {
-    // 只有纯粹的po数组才能进行对象合并
+  } else {
+    // 只有纯粹的 po 数组才能进行对象合并
     mergeObject = false
 
-    // 只有纯粹的function/po数组才能进行函数融合
-    if (!isFunctionArray)
+    // 只有纯粹的 function / po 数组才能进行函数融合
+    if (!isFunctionArray) {
       mergeFunction = false
+    }
   }
 
   for (let i = 0; i < configSequenceCopy.length; i++) {
@@ -230,36 +246,35 @@ export default function conclude(
     if (prop !== undefined) {
       if (i === configSequenceCopy.length - 1) {
         result = prop
-      }
-      else if (mergeObject) {
+      } else if (mergeObject) {
         result = MergeObject(mergeObjectApplyOnlyToDefault
-          // 直接将权重最高的prop与默认值进行合并
-          ? [defaultValue, prop]
+          // 直接将权重最高的 prop 与默认值进行合并
+          ? [prop, defaultValue]
           // 依次合并（一次性完成，跳出循环）
-          // reverse会改变原始对象
-          : [...configSequenceCopy].reverse(), {
+          // reverse 会改变原始对象
+          : configSequenceCopy, {
           mergeObject,
           mergeFunction,
+          camelCase,
         })
-      }
-      else if (mergeFunction) {
+      } else if (mergeFunction) {
         result = MergeFunction(mergeFunctionApplyOnlyToDefault
-          // 直接将权重最高的prop与默认值进行融合
+          // 直接将权重最高的 prop 与默认值进行融合
           ? [prop, defaultValue]
           // 依次融合（一次性完成，跳出循环）
           : configSequenceCopy, {
           mergeFunction,
         })
-      }
-      else {
+      } else {
         result = prop
       }
       break
     }
   }
 
-  if (required && [undefined, null].includes(result))
+  if (required && [undefined, null].includes(result)) {
     throw new Error('Missing required prop')
+  }
 
   if (defaultIsDynamic) {
     return conclude(
@@ -269,16 +284,5 @@ export default function conclude(
         defaultIsDynamic: false,
       })
   }
-  else {
-    // console.log('生效：', result)
-    return camelCase && isPlainObject(result)
-      // 只有最外层的键会被转换
-      // changeCase.camelCase 默认会把键中包含字母数字之外的任意字符如 $ _ 的键值对干掉
-      // attrs 的命名正好不允许包含 $ _
-      // 但是 props、listeners 允许
-      ? mapKeys(result, (v: any, k: any) => changeCase.camelCase(k, {
-        stripRegexp: /-/g, // 只过滤短横线，以便 kebab-case 转换为 camelCase
-      }))
-      : result
-  }
+  return result
 }

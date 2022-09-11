@@ -31,28 +31,23 @@ export default function useGlobalConfig(
       if (isVue3) {
         if (eventName.startsWith('vnode')) {
           globalHooks[atToOn(eventName)] = globalConfig[k]
-        }
-        else {
+        } else {
           // Vue 3
           // @xxx → onXxx
           globalListeners[atToOn(eventName)] = globalConfig[k]
         }
-      }
-      else {
+      } else {
         if (eventName.startsWith('hook:')) {
           globalHooks[eventName] = globalConfig[k]
-        }
-        else {
+        } else {
           // Vue 2
           // @xxx → xxx
           globalListeners[eventName] = globalConfig[k]
         }
       }
-    }
-    else if (localPropsArray.includes(k)) {
+    } else if (localPropsArray.includes(k)) {
       globalProps[k] = globalConfig[k]
-    }
-    else {
+    } else {
       globalAttrs[k] = globalConfig[k]
     }
   }
