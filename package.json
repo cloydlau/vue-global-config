@@ -11,6 +11,7 @@
     "global registration",
     "global configuration",
     "global options",
+    "vue-demi",
     "vue",
     "component",
     "sfc"
