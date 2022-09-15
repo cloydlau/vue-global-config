@@ -61,7 +61,7 @@ But note that it's only for **partial props**. Global attrs, global listeners & 
 
 Make your components capable of globally configuring, is a not-that-hard but tiresome drudgery.
 
-Entangled in global/local/default parameters, which one to choose? It should be replaced or shallow merged or deep merged when it comes to plain object type? What if I want all functions triggered instead of ony one when it comes to function type? How to decide when both camel case and kebab case of a same parameter come together?
+Entangled in global / local / default parameters, which one to choose? It should be replaced or shallow merged or deep merged when it comes to plain object type? What if I want all functions triggered instead of ony one when it comes to function type? How to decide when both camel case and kebab case of a same parameter come together?
 
 <br>
 
@@ -69,7 +69,7 @@ Entangled in global/local/default parameters, which one to choose? It should be 
 
 1. Firstly provide an [entrance](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts) for your component to register globally, this is the foundation.
 2. Use [useGlobalConfig](#useGlobalConfig) to handle parameters passed by component user, get global props, global attrs, global listeners & global hooks.
-3. Import those global parameters, meet them with local/default parameters and determine the final value using [conclude](#conclude) .
+3. Import those global parameters, meet them with local / default parameters and determine the final value using [conclude](#conclude) .
 
 [Vue 3 demo](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent)
 
@@ -80,7 +80,7 @@ Entangled in global/local/default parameters, which one to choose? It should be 
 ## Features
 
 - Support Vue 2.6 / 2.7 / 3
-- Provide weight algorithm to deal with trade-off and merging issues of global/local/default parameters.
+- Provide weight algorithm to deal with trade-off and merging issues of global / local / default parameters.
 - Support global [props](https://staging.vuejs.org/guide/components/props.html#props)
 - Support global [attrs](https://staging.vuejs.org/guide/components/attrs.html)
 - Support global [listeners](https://staging.vuejs.org/guide/essentials/event-handling.html#listening-to-listeners)
