@@ -50,7 +50,7 @@ Vue.use(YourComponent, {
 
 <br>
 
-## Why
+## Why?
 
 Vue provides support for globally registering components, but no configuration.
 
@@ -62,6 +62,18 @@ But note that it's only for **partial props**. Global attrs, global listeners & 
 Make your components capable of globally configuring, is a not-that-hard but tiresome drudgery.
 
 Entangled in global/local/default parameters, which one to choose? It should be replaced or shallow merged or deep merged when it comes to plain object type? What if I want all functions triggered instead of ony one when it comes to function type? How to decide when both camel case and kebab case of a same parameter come together?
+
+<br>
+
+## How?
+
+1. Firstly provide an [entrance](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts) for your component to register globally, this is the foundation.
+2. Use [useGlobalConfig](#useGlobalConfig) to handle parameters passed by component user, get global props, global attrs, global listeners & global hooks.
+3. Import those global parameters, meet them with local/default parameters and determine the final value using [conclude](#conclude) .
+
+[Vue 3 demo](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent)
+
+[Vue 2 demo](https://github.com/cloydlau/vue-global-config/tree/main/vue2demo/src/components/GlobalComponent)
 
 <br>
 
@@ -82,32 +94,15 @@ Entangled in global/local/default parameters, which one to choose? It should be 
 
 <br>
 
-## Installation
+## Vue 3
+
+### Install
 
 ![NPM](https://nodei.co/npm/vue-global-config.png)
 
-``` bash
-# Vue version before 2.7 should add an extra @vue/composition-api
-$ npm add vue-global-config
-```
-
 <br>
 
-## Usage
-
-1. Firstly provide an [entrance](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts) for your component to register globally, this is the foundation.
-2. Use [useGlobalConfig](#useGlobalConfig) to handle parameters passed by component user, get global props, global attrs, global listeners & global hooks.
-3. Import those global parameters, meet them with local/default parameters and determine the final value using [conclude](#conclude) .
-
-[Vue 3 demo](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent)
-
-[Vue 2 demo](https://github.com/cloydlau/vue-global-config/tree/main/vue2demo/src/components/GlobalComponent)
-
-<br>
-
-## Vue 3
-
-### Global props
+### Global Props
 
 ```vue
 <template>
@@ -124,7 +119,7 @@ const Msg = computed(() => conclude([props.msg, globalProps.msg])) // Place the 
 </script>
 ```
 
-### Global attrs & listeners
+### Global Attrs & Listeners
 
 > In Vue 3, `attrs` includes both attrs & listeners
 
@@ -156,7 +151,7 @@ const Attrs = computed(() => conclude([useAttrs()], {
 </script>
 ```
 
-### Global hooks
+### Global Hooks
 
 ```vue
 <template>
@@ -179,7 +174,19 @@ for (const k in globalHooks)
 
 ## Vue 2
 
-### Global props
+### Install
+
+``` bash
+# Vue 2.7
+$ npm add vue-global-config
+
+# Vue 2.6 or Earlier
+$ npm add vue-global-config @vue/composition-api
+```
+
+<br>
+
+### Global Props
 
 ```vue
 <template>
@@ -201,7 +208,7 @@ export default {
 </script>
 ```
 
-### Global attrs
+### Global Attrs
 
 ```vue
 <template>
@@ -222,7 +229,7 @@ export default {
 </script>
 ```
 
-### Global listeners
+### Global Listeners
 
 ```vue
 <template>
@@ -257,7 +264,7 @@ export default {
 </script>
 ```
 
-### Global hooks
+### Global Hooks
 
 ```vue
 <template>
@@ -281,11 +288,13 @@ export default {
 
 <a name="useGlobalConfig"></a>
 
-## useGlobalConfig
+## API
+
+### useGlobalConfig
 
 Get global props, attrs, listeners & hooks by analysing global parameters passed by component user.
 
-### Param
+#### Param
 
 ```ts
 /**
@@ -321,7 +330,7 @@ useGlobalConfig({
 
 <a name="conclude"></a>
 
-## conclude
+### conclude
 
 Vue 提供了 prop 的局部配置和默认值配置，但在封装组件时，还会非常需要一个“全局配置”，否则可能导致每个组件实例进行重复的配置。
 
@@ -333,7 +342,7 @@ Vue 提供了 prop 的局部配置和默认值配置，但在封装组件时，�
 
 conclude 的作用就是帮助你计算出最终的配置。
 
-### Features
+#### Features
 
 - 和 Vue 的 props 一样，提供是否必传、数据类型和自定义的校验
 - 对于 plain object 类型的 prop，支持深合并、浅合并和直接覆盖
@@ -341,7 +350,7 @@ conclude 的作用就是帮助你计算出最终的配置。
 - 支持将对象的键统一为驼峰命名
 - 支持动态生成默认值
 
-### Param
+#### Param
 
 ```ts
 /**
@@ -370,21 +379,21 @@ import { conclude } from 'vue-global-config'
 conclude([1, 2, undefined]) // 1
 ```
 
-### How can we know whether a prop is passed or not?
+#### How can we know whether a prop is passed or not?
 
 以该 prop 是否全等于 `undefined` 作为标识
 
-### config.type
+#### config.type
 
 与 [Vue 的 Prop 类型校验](https://vuejs.org/guide/components/props.html#prop-validation) 一致。
 
-### config.mergeObject
+#### config.mergeObject
 
 - `'deep'`: 深合并，高权重 prop 的对象键会覆盖低权重 prop 的同名键，包含嵌套的对象（默认值）
 - `'shallow'`: 浅合并，高权重 prop 的对象键会覆盖低权重 prop 的同名键，不含嵌套的对象
 - `false`: 不合并，直接覆盖，高权重 prop 的对象会直接覆盖低权重 prop 的对象，与值类型的表现一致
 
-### config.mergeObjectApplyOnlyToDefault
+#### config.mergeObjectApplyOnlyToDefault
 
 默认关闭，仅在 mergeObject 开启时有效。
 
@@ -394,7 +403,7 @@ conclude([1, 2, undefined]) // 1
 
 使用场景：组件作者想要将组件内部的配置与组件使用者的配置进行合并，但组件使用者自身的各级配置依然保持直接覆盖的规则。
 
-### config.mergeFunction
+#### config.mergeFunction
 
 使用场景：在封装组件时，你可能需要通过配置选项的方式监听底层依赖的某些事件，
 
@@ -443,7 +452,7 @@ conclude([
 // 结果会打印 '我是显式默认值' '我是参数2' '我是参数1'
 ```
 
-### config.mergeFunctionApplyOnlyToDefault
+#### config.mergeFunctionApplyOnlyToDefault
 
 默认开启，仅在 mergeFunction 开启时有效。
 
@@ -455,12 +464,12 @@ conclude([
 
 关闭时，mergeFunction 的规则会应用至所有函数类型 prop 的权重比对中。
 
-### config.default
+#### config.default
 
 显式指定默认值，如果没有开启 `mergeObjectApplyOnlyToDefault` 或 `mergeFunctionApplyOnlyToDefault` 的话，则没有必要使用该参数，将默认值放在 `configSequence`
 的末尾即可。
 
-### config.camelCase
+#### config.camelCase
 
 without
 
@@ -516,7 +525,7 @@ Why not take kebab-case as default?
 
 - Check [Official Vue style guide](https://v2.vuejs.org/v2/style-guide/index.html#Prop-name-casing-strongly-recommended)
 
-### Dynamic default value
+#### Dynamic default value
 
 使用场景：需要根据组件使用者传的参数来决定默认值
 
@@ -556,7 +565,7 @@ conclude([{
 
 <br>
 
-## getLocalListeners
+### getLocalListeners
 
 Vue 2 only. For the purpose of listening local hooks.
 
@@ -570,7 +579,7 @@ By using `getLocalListeners(this.$listeners)`, your can get pure listeners witho
 
 <br>
 
-## listenGlobalHooks
+### listenGlobalHooks
 
 Vue 2 only. For the purpose of listening global hooks.
 
@@ -584,7 +593,7 @@ Detailed changes for each release are documented in the [release notes](https://
 
 <br>
 
-## Development
+## Develop
 
 **PR welcome!**
 
