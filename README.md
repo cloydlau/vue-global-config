@@ -595,7 +595,7 @@ Detailed changes for each release are documented in the [release notes](https://
 
 ## Develop
 
-**PR welcome!**
+**PR welcome!** 💗
 
 1. Install Deno
     - https://deno.land/#installation
