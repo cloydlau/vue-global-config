@@ -124,7 +124,7 @@ function MergeObject(sources: any[], {
 
   const customizer = mergeFunction
     ? (objValue: any, srcValue: any) =>
-        (objValue instanceof Function && srcValue instanceof Function)
+        (typeof objValue === 'function' && typeof srcValue === 'function')
           ? mergeFunction(srcValue, objValue)
           : undefined
     : undefined
@@ -194,7 +194,7 @@ export default function conclude(
       validateProp({ type, prop, validator })
 
       const itemIsPlainObject = isPlainObject(prop)
-      const itemIsFunction = prop instanceof Function
+      const itemIsFunction = typeof prop === 'function'
       isPlainObjectArray = itemIsPlainObject
       isFunctionArray = itemIsFunction
 
@@ -222,7 +222,7 @@ export default function conclude(
 
   if (!defaultIsDynamic) {
     configSequenceCopy.push(handleProp(defaultValue))
-  } else if (!(defaultValue instanceof Function)) {
+  } else if (!(typeof defaultValue === 'function')) {
     throw new TypeError(`Invalid option: config.default should be Function when config.defaultIsDynamic enabled, receiving: ${defaultValue}`)
   }
 
