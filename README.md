@@ -4,6 +4,7 @@
   <a href="https://npmjs.com/package/vue-global-config"><img src="https://img.shields.io/npm/v/vue-global-config.svg" alt="npm package"></a>
   <a href="https://npmjs.com/package/vue-global-config"><img src="http://img.badgesize.io/https://unpkg.com/vue-global-config/dist/vue-global-config.umd.js?compression=gzip&label=gziped" alt="gziped"></a>
   <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fcloydlau%2Fvue-global-config?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcloydlau%2Fvue-global-config.svg?type=shield"/></a>
+  <a href="https://github.com/cloydlau/vue-global-config#develop"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
 </p>
 
 > Configure your Vue 2.6 / 2.7 / 3 components globally!
@@ -600,8 +601,6 @@ Detailed changes for each release are documented in the [release notes](https://
 <br>
 
 ## Develop
-
-**PR welcome!** 💗
 
 1. [Install Deno](https://deno.land/#installation)
 
