@@ -1,10 +1,12 @@
 # vue-global-config
 
 <p align="left">
-  <a href="https://npmjs.com/package/vue-global-config"><img src="https://img.shields.io/npm/v/vue-global-config.svg" alt="npm package"></a>
-  <a href="https://npmjs.com/package/vue-global-config"><img src="http://img.badgesize.io/https://unpkg.com/vue-global-config/dist/vue-global-config.umd.js?compression=gzip&label=gziped" alt="gziped"></a>
-  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fcloydlau%2Fvue-global-config?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcloydlau%2Fvue-global-config.svg?type=shield"/></a>
-  <a href="https://github.com/cloydlau/vue-global-config#develop"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
+  <a href="https://npmjs.com/package/vue-global-config"><img alt="npm package" src="https://img.shields.io/npm/v/vue-global-config.svg?logo=npm"></a>
+  <a href="https://bundlephobia.com/package/vue-global-config"><img alt="minzipped size" src="https://img.shields.io/bundlephobia/minzip/vue-global-config"></a>
+  <br>
+  <a href="https://eslint.org"><img alt="code style" src="https://img.shields.io/badge/code_style-eslint-4B32C3.svg"></a>
+  <a href="https://conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/commits-conventional-fe5196.svg"></a>
+  <a href="https://github.com/cloydlau/vue-global-config#develop"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p>
 
 > Configure your Vue 2.6 / 2.7 / 3 components globally!
