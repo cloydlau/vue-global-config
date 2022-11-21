@@ -1,9 +1,10 @@
-# vue-global-config
+# Vue Global Config <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
+
+[npm-version-svg]: https://versionbadg.es/cloydlau/vue-global-config.svg
+[package-url]: https://npmjs.com/package/vue-global-config
 
 <p align="left">
-  <a href="https://npmjs.com/package/vue-global-config"><img alt="npm package" src="https://img.shields.io/npm/v/vue-global-config.svg?logo=npm"></a>
   <a href="https://bundlephobia.com/package/vue-global-config"><img alt="minzipped size" src="https://img.shields.io/bundlephobia/minzip/vue-global-config"></a>
-  <br>
   <a href="https://eslint.org"><img alt="code style" src="https://img.shields.io/badge/code_style-eslint-4B32C3.svg"></a>
   <a href="https://conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/commits-conventional-fe5196.svg"></a>
   <a href="https://github.com/cloydlau/vue-global-config#develop"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
