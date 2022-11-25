@@ -20,8 +20,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/vue-global-config.umd.js",
-      "import": "./dist/vue-global-config.mjs",
-      "browser": "./dist/vue-global-config.mjs"
+      "import": "./dist/vue-global-config.mjs"
     },
     "./*": "./*"
   },
