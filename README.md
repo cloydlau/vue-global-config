@@ -100,15 +100,53 @@ Entangled in global / local / default parameters, which one to choose? It should
 
 <br>
 
-## Vue 3
+## Install
 
-### Install
+### NPM
 
-![NPM](https://nodei.co/npm/vue-global-config.png)
+``` bash
+$ npm add vue-global-config
+```
+
+> `@vue/composition-api` is required in Vue 2.6 or Earlier
 
 <br>
 
-### Global Props
+### CDN
+
+#### Using the ESM Build
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "vue": "https://unpkg.com/vue/dist/vue.esm-browser.prod.js",
+      "vue-demi": "https://unpkg.com/vue-demi/lib/v3/index.mjs",
+      "vue-global-config": "https://unpkg.com/vue-global-config/dist/vue-global-config.mjs"
+    }
+  }
+</script>
+<script type="module">
+  import { conclude, getLocalListeners, listenGlobalHooks, useGlobalConfig } from 'vue-global-config'
+</script>
+```
+
+#### Using the Global Build
+
+```html
+<script src="https://unpkg.com/vue-global-config@0.2"></script>
+<script>
+  const { conclude, getLocalListeners, listenGlobalHooks, useGlobalConfig } = VueGlobalConfig
+</script>
+```
+
+<br>
+
+## Usage
+
+### Vue 3
+
+#### Global Props
 
 ```vue
 <template>
@@ -125,7 +163,7 @@ const Msg = computed(() => conclude([props.msg, globalProps.msg])) // Place the 
 </script>
 ```
 
-### Global Attrs & Listeners
+#### Global Attrs & Listeners
 
 > In Vue 3, `attrs` includes both attrs & listeners
 
@@ -157,7 +195,7 @@ const Attrs = computed(() => conclude([useAttrs()], {
 </script>
 ```
 
-### Global Hooks
+#### Global Hooks
 
 ```vue
 <template>
@@ -178,21 +216,9 @@ for (const k in globalHooks)
 
 <br>
 
-## Vue 2
+### Vue 2
 
-### Install
-
-``` bash
-# Vue 2.7
-$ npm add vue-global-config
-
-# Vue 2.6 or Earlier
-$ npm add vue-global-config @vue/composition-api
-```
-
-<br>
-
-### Global Props
+#### Global Props
 
 ```vue
 <template>
@@ -214,7 +240,7 @@ export default {
 </script>
 ```
 
-### Global Attrs
+#### Global Attrs
 
 ```vue
 <template>
@@ -235,7 +261,7 @@ export default {
 </script>
 ```
 
-### Global Listeners
+#### Global Listeners
 
 ```vue
 <template>
@@ -270,7 +296,7 @@ export default {
 </script>
 ```
 
-### Global Hooks
+#### Global Hooks
 
 ```vue
 <template>
@@ -292,9 +318,9 @@ export default {
 
 <br>
 
-<a name="useGlobalConfig"></a>
-
 ## API
+
+<a name="useGlobalConfig"></a>
 
 ### useGlobalConfig
 
