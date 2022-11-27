@@ -132,8 +132,8 @@ function MergeObject(sources: any[], {
 
   // merge, assignIn will change the original object
   return mergeObject === MergeObjectOptions.deep
-    ? mergeWith(...reversedSource, customizer)
-    : assignInWith(...reversedSource, customizer)
+    ? mergeWith(...(reversedSource as []), customizer)
+    : assignInWith(...(reversedSource as []), customizer)
 }
 
 function MergeFunction(sources: any[], {
