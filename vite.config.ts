@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import { name } from './package.json'
+import { name, pascalCasedName } from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,8 +18,8 @@ export default defineConfig({
         'vue-demi',
       ],
       output: {
-        // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
         globals: {
+          [name]: pascalCasedName,
           'vue': 'Vue',
           'vue-demi': 'VueDemi',
         },

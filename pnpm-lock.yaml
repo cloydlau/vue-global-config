@@ -4,6 +4,8 @@ specifiers:
   '@antfu/eslint-config': latest
   '@commitlint/cli': latest
   '@commitlint/config-conventional': latest
+  '@types/lodash-es': latest
+  '@types/node': ^18.11.9
   '@vitejs/plugin-vue': latest
   '@vitest/coverage-c8': latest
   '@vue/compiler-sfc': latest
@@ -33,6 +35,8 @@ devDependencies:
   '@antfu/eslint-config': 0.31.0_hsf322ms6xhhd4b5ne6lb74y4a
   '@commitlint/cli': 17.3.0
   '@commitlint/config-conventional': 17.3.0
+  '@types/lodash-es': 4.17.6
+  '@types/node': 18.11.9
   '@vitejs/plugin-vue': 3.2.0_vite@3.2.4+vue@3.2.45
   '@vitest/coverage-c8': 0.25.3
   '@vue/compiler-sfc': 3.2.45
@@ -44,11 +48,11 @@ devDependencies:
   lint-staged: 13.0.4
   typescript: 4.9.3
   unplugin-auto-import: 0.12.0
-  vite: 3.2.4
+  vite: 3.2.4_@types+node@18.11.9
   vite-plugin-dts: 1.7.1_vite@3.2.4
   vitest: 0.25.3
   vue: 3.2.45
-  vue-global-config: 0.2.4_vue@3.2.45
+  vue-global-config: 0.2.5_vue@3.2.45
 
 packages:
 
@@ -819,7 +823,7 @@ packages:
       vite: ^3.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 3.2.4
+      vite: 3.2.4_@types+node@18.11.9
       vue: 3.2.45
     dev: true
 
@@ -4394,43 +4398,10 @@ packages:
       fs-extra: 10.1.0
       kolorist: 1.6.0
       ts-morph: 16.0.0
-      vite: 3.2.4
+      vite: 3.2.4_@types+node@18.11.9
     transitivePeerDependencies:
       - rollup
       - supports-color
-    dev: true
-
-  /vite/3.2.4:
-    resolution: {integrity: sha512-Z2X6SRAffOUYTa+sLy3NQ7nlHFU100xwanq1WDwqaiFiCe+25zdxP1TfCS5ojPV2oDDcXudHIoPnI1Z/66B7Yw==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      esbuild: 0.15.15
-      postcss: 8.4.19
-      resolve: 1.22.1
-      rollup: 2.79.1
-    optionalDependencies:
-      fsevents: 2.3.2
     dev: true
 
   /vite/3.2.4_@types+node@18.11.9:
@@ -4544,8 +4515,8 @@ packages:
       - supports-color
     dev: true
 
-  /vue-global-config/0.2.4_vue@3.2.45:
-    resolution: {integrity: sha512-NwitdlLWcah6wqz3Sp5NGIMUvi8RZ3PsJYIrqiz5bBq2B6D3MzLlXbIgjlNROtv1RPwAJtQeOWa+mFATR6i12w==}
+  /vue-global-config/0.2.5_vue@3.2.45:
+    resolution: {integrity: sha512-Be+/k80EAE/YcnF+TR8mvzlOFkHJ5o09KRCx9UykmTXKsaUnHEkaZO3bkQBdjTaUUK3nrXCAC5JbcRqrNuQYNw==}
     peerDependencies:
       '@vue/composition-api': '>=1'
       vue: 2 || 3
