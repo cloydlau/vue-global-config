@@ -1,13 +1,16 @@
-// 仅适用于 Vue 2
-// 在 Vue 2 中，只有组件才能触发 hooks，原生元素不行
-// 通过劫持 emit 来实现同时触发全局 hooks 和实例 hooks
-export default function listenGlobalHooks(globalHooks: { [key: string]: any }) {
+// Only for Vue 2
+// In Vue 2, only components can trigger hooks, not native elements
+// Hijack `emit` to trigger both global hooks and instance hooks
+
+import type { ComponentPublicInstance } from 'vue-demi'
+
+export default function listenGlobalHooks(this: ComponentPublicInstance, globalHooks: { [key: string]: any }) {
   if (Object.getOwnPropertyNames(globalHooks || {}).length) {
     const originalEmit = this.$emit
-    this.$emit = function () {
-      originalEmit.apply(this, arguments)
-      const [eventName, ...args] = arguments
-      globalHooks[eventName]?.apply(this, args)
+    this.$emit = function (...args) {
+      originalEmit.apply(this, args)
+      const [eventName, ...eventArgs] = args
+      globalHooks[eventName]?.apply(this, eventArgs)
     }
   }
 }
