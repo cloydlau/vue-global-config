@@ -77,13 +77,9 @@ Entangled in global / local / default parameters, which one to choose? It should
 
 ## How?
 
-1. Firstly provide an [entrance](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent/index.ts) for your component to register globally, this is the foundation.
+1. Firstly provide an [entrance](https://github.com/cloydlau/vue-global-config/tree/main/demo/vue3/src/components/GlobalComponent/index.ts) for your component to register globally, this is the foundation.
 2. Use [useGlobalConfig](#useGlobalConfig) to handle parameters passed by component user, get global props, global attrs, global listeners & global hooks.
 3. Import those global parameters, meet them with local / default parameters and determine the final value using [conclude](#conclude) .
-
-[Vue 3 demo](https://github.com/cloydlau/vue-global-config/tree/main/vue3demo/src/components/GlobalComponent)
-
-[Vue 2 demo](https://github.com/cloydlau/vue-global-config/tree/main/vue2demo/src/components/GlobalComponent)
 
 <br>
 
@@ -342,42 +338,41 @@ useGlobalConfig({
 
 ### conclude
 
-Vue 提供了 prop 的局部配置和默认值配置，但在封装组件时，还会非常需要一个“全局配置”，否则可能导致每个组件实例进行重复的配置。
+`Vue` provides local and default configuration of prop, but when wrapping components, there is a strong need for a "global configuration", which may otherwise lead to duplicate configurations for each component instance.
 
-举个例子，Element 的 size 与 zIndex 就是支持全局配置的。
+For example, the size and zIndex of `ElementUI` support global configuration.
 
-当配置多了以后，由于存在不同的优先级，最终组件采用的是哪一项配置，需要进行一定的判断，
+When there are more configurations, there is some judgment as to which configuration is used by the final component due to the different priorities.
 
-在涉及到对象和函数时，判断可能会变得相当复杂。
+When it comes to objects and functions, this can get quite complicated.
 
-conclude 的作用就是帮助你计算出最终的配置。
+The role of `conclude` is to help you figure out the final configuration.
 
 #### Features
 
-- 和 Vue 的 props 一样，提供是否必传、数据类型和自定义的校验
-- 对于 plain object 类型的 prop，支持深合并、浅合并和直接覆盖
-- 对于 function 类型的 prop，支持融合、直接覆盖
-- 支持将对象的键统一为驼峰命名
-- 支持动态生成默认值
+- Like Vue's props, it provides requirement, data type and custom validator
+- For plain object type prop, deep merge, shallow merge and direct override are supported
+- For function type prop, support merge and direct override
+- Support for unifying the keys of objects into camel names
+- Support for dynamic generation of default values
 
 #### Param
 
 ```ts
 /**
- * @param {any[]} configSequence - config 序列（优先级从高到低，最后是默认值）
- * @param {object} [config] - 配置
- * @param {string} [config.name] - config 名称，用于报错提示
- * @param {PropType} [config.type] - 数据类型校验
- * @param {any} [config.default] - 默认值（显式）
- * @param {boolean} [config.defaultIsDynamic = false] - 动态生成默认值
- * @param {boolean} [config.required = false] - 是否必传校验
- * @param {function} [config.validator] - 自定义校验
- * @param {string} [config.camelCase = true] - 是否将对象的键统一为驼峰命名
- * @param {false|string} [config.mergeObject = 'deep'] - 合并对象的方式
- * @param {boolean} [config.mergeObjectApplyOnlyToDefault = false] - mergeObject 仅作用于 default
- * @param {false|((accumulator, currentValue, index?, array?) => Function)} [config.mergeFunction = false] - 融合函数的方式
- * @param {boolean} [config.mergeFunctionApplyOnlyToDefault = true] - mergeFunction 仅作用于 default
- * @returns {any} 最终的参数
+ * @param {any[]} configSequence - Config sequence (priority from highest to lowest, last is the default value)
+ * @param {object} [config] - Configuration
+ * @param {PropType<any>} [config.type] - Data type checking
+ * @param {any} [config.default] - Default value (explicit)
+ * @param {boolean} [config.defaultIsDynamic = false] - Dynamic generation of default values
+ * @param {boolean} [config.required = false] - Requirement checking
+ * @param {function} [config.validator] - Custom validator
+ * @param {string} [config.camelCase = true] - Whether or not to unify the keys of the object as a hump naming
+ * @param {false|string} [config.mergeObject = 'deep'] - The way to merge objects
+ * @param {boolean} [config.mergeObjectApplyOnlyToDefault = false] - `mergeObject` only works on `default`
+ * @param {false|((accumulator, currentValue, index?, array?) => Function)} [config.mergeFunction = false] - The way to fuse functions
+ * @param {boolean} [config.mergeFunctionApplyOnlyToDefault = true] - `mergeFunction` only works on `default`
+ * @returns {any} Final prop
  */
 ```
 
@@ -391,66 +386,64 @@ conclude([1, 2, undefined]) // 1
 
 #### How can we know whether a prop is passed or not?
 
-以该 prop 是否全等于 `undefined` 作为标识
+Whether the prop is all equal to `undefined` or not
 
 #### config.type
 
-与 [Vue 的 Prop 类型校验](https://vuejs.org/guide/components/props.html#prop-validation) 一致。
+Same as [Vue's prop validation](https://vuejs.org/guide/components/props.html#prop-validation).
 
 #### config.mergeObject
 
-- `'deep'`: 深合并，高权重 prop 的对象键会覆盖低权重 prop 的同名键，包含嵌套的对象（默认值）
-- `'shallow'`: 浅合并，高权重 prop 的对象键会覆盖低权重 prop 的同名键，不含嵌套的对象
-- `false`: 不合并，直接覆盖，高权重 prop 的对象会直接覆盖低权重 prop 的对象，与值类型的表现一致
+- `'deep'`: Deep merge, where the object key of a high-weight prop overwrites the same-name key of a low-weight prop, containing nested objects (the default value)
+- `'shallow'`: Shallow merge, where the object key of a high weight prop overwrites the key of the same name of a low weight prop, without nested objects
+- `false`: No merging, direct overwriting, objects of high weight prop will directly overwrite objects of low weight prop, consistent with the behavior of value types
 
 #### config.mergeObjectApplyOnlyToDefault
 
-默认关闭，仅在 mergeObject 开启时有效。
+Off by default, only valid when mergeObject is on.
 
-开启时，mergeObject 的规则仅会应用于最后与 default 进行比对的环节中，之前的对象依然会直接覆盖。
+When on, mergeObject's rules are only applied to the final comparison with default, and previous objects are still directly overwritten.
 
-关闭时，mergeObject 的规则会应用至所有对象类型 prop 的权重比对中。
+When off, mergeObject's rules are applied to all object type prop weights.
 
-使用场景：组件作者想要将组件内部的配置与组件使用者的配置进行合并，但组件使用者自身的各级配置依然保持直接覆盖的规则。
+Usage scenario: The component author wants to merge the component's internal configuration with the component user's configuration, but the component user's own configuration at all levels remains directly overwritten by the rules.
 
 #### config.mergeFunction
 
-使用场景：在封装组件时，你可能需要通过配置选项的方式监听底层依赖的某些事件，
+Usage Scenario: When wrapping a component, you may need to listen to certain events of the underlying dependency by configuration.
 
-在将该依赖的配置选项暴露出去时，组件使用者的配置就会与你的配置发生冲突。
+When exposing the configuration for that dependency, the component user's configuration will conflict with yours.
 
-mergeFunction 提供定制化的方式来融合函数类型的 prop。
+`mergeFunction` provides a customized way to merge function type prop.
 
-举个例子，知名的富文本库 TinyMCE 的配置选项中有一个叫 `init_instance_callback` 的回调，
+For example, the well-known rich text library TinyMCE has a callback called `init_instance_callback` in its options.
 
-在封装这个库时，可以藉此来做一些初始化的工作，为了不破坏组件的灵活性，也会将 TinyMCE 的配置选项暴露出去，
+When wrapping this library, you can use it to do some initialization work and expose TinyMCE's options in order not to break the flexibility of the component.
 
-问题来了，组件使用者一旦配置了这个回调，就会与你的配置发生冲突。
+The problem is that once the component user has configured this callback, it will conflict with your configuration.
 
-与其他数据类型的配置不同的是，函数类型的 prop，往往不期望被用户的配置直接覆盖掉，会有需要进行“融合”的需求。
+Unlike the configuration of other data types, function-type prop is not expected to be directly overridden by the user's configuration, and there is a need for "fusion".
 
-融合：既执行组件使用者配置的函数，也执行组件内部配置的函数。
+Fusion: executes both functions configured by the component user and functions configured internally by the component.
 
-函数类型的 prop 包括两种情况：
+The function type prop includes two cases:
 
-- prop 本身是函数
-- prop 是含有函数属性的对象
+- prop is itself a function
+- prop is an object with function properties
 
-conclude
-内部使用 [Array.prototype.reduce](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
-来执行函数融合，mergeFunction 将被用作参数1。
+`conclude` internally uses `Array.prototype.reduce` to perform the function fusion, `mergeFunction` will be used as argument 1.
 
 ```ts
 conclude([
   () => {
-    console.log('我是参数1')
+    console.log('I am option 1')
   },
   () => {
-    console.log('我是参数2')
+    console.log('I am option 2')
   }
 ], {
   default: () => {
-    console.log('我是显式默认值')
+    console.log('I am default option')
   },
   mergeFunction: (accumulator, item) => (...args) => {
     accumulator(...args)
@@ -459,25 +452,24 @@ conclude([
   mergeFunctionApplyOnlyToDefault: false,
 })()
 
-// 结果会打印 '我是显式默认值' '我是参数2' '我是参数1'
+// Will print 'I am default option' 'I am option 2' 'I am option 1'
 ```
 
 #### config.mergeFunctionApplyOnlyToDefault
 
-默认开启，仅在 mergeFunction 开启时有效。
+Is turned on by default and is only available when `mergeFunction` is on.
 
-函数融合毕竟是一个特殊行为，往往只有组件作者会用到这个功能，
+Function merging is, after all, a special behavior, and often only the component author will use this feature.
 
-对于组件使用者来说，函数类型的配置可能更希望的是和其他原始类型一样，直接覆盖掉就好了。
+For component users, the configuration of function types may be more like Primitive Types and just override them.
 
-开启时，mergeFunction 的规则仅会应用于最后与 default 进行比对的环节中，之前的函数依然会直接覆盖。
+When turned on, the `mergeFunction` rule is only applied to the final comparison with default, and the previous function is still overwritten directly.
 
-关闭时，mergeFunction 的规则会应用至所有函数类型 prop 的权重比对中。
+When off, `mergeFunction`'s rules are applied to all function type prop weights.
 
 #### config.default
 
-显式指定默认值，如果没有开启 `mergeObjectApplyOnlyToDefault` 或 `mergeFunctionApplyOnlyToDefault` 的话，则没有必要使用该参数，将默认值放在 `configSequence`
-的末尾即可。
+Explicitly specifies the default value. If `mergeObjectApplyOnlyToDefault` or `mergeFunctionApplyOnlyToDefault` is not enabled, there is no need to use this parameter, just put the default value at the end of `configSequence`.
 
 #### config.camelCase
 
@@ -537,10 +529,10 @@ Why not take kebab-case as default?
 
 #### Dynamic default value
 
-使用场景：需要根据组件使用者传的参数来决定默认值
+Usage scenario: the default value needs to be determined according to the parameters passed by the component user.
 
 ```ts
-// 示例
+// Example
 
 conclude([{
   a: {
@@ -552,7 +544,7 @@ conclude([{
     b: 1
   }
 }], {
-  // userProp是参数1的计算结果
+  // userProp is the result of the calculation of parameter 1
   default: userProp => ({
     a: {
       c: userProp.a.a === 1 ? 1 : null
@@ -562,7 +554,7 @@ conclude([{
 })
 
 /**
- * 将得到：
+ * Will get:
  * {
  *   a: {
  *     a: 1,
