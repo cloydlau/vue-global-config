@@ -112,9 +112,7 @@ $ npm add vue-global-config
 
 <br>
 
-### CDN
-
-#### Using the ESM Build
+### CDN + ESM
 
 ```html
 <script type="importmap">
@@ -131,7 +129,7 @@ $ npm add vue-global-config
 </script>
 ```
 
-#### Using the Global Build
+### CDN + UMD
 
 ```html
 <script src="https://unpkg.com/vue-global-config@0.2"></script>
