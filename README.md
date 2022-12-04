@@ -104,13 +104,11 @@ Entangled in global / local / default parameters, which one to choose? It should
 
 ### NPM
 
-``` bash
-$ npm add vue-global-config
+```shell
+npm add vue-global-config
 ```
 
 > `@vue/composition-api` is required in Vue 2.6 or Earlier
-
-<br>
 
 ### CDN + ESM
 
