@@ -1,7 +1,7 @@
 {
   "name": "vue-global-config",
   "pascalCasedName": "VueGlobalConfig",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "private": false,
   "description": "Configure your Vue 2.6 / 2.7 / 3 components globally.",
   "author": "cloydlau",
