@@ -394,7 +394,7 @@ The role of `conclude` is to help you figure out the final configuration.
  * @param {boolean} [config.defaultIsDynamic = false] - Dynamic generation of default values
  * @param {boolean} [config.required = false] - Requirement checking
  * @param {function} [config.validator] - Custom validator
- * @param {string} [config.camelCase = true] - Whether or not to unify the keys of the object as a hump naming
+ * @param {string} [config.camelizeObjectKeys = false] - Whether or not to camelize object keys
  * @param {false|string} [config.mergeObject = 'deep'] - The way to merge objects
  * @param {boolean} [config.mergeObjectApplyOnlyToDefault = false] - `mergeObject` only works on `default`
  * @param {false|((accumulator, currentValue, index?, array?) => Function)} [config.mergeFunction = false] - The way to fuse functions
@@ -498,7 +498,7 @@ When off, `mergeFunction`'s rules are applied to all function type prop weights.
 
 Explicitly specifies the default value. If `mergeObjectApplyOnlyToDefault` or `mergeFunctionApplyOnlyToDefault` is not enabled, there is no need to use this parameter, just put the default value at the end of `configSequence`.
 
-#### config.camelCase
+#### config.camelizeObjectKeys
 
 without
 

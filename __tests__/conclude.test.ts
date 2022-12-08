@@ -160,7 +160,9 @@ describe('conclude', () => {
         'a-b': {
           'b-a': 1,
         },
-      }])).toEqual({
+      }], {
+        camelizeObjectKeys: true,
+      })).toEqual({
         aB: {
           'b-a': 1,
         },
@@ -169,9 +171,7 @@ describe('conclude', () => {
         'a-b': {
           'b-a': 1,
         },
-      }], {
-        camelCase: false,
-      })).toEqual({
+      }])).toEqual({
         'a-b': {
           'b-a': 1,
         },
@@ -181,7 +181,9 @@ describe('conclude', () => {
           'b-a': 1,
         },
         'aB': 1,
-      }])).toEqual({
+      }], {
+        camelizeObjectKeys: true,
+      })).toEqual({
         aB: 1,
       })
     })
@@ -223,8 +225,11 @@ describe('conclude', () => {
       expect(FINAL_PROP.a).toEqual(1)
     })
     it('驼峰和短横线并存', () => {
-      expect(conclude([{ 'aB': 1, 'a-b': 2 }, { 'a-b': 4, 'aB': 3 }])).toEqual({ aB: 2 })
+      expect(conclude([{ 'aB': 1, 'a-b': 2 }, { 'a-b': 4, 'aB': 3 }], {
+        camelizeObjectKeys: true,
+      })).toEqual({ aB: 2 })
       expect(conclude([{ 'aB': 1, 'a-b': 2 }], {
+        camelizeObjectKeys: true,
         default: (userProp: any) => {
           expect(userProp).toEqual({ aB: 2 })
         },

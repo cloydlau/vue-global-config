@@ -1,5 +1,5 @@
 import { assignInWith, cloneDeep, isObject, isPlainObject, mapKeys, mergeWith } from 'lodash-es'
-import * as changeCase from 'change-case'
+import { camelCase } from 'change-case'
 
 // isPlainObject: Vue and Vue instances return `false`
 // cloneDeep does not fully support Vue instances
@@ -142,21 +142,6 @@ function MergeFunction(sources: any[], {
   return sources.reduce(mergeFunction, () => { })
 }
 
-/**
- * @param {any[]} configSequence - Config sequence (priority from highest to lowest, last is the default value)
- * @param {object} [config] - Configuration
- * @param {PropType<any>} [config.type] - Data type checking
- * @param {any} [config.default] - Default value (explicit)
- * @param {boolean} [config.defaultIsDynamic = false] - Dynamic generation of default values
- * @param {boolean} [config.required = false] - Requirement checking
- * @param {function} [config.validator] - Custom validator
- * @param {string} [config.camelCase = true] - Whether or not to unify the keys of the object as a hump naming
- * @param {false|string} [config.mergeObject = 'deep'] - The way to merge objects
- * @param {boolean} [config.mergeObjectApplyOnlyToDefault = false] - `mergeObject` only works on `default`
- * @param {false|((accumulator, currentValue, index?, array?) => Function)} [config.mergeFunction = false] - The way to fuse functions
- * @param {boolean} [config.mergeFunctionApplyOnlyToDefault = true] - `mergeFunction` only works on `default`
- * @returns {any} Final prop
- */
 export default function conclude(
   configSequence: any[], config: {
     type?: PropType<any>
@@ -164,7 +149,7 @@ export default function conclude(
     defaultIsDynamic?: boolean
     required?: boolean
     validator?: (prop: any) => boolean
-    camelCase?: boolean
+    camelizeObjectKeys?: boolean
     mergeObject?: string | false
     mergeObjectApplyOnlyToDefault?: boolean
     mergeFunction?: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
@@ -177,7 +162,7 @@ export default function conclude(
     defaultIsDynamic = false,
     required = false,
     validator,
-    camelCase = true,
+    camelizeObjectKeys = false,
     mergeObjectApplyOnlyToDefault = false,
     mergeFunctionApplyOnlyToDefault = true,
   } = config
@@ -202,15 +187,15 @@ export default function conclude(
       isFunctionArray = itemIsFunction
 
       // Shallow conversion: only the outermost keys are converted
-      // changeCase.camelCase kills key-value pairs which contain any character other than alphanumeric, such as $ _ in keys by default
+      // camelCase kills key-value pairs which contain any character other than alphanumeric, such as $ _ in keys by default
       // The naming of attrs does not allow $ _ by change, but props, listeners do
       // For attributes of the same name in different cases, the override priority:
       // determined by the order in which the properties are defined within the object, keeping the ones defined later
       // Note: when merging objects, the order of the attributes is changed, and the order of the attributes takes precedence over the next (lower priority) object!
       if (itemIsPlainObject) {
         prop = cloneDeep(prop)
-        return camelCase
-          ? mapKeys(prop, (v: any, k: any) => changeCase.camelCase(k, {
+        return camelizeObjectKeys
+          ? mapKeys(prop, (v: any, k: any) => camelCase(k, {
             stripRegexp: /-/g, // Filter only short horizontal lines for kebab-case conversion to camelCase
           }))
           : prop
