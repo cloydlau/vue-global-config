@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import { name, pascalCasedName } from './package.json'
+import { name, PascalCasedName } from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,7 +20,7 @@ export default defineConfig({
       ],
       output: {
         globals: {
-          [name]: pascalCasedName,
+          [name]: PascalCasedName,
           'vue': 'Vue',
           'vue-demi': 'VueDemi',
         },
