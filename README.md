@@ -5,7 +5,7 @@
 </h1>
 
 <p align="center">
-  Configure your Vue 2.6 / 2.7 / 3 components globally!
+  Configure your Vue 2.6/2.7/3 components globally!
 </p>
 
 <p align="center">
@@ -90,7 +90,7 @@ Entangled in global / local / default parameters, which one to choose? It should
 
 ## Features
 
-- Support Vue 2.6 / 2.7 / 3
+- Support Vue 2.6/2.7/3
 - Provide weight algorithm to deal with trade-off and merging issues of global / local / default parameters.
 - Support global [props](https://staging.vuejs.org/guide/components/props.html#props)
 - Support global [attrs](https://staging.vuejs.org/guide/components/attrs.html)
