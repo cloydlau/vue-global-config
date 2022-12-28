@@ -110,7 +110,7 @@ Entangled in global / local / default parameters, which one to choose? It should
 ### NPM
 
 ```shell
-npm add vue-global-config
+npm i vue-global-config
 ```
 
 > `@vue/composition-api` is required in Vue 2.6 or Earlier
@@ -626,7 +626,7 @@ Detailed changes for each release are documented in the [release notes](https://
 
 1. [Install Deno](https://deno.land/#installation)
 
-2. `npm add pnpm @cloydlau/scripts -g; pnpm i`
+2. `npm i pnpm @cloydlau/scripts -g; pnpm i`
 
 3. Start
 
