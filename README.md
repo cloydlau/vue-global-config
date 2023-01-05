@@ -604,7 +604,7 @@ In Vue 3, `attrs` includes attrs and listeners.
 
 As a result in Vue 2, hooks passed locally will be improperly passed to the child component within your component, making hook triggered repeatedly.
 
-By using `getLocalListeners(this.$listeners)`, your can get pure listeners without any hook.
+By using `getLocalListeners(this.$listeners)`, you can get pure listeners without any hook.
 
 <br>
 
