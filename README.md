@@ -83,7 +83,7 @@ Entangled in global / local / default parameters, which one to choose? It should
 ## How?
 
 1. Firstly provide an [entrance](https://github.com/cloydlau/vue-global-config/tree/main/demo/vue3/src/components/GlobalComponent/index.ts) for your component to register globally, this is the foundation.
-2. Use [useGlobalConfig](#useGlobalConfig) to handle parameters passed by component user, get global props, global attrs, global listeners & global hooks.
+2. Use [resolveConfig](#resolveConfig) to handle parameters passed by component user, get global props, global attrs, global listeners & global hooks.
 3. Import those global parameters, meet them with local / default parameters and determine the final value using [conclude](#conclude) .
 
 <br>
@@ -128,7 +128,7 @@ npm i vue-global-config
   }
 </script>
 <script type="module">
-  import { conclude, getLocalListeners, listenGlobalHooks, useGlobalConfig } from 'vue-global-config'
+  import { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } from 'vue-global-config'
 </script>
 ```
 
@@ -137,7 +137,7 @@ npm i vue-global-config
 ```html
 <script src="https://unpkg.com/vue-global-config@0.2"></script>
 <script>
-  const { conclude, getLocalListeners, listenGlobalHooks, useGlobalConfig } = VueGlobalConfig
+  const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } = VueGlobalConfig
 </script>
 ```
 
@@ -321,9 +321,9 @@ export default {
 
 ## API
 
-<a name="useGlobalConfig"></a>
+<a name="resolveConfig"></a>
 
-### useGlobalConfig
+### resolveConfig
 
 Get global props, attrs, listeners & hooks by analysing global parameters passed by component user.
 
@@ -349,9 +349,9 @@ Get global props, attrs, listeners & hooks by analysing global parameters passed
 // import VCA from '@vue/composition-api'
 // Vue.use(VCA)
 
-import { useGlobalConfig } from 'vue-global-config'
+import { resolveConfig } from 'vue-global-config'
 
-useGlobalConfig({
+resolveConfig({
   'msg': 'some prop',
   'placeholder': 'some attr',
   '@blur': function () {},
