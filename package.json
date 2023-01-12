@@ -71,7 +71,6 @@
     "case-police": "^0.5.10",
     "element-ui": "latest",
     "eslint": "^8.31.0",
-    "eslint-plugin-import": "^2.27.4",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
     "typescript": "^4.9.4",

@@ -1,21 +1,25 @@
 <template>
   <div v-bind="globalHooks">
     <h2>Msg：{{ Msg }}</h2>
-    <el-input v-bind="Attrs"/>
+    <el-input v-bind="Attrs" />
   </div>
 </template>
 
 <script>
-export default {
-  name: 'GlobalComponent',
-}
 </script>
 
 <script setup>
-import { getCurrentInstance, computed, useAttrs } from 'vue'
-import { globalProps, globalAttrs, globalListeners, globalHooks } from './index'
+import { computed, getCurrentInstance, useAttrs } from 'vue'
 import { conclude } from '../../../../src'
-//import { conclude } from 'vue-global-config'
+import { globalAttrs, globalHooks, globalListeners, globalProps } from './index'
+/**
+ * props
+ */
+const props = defineProps(['msg'])
+export default {
+  name: 'GlobalComponent',
+}
+// import { conclude } from 'vue-global-config'
 
 /* defineOptions({
   name: 'GlobalComponent',
@@ -23,10 +27,6 @@ import { conclude } from '../../../../src'
 
 const currentInstance = getCurrentInstance()
 
-/**
- * props
- */
-const props = defineProps(['msg'])
 const Msg = computed(() => conclude([props.msg, globalProps.msg]))
 
 /**
