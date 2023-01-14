@@ -22,21 +22,20 @@
 
 app.use(YourComponent, {
   // global prop
-  'message': 'Hello World',
-
+  'title': 'Global Title',
   // global attr
-  'placeholder': 'Please enter',
-
+  'data': [
+    { key: 1, label: 'Global Option 1' },
+    { key: 2, label: 'Global Option 2' },
+  ],
   // global listener
-  '@blur': function (e) {
-    console.log(e) // event is accessible
-    console.log(this) // 'this' is accessible
-  },
-
+  '@change': function () { console.log('Global Change') },
   // global hook
-  '@vnodeMounted': function () {
-    console.log(this) // 'this' is accessible
-  },
+  '@vnodeMounted': function () { console.log('Global Mounted') },
+  // global slot
+  '#left-footer': () => h('Fragment', null, 'Global Slot'),
+  // global scoped slot
+  '#default': ({ option }) => h('Fragment', null, `${option.label} (From Global Scoped Slot)`),
 })
 ```
 
@@ -60,6 +59,11 @@ Vue.use(YourComponent, {
   '@hook:mounted': function () {
     console.log(this) // 'this' is accessible
   },
+
+  // global slot
+  '#default': {
+    render: h => h('div', null, 'Slot Content'),
+  },
 })
 ```
 
@@ -72,36 +76,40 @@ Vue provides support for globally registering components, but no configuration.
 In the industry, ElementPlus
 thoughtfully provides [config-provider](https://element-plus.org/en-US/component/config-provider.html#config-provider-attributes) .
 
-But note that it's only for **partial props**. Global attrs, global listeners & global hooks are all **not** supported.
+But note that it's only for **partial props**. Global attrs/listeners/hooks/slots are all **not** supported.
 
 Make your components capable of globally configuring, is a not-that-hard but tiresome drudgery.
 
-Entangled in global / local / default parameters, which one to choose? It should be replaced or shallow merged or deep merged when it comes to plain object type? What if I want all functions triggered instead of ony one when it comes to function type? How to decide when both camel case and kebab case of a same parameter come together?
-
-<br>
-
-## How?
-
-1. Firstly provide an [entrance](https://github.com/cloydlau/vue-global-config/tree/main/demo/vue3/src/components/GlobalComponent/index.ts) for your component to register globally, this is the foundation.
-2. Use [resolveConfig](#resolveConfig) to handle parameters passed by component user, get global props, global attrs, global listeners & global hooks.
-3. Import those global parameters, meet them with local / default parameters and determine the final value using [conclude](#conclude) .
+Entangled in global/local/default parameters, which one to choose? It should be replaced or shallow merged or deep merged when it comes to plain object type? What if I want all functions triggered instead of ony one when it comes to function type? How to decide when both camel case and kebab case of a same parameter come together?
 
 <br>
 
 ## Features
 
 - Support Vue 2.6/2.7/3
-- Provide weight algorithm to deal with trade-off and merging issues of global / local / default parameters.
-- Support global [props](https://staging.vuejs.org/guide/components/props.html#props)
-- Support global [attrs](https://staging.vuejs.org/guide/components/attrs.html)
-- Support global [listeners](https://staging.vuejs.org/guide/essentials/event-handling.html#listening-to-listeners)
-    - Support triggering both global listener & local listener.
-    - Support triggering either global listener or local listener.
-- Support global hooks (internal API)
+- Support global Props
+- Support global Attrs
+- Support global Listeners
+    - Support triggering both global listener and local listener
+    - Support triggering either global listener or local listener
+- Support global Hooks (internal API)
     - Such as `@vnodeMounted` in Vue 3, see https://github.com/vuejs/core/issues/4457
     - Such as `@hook:mounted` in Vue 2, see https://github.com/vuejs/vue/issues/10312
-- Support deep merge, shallow merge or directly replace plain object type values
-- Support merge or directly replace function type values
+- Support global Slots & Scoped Slots
+  - Vue 3
+    - Render function (`h`/`createVNode`)
+    - Component definition (`{ render: () => h() }` / `{ template: '...' }`)
+    - (Locally/Globally) registered component name
+    - Imported SFC
+  - Vue 2
+    - Render function (`h`)
+    - Component definition (`{ render: h => h() }` / `{ template: '...' }`)
+    - Component constructor (`Vue.extend()`)
+    - (Locally/Globally) registered component name
+    - Imported SFC
+- Provide weight algorithm to deal with trade-off and merging issues of global/local/default parameters.
+  - Support deep merge, shallow merge or directly replace values of plain object type
+  - Support merge or directly replace values of function type
 
 <br>
 
@@ -135,7 +143,7 @@ npm i vue-global-config
 ### CDN + UMD
 
 ```html
-<script src="https://unpkg.com/vue-global-config@0.2"></script>
+<script src="https://unpkg.com/vue-global-config@0.3"></script>
 <script>
   const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } = VueGlobalConfig
 </script>
@@ -210,10 +218,46 @@ import { globalHooks } from './index' // Entrance for registering globally
 const currentInstance = getCurrentInstance()
 
 // Not required: Bind 'this' to globalHooks, if you need it in the global configuration
-for (const k in globalHooks)
+for (const k in globalHooks) {
   globalHooks[k] = globalHooks[k].bind(currentInstance)
+}
 </script>
 ```
+
+#### Global Slots
+
+```vue
+<template>
+  <template
+    v-for="(v, k) in Slots"
+    #[k]
+  >
+    <component
+      :is="v"
+      v-if="isGlobalSlots(v)"
+      :key="k"
+    />
+    <slot
+      v-else
+      :name="k"
+    />
+  </template>
+</template>
+
+<script setup>
+import { getCurrentInstance } from 'vue'
+
+const currentInstance = getCurrentInstance()
+
+function install() {
+  const { slots } = resolveConfig(options)
+  Object.assign(globalSlots, slots)
+  app.component(currentInstance.name, currentInstance)
+}
+</script>
+```
+
+#### Global Scoped Slots
 
 <br>
 
@@ -316,6 +360,10 @@ export default {
 }
 </script>
 ```
+
+#### Global Slots
+
+#### Global Scoped Slots
 
 <br>
 

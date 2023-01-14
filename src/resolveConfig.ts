@@ -13,6 +13,7 @@ interface ResolvedResult {
   attrs: Record<string, any>
   listeners: Record<string, Function>
   hooks: Record<string, Function>
+  slots: Record<string, Function>
 }
 
 export default function resolveConfig(
@@ -24,6 +25,7 @@ export default function resolveConfig(
     attrs: {},
     listeners: {},
     hooks: {},
+    slots: {},
   }
 
   const propsList = Array.isArray(props) ? props : Object.keys(props)
@@ -47,6 +49,29 @@ export default function resolveConfig(
           // @xxx → xxx
           res.listeners[eventName] = config[k]
         }
+      }
+    }
+    /**
+     * Vue 2.6/2.7
+     *   通过 <slot> 接收插槽
+     *     $slots：只有非作用域插槽，属性为数组类型
+     *     $scopedSlots：包含所有插槽，属性为函数类型，函数名为 normalized
+     *   通过 <component :is=""> 接收插槽
+     *     string：组件名
+    *      ComponentDefinition (直接书写或导入的 SFC)：POJO 类型
+     *     ComponentConstructor (Vue.extend)：函数类型，函数名为 VueComponent
+     * Vue 3
+     *   通过 <slot> 接收插槽
+     *     $slots：属性为函数类型，函数名为 renderFnWithContext
+     *   通过 <component :is=""> 接收插槽
+     *     string：组件名
+     *     Component (直接书写或导入的 SFC)：POJO 类型
+     *     虚拟 DOM (渲染函数 h/createVNode 的返回值)：POJO 类型
+     */
+    else if (k.startsWith('#')) {
+      const slotName = k.substring(1)
+      if (slotName) {
+        res.slots[slotName] = config[k]
       }
     } else if (propsList.includes(k)) {
       res.props[k] = config[k]
