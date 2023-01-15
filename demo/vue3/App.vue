@@ -15,20 +15,20 @@
       />
     </p>
     <YourComponent
-      v-if="mount"
+      v-if="isMounted"
       v-bind="localConfig"
     >
-      <!-- local slot -->
+      <!-- Local Slot -->
       <template
-        #left-footer
         v-if="enableLocalConfig"
+        #left-footer
       >
         Local Slot
       </template>
-      <!-- local scoped slot -->
+      <!-- Local Scoped Slot -->
       <template
-        #default="{ option }"
         v-if="enableLocalConfig"
+        #default="{ option }"
       >
         {{ option.label }} (From Local Scoped Slot)
       </template>
@@ -40,33 +40,31 @@
 import { computed, nextTick, ref, watch } from 'vue'
 
 const enableLocalConfig = ref(true)
-const mount = ref(true)
-const localConfig = computed(() =>
-  enableLocalConfig.value
-    ? {
-      // local prop
-      'title': 'Local Title',
-      // local attr
-      'data': [
-        { key: 1, label: 'Local Option 1' },
-        { key: 2, label: 'Local Option 2' },
-      ],      // local listener
-      'onChange': function () {
-        console.log('Local Change')
-      },
-      // local hook
-      'onVnodeMounted': function () {
-        console.log('Local Mounted')
-      },
-    }
-    : {},
-)
+const isMounted = ref(true)
+const localConfig = computed(() => ({
+  ...enableLocalConfig.value && {
+    // Local Prop
+    title: 'Local Title',
+    // Local Attr
+    data: [
+      { key: 1, label: 'Local Option 1' },
+      { key: 2, label: 'Local Option 2' },
+    ],
+    // Local Listener
+    onLeftCheckChange() {
+      console.log('Local LeftCheckChange')
+    },
+    // Local Hook
+    onVnodeMounted() {
+      console.log('Local Mounted')
+    },
+  },
+}))
 
 watch(enableLocalConfig, (n) => {
-  // Reload YourComponent
-  mount.value = false
+  isMounted.value = false
   nextTick(() => {
-    mount.value = true
+    isMounted.value = true
   })
 })
 </script>

@@ -21,49 +21,51 @@
 // Vue 3
 
 app.use(YourComponent, {
-  // global prop
+  // Global Prop
   'title': 'Global Title',
-  // global attr
+  // Global Attr
   'data': [
     { key: 1, label: 'Global Option 1' },
     { key: 2, label: 'Global Option 2' },
   ],
-  // global listener
-  '@change': function () { console.log('Global Change') },
-  // global hook
-  '@vnodeMounted': function () { console.log('Global Mounted') },
-  // global slot
-  '#left-footer': () => h('Fragment', null, 'Global Slot'),
-  // global scoped slot
-  '#default': ({ option }) => h('Fragment', null, `${option.label} (From Global Scoped Slot)`),
+  // Global Listener
+  '@leftCheckChange': function () {
+    console.log('Global LeftCheckChange')
+  },
+  // Global Hook
+  '@vnodeMounted': function () {
+    console.log('Global Mounted')
+  },
+  // Global Slot
+  '#left-footer': () => h('Fragment', undefined, 'Global Slot'),
+  // Global Scoped Slot
+  '#default': ({ option }) => h('Fragment', undefined, `${option.label} (From Global Scoped Slot)`),
 })
 ```
 
 ```ts
-// Vue 2
+// Vue 2.6/2.7
 
 Vue.use(YourComponent, {
-  // global prop
-  'message': 'Hello World',
-
-  // global attr
-  'placeholder': 'Please enter',
-
-  // global listener
-  '@blur': function (e) {
-    console.log(e) // event is accessible
-    console.log(this) // 'this' is accessible
+  // Global Prop
+  'title': 'Global Title',
+  // Global Attr
+  'data': [
+    { key: 1, label: 'Global Option 1' },
+    { key: 2, label: 'Global Option 2' },
+  ],
+  // Global Listener
+  '@left-check-change': function () {
+    console.log('Global LeftCheckChange')
   },
-
-  // global hook
+  // Global Hook
   '@hook:mounted': function () {
-    console.log(this) // 'this' is accessible
+    console.log('Global Mounted')
   },
-
-  // global slot
-  '#default': {
-    render: h => h('div', null, 'Slot Content'),
-  },
+  // Global Slot
+  '#left-footer': () => ({ render: h => h('span', undefined, 'Global Slot') }),
+  // Global Scoped Slot
+  '#default': ({ option }) => ({ render: h => h('span', undefined, `${option.label} (From Global Scoped Slot)`) }),
 })
 ```
 
@@ -73,8 +75,7 @@ Vue.use(YourComponent, {
 
 Vue provides support for globally registering components, but no configuration.
 
-In the industry, ElementPlus
-thoughtfully provides [config-provider](https://element-plus.org/en-US/component/config-provider.html#config-provider-attributes) .
+Some UI framework like Element Plus thoughtfully provides [config-provider](https://element-plus.org/en-US/component/config-provider.html#config-provider-attributes).
 
 But note that it's only for **partial props**. Global attrs/listeners/hooks/slots are all **not** supported.
 
@@ -87,25 +88,27 @@ Entangled in global/local/default parameters, which one to choose? It should be 
 ## Features
 
 - Support Vue 2.6/2.7/3
-- Support global Props
-- Support global Attrs
-- Support global Listeners
+- Support global **Props**
+- Support global **Attrs**
+- Support global **Listeners**
     - Support triggering both global listener and local listener
     - Support triggering either global listener or local listener
-- Support global Hooks (internal API)
+    - Support current instance (`this`) access
+- Support global **Hooks** (internal API)
     - Such as `@vnodeMounted` in Vue 3, see https://github.com/vuejs/core/issues/4457
     - Such as `@hook:mounted` in Vue 2, see https://github.com/vuejs/vue/issues/10312
-- Support global Slots & Scoped Slots
+    - Support current instance (`this`) access
+- Support global **Slots** & **Scoped Slots**
   - Vue 3
     - Render function (`h`/`createVNode`)
     - Component definition (`{ render: () => h() }` / `{ template: '...' }`)
-    - (Locally/Globally) registered component name
+    - Locally or globally registered component name
     - Imported SFC
   - Vue 2
     - Render function (`h`)
     - Component definition (`{ render: h => h() }` / `{ template: '...' }`)
     - Component constructor (`Vue.extend()`)
-    - (Locally/Globally) registered component name
+    - Locally or globally registered component name
     - Imported SFC
 - Provide weight algorithm to deal with trade-off and merging issues of global/local/default parameters.
   - Support deep merge, shallow merge or directly replace values of plain object type
@@ -121,7 +124,7 @@ Entangled in global/local/default parameters, which one to choose? It should be 
 npm i vue-global-config
 ```
 
-> `@vue/composition-api` is required in Vue 2.6 or Earlier
+> ⚠ `@vue/composition-api` is required in Vue 2.6 or Earlier
 
 ### CDN + ESM
 
@@ -151,219 +154,11 @@ npm i vue-global-config
 
 <br>
 
-## Usage
+## Example
 
-### Vue 3
-
-#### Global Props
-
-```vue
-<template>
-  {{ Msg }}
-</template>
-
-<script setup>
-import { computed } from 'vue'
-import { conclude } from 'vue-global-config'
-import { globalProps } from './index' // Entrance for registering globally
-
-const props = defineProps(['msg'])
-const Msg = computed(() => conclude([props.msg, globalProps.msg])) // Place the prop of higher priority in the front
-</script>
-```
-
-#### Global Attrs & Listeners
-
-> In Vue 3, `attrs` includes both attrs & listeners
-
-```vue
-<template>
-  <el-input v-bind="Attrs" />
-</template>
-
-<script setup>
-import { computed, getCurrentInstance, useAttrs } from 'vue'
-import { conclude } from 'vue-global-config'
-import { globalAttrs, globalListeners } from './index' // Entrance for registering globally
-
-const currentInstance = getCurrentInstance()
-
-// Not required: Bind 'this' to globalListeners, if you need it in the global configuration
-for (const k in globalListeners)
-  globalListeners[k] = globalListeners[k].bind(currentInstance)
-
-const Attrs = computed(() => conclude([useAttrs()], {
-  default: { ...globalAttrs, ...globalListeners },
-  // mergeFunction's role is to trigger both global and local listener
-  // do not use it if you want global listener replaced by local one
-  mergeFunction: (localEventListener, globalEventListener) => (...args) => {
-    localEventListener(...args)
-    globalEventListener(...args)
-  },
-}))
-</script>
-```
-
-#### Global Hooks
-
-```vue
-<template>
-  <div v-bind="globalHooks" />
-</template>
-
-<script setup>
-import { getCurrentInstance } from 'vue'
-import { globalHooks } from './index' // Entrance for registering globally
-
-const currentInstance = getCurrentInstance()
-
-// Not required: Bind 'this' to globalHooks, if you need it in the global configuration
-for (const k in globalHooks) {
-  globalHooks[k] = globalHooks[k].bind(currentInstance)
-}
-</script>
-```
-
-#### Global Slots
-
-```vue
-<template>
-  <template
-    v-for="(v, k) in Slots"
-    #[k]
-  >
-    <component
-      :is="v"
-      v-if="isGlobalSlots(v)"
-      :key="k"
-    />
-    <slot
-      v-else
-      :name="k"
-    />
-  </template>
-</template>
-
-<script setup>
-import { getCurrentInstance } from 'vue'
-
-const currentInstance = getCurrentInstance()
-
-function install() {
-  const { slots } = resolveConfig(options)
-  Object.assign(globalSlots, slots)
-  app.component(currentInstance.name, currentInstance)
-}
-</script>
-```
-
-#### Global Scoped Slots
-
-<br>
-
-### Vue 2
-
-#### Global Props
-
-```vue
-<template>
-  {{ Msg }}
-</template>
-
-<script>
-import { conclude } from 'vue-global-config'
-import { globalProps } from './index' // Entrance for registering globally
-
-export default {
-  props: ['msg'],
-  computed: {
-    Msg() {
-      return conclude([this.msg, globalProps.msg]) // Place the prop of higher priority in the front
-    },
-  }
-}
-</script>
-```
-
-#### Global Attrs
-
-```vue
-<template>
-  <el-input v-bind="Attrs" />
-</template>
-
-<script>
-import { conclude } from 'vue-global-config'
-import { globalAttrs } from './index' // Entrance for registering globally
-
-export default {
-  computed: {
-    Attrs() {
-      return conclude([this.$attrs, globalAttrs]) // Place the prop of higher priority in the front
-    },
-  }
-}
-</script>
-```
-
-#### Global Listeners
-
-```vue
-<template>
-  <el-input v-on="Listeners" />
-</template>
-
-<script>
-import { conclude, getLocalListeners } from 'vue-global-config'
-import { globalListeners } from './index' // Entrance for registering globally
-
-export default {
-  computed: {
-    Listeners() {
-      // Not required: Bind 'this' to globalListeners, if you need it in the global configuration
-      for (const k in globalListeners)
-        globalListeners[k] = globalListeners[k].bind(this)
-
-      // getLocalListeners's role is to remove hooks in this.$listeners
-      // Check the getLocalListeners chapter for details
-      return conclude([getLocalListeners(this.$listeners)], {
-        default: globalListeners,
-        // mergeFunction's role is to trigger both global and local listener
-        // do not use it if you want global listener replaced by local one
-        mergeFunction: (localEventListener, globalEventListener) => (...args) => {
-          localEventListener(...args)
-          globalEventListener(...args)
-        },
-      })
-    },
-  }
-}
-</script>
-```
-
-#### Global Hooks
-
-```vue
-<template>
-  <div />
-</template>
-
-<script>
-import { listenGlobalHooks } from 'vue-global-config'
-import { globalHooks } from './index' // Entrance for registering globally
-
-export default {
-  created() {
-    // listen global hooks
-    listenGlobalHooks.call(this, globalHooks)
-  },
-}
-</script>
-```
-
-#### Global Slots
-
-#### Global Scoped Slots
+- [Vue 3](./demo/vue3)
+- [Vue 2.7](./demo/vue2.7)
+- [Vue 2.6](./demo/vue2.6)
 
 <br>
 

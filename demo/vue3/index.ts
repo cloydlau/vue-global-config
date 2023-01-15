@@ -1,28 +1,32 @@
 import { createApp, h } from 'vue'
-import App from './App.vue'
 
 import 'element-plus/dist/index.css'
 import ElementPlus from 'element-plus'
 
+import App from './App.vue'
 import YourComponent from './YourComponent'
 
 createApp(App)
   .use(ElementPlus)
   .use(YourComponent, {
-    // global prop
+    // Global Prop
     'title': 'Global Title',
-    // global attr
+    // Global Attr
     'data': [
       { key: 1, label: 'Global Option 1' },
       { key: 2, label: 'Global Option 2' },
     ],
-    // global listener
-    '@change': function () { console.log('Global Change') },
-    // global hook
-    '@vnodeMounted': function () { console.log('Global Mounted') },
-    // global slot
-    '#left-footer': () => h('Fragment', null, 'Global Slot'),
-    // global scoped slot
-    '#default': ({ option }) => h('Fragment', null, `${option.label} (From Global Scoped Slot)`),
+    // Global Listener
+    '@leftCheckChange': function () {
+      console.log('Global LeftCheckChange')
+    },
+    // Global Hook
+    '@vnodeMounted': function () {
+      console.log('Global Mounted')
+    },
+    // Global Slot
+    '#left-footer': () => h('Fragment', undefined, 'Global Slot'),
+    // Global Scoped Slot
+    '#default': ({ option }) => h('Fragment', undefined, `${option.label} (From Global Scoped Slot)`),
   })
   .mount('#app')

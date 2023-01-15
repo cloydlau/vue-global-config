@@ -1,55 +1,75 @@
 <template>
-  <div>
+  <el-dialog
+    visible
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :show-close="false"
+    width="90%"
+  >
     <p>
-      传递实例参数：
-      <el-switch v-model="enableLocalConfig" />
+      <el-switch
+        v-model="enableLocalConfig"
+        active-text="Enable Local Config"
+        inactive-text="Disable Local Config"
+      />
     </p>
-    <GlobalComponent
-      v-if="mount"
+    <YourComponent
+      v-if="isMounted"
       v-bind="localPropsAndAttrs"
-      v-on="localEventsAndHooks"
-    />
-  </div>
+      v-on="localListeners"
+    >
+      <!-- Local Slot -->
+      <template
+        v-if="enableLocalConfig"
+        #left-footer
+      >
+        Local Slot
+      </template>
+      <!-- Local Scoped Slot -->
+      <template
+        v-if="enableLocalConfig"
+        #default="{ option }"
+      >
+        {{ option.label }} (From Local Scoped Slot)
+      </template>
+    </YourComponent>
+  </el-dialog>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      enableLocalConfig: true,
-      mount: true,
-    }
+<script setup>
+import { computed, nextTick, ref, watch } from 'vue'
+
+const enableLocalConfig = ref(true)
+const isMounted = ref(true)
+const localPropsAndAttrs = computed(() => ({
+  ...enableLocalConfig.value && {
+    // Local Prop
+    title: 'Local Title',
+    // Local Attr
+    data: [
+      { key: 1, label: 'Local Option 1' },
+      { key: 2, label: 'Local Option 2' },
+    ],
   },
-  computed: {
-    localPropsAndAttrs() {
-      return this.enableLocalConfig
-        ? {
-            msg: '传给 GlobalComponent 的实例 prop',
-            placeholder: '传给 el-input 的实例 attr',
-          }
-        : {}
+}))
+
+const localListeners = computed(() => ({
+  ...enableLocalConfig.value && {
+    // Local Listener
+    'left-check-change': function () {
+      console.log('Local LeftCheckChange')
     },
-    localEventsAndHooks() {
-      return this.enableLocalConfig
-        ? {
-            'blur': function () {
-              console.log('传给 el-input 的实例 listener', this)
-            },
-            'hook:mounted': function () {
-              console.log('传给 el-input 的实例 hook', this)
-            },
-          }
-        : {}
+    // Local Hook
+    'hook:mounted': function () {
+      console.log('Local Mounted')
     },
   },
-  watch: {
-    enableLocalConfig() {
-      // 重载 GlobalComponent
-      this.mount = false
-      this.$nextTick(() => {
-        this.mount = true
-      })
-    },
-  },
-}
+}))
+
+watch(enableLocalConfig, (n) => {
+  isMounted.value = false
+  nextTick(() => {
+    isMounted.value = true
+  })
+})
 </script>

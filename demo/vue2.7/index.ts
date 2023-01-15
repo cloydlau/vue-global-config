@@ -1,21 +1,32 @@
 import Vue from 'vue'
-import App from './App.vue'
 
 import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
 
-import GlobalComponent from './components/GlobalComponent'
+import App from './App.vue'
+import YourComponent from './YourComponent'
 
 Vue.use(ElementUI)
-Vue.use(GlobalComponent, {
-  'msg': '传给 GlobalComponent 的全局 prop',
-  'placeholder': '传给 el-input 的全局 attr',
-  '@blur': function () {
-    console.log('传给 el-input 的全局 listener', this)
+Vue.use(YourComponent, {
+  // Global Prop
+  'title': 'Global Title',
+  // Global Attr
+  'data': [
+    { key: 1, label: 'Global Option 1' },
+    { key: 2, label: 'Global Option 2' },
+  ],
+  // Global Listener
+  '@left-check-change': function () {
+    console.log('Global LeftCheckChange')
   },
+  // Global Hook
   '@hook:mounted': function () {
-    console.log('传给 el-input 的全局 hook', this)
+    console.log('Global Mounted')
   },
+  // Global Slot
+  '#left-footer': () => ({ render: h => h('span', undefined, 'Global Slot') }),
+  // Global Scoped Slot
+  '#default': ({ option }) => ({ render: h => h('span', undefined, `${option.label} (From Global Scoped Slot)`) }),
 })
 
 new Vue({

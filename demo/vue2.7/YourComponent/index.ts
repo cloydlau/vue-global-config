@@ -1,6 +1,6 @@
 import type { Plugin, install } from 'vue-demi'
-import { resolveConfig } from '../../../../src'
-import Component from './index.vue'
+import { resolveConfig } from '../../../src'
+import Component from './Component.vue'
 
 type SFCWithInstall<T> = T & Plugin & { install: typeof install }
 
@@ -26,19 +26,19 @@ const globalProps: Record<string, any> = {}
 const globalAttrs: Record<string, any> = {}
 const globalListeners: Record<string, any> = {}
 const globalHooks: Record<string, any> = {}
+const globalSlots: Record<string, any> = {}
 
 const ComponentWithInstall = withInstall(Component)
 
 ComponentWithInstall.install = (app: any, options = {}) => {
-  const { props, attrs, listeners, hooks } = resolveConfig(options, Component.props)
+  const { props, attrs, listeners, hooks, slots } = resolveConfig(options, Component.props)
   Object.assign(globalProps, props)
   Object.assign(globalAttrs, attrs)
   Object.assign(globalListeners, listeners)
   Object.assign(globalHooks, hooks)
+  Object.assign(globalSlots, slots)
   app.component(ComponentWithInstall.name, ComponentWithInstall)
 }
 
+export { globalProps, globalAttrs, globalListeners, globalHooks, globalSlots }
 export default ComponentWithInstall
-export {
-  globalProps, globalAttrs, globalListeners, globalHooks,
-}

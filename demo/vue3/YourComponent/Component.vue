@@ -3,13 +3,16 @@
     <h1>{{ Title }}</h1>
 
     <el-transfer v-bind="Attrs">
-      <!-- Place global slots in front of local slots so that local slots get higher priority -->
+      <!-- Place global Slots in front of local Slots so that local Slots get higher priority -->
+      <!-- Global Slots -->
       <template
         v-for="(v, k) in globalSlots"
         #[k]="slotProps"
+        :key="k"
       >
         <component :is="v(slotProps)" />
       </template>
+      <!-- Local Slots -->
       <template
         v-for="(v, k) in slots"
         #[k]="slotProps"
@@ -25,14 +28,12 @@
 
 <script lang="ts" setup>
 import { computed, useAttrs, useSlots } from 'vue'
-import { globalProps, globalAttrs, globalListeners, globalHooks, globalSlots } from './index'
 import { conclude } from '../../../src'
+import { globalAttrs, globalHooks, globalListeners, globalProps, globalSlots } from './index'
 
 const props = defineProps(['title'])
 const Title = computed(() => conclude([props.title, globalProps.title]))
 const Attrs = computed(() => conclude([useAttrs(), globalAttrs, globalListeners]))
-
-console.log(globalListeners)
 const slots = useSlots()
 </script>
 
