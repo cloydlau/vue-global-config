@@ -17,9 +17,9 @@
 
 <br>
 
-```ts
-// Vue 3
+- Vue 3
 
+```ts
 app.use(YourComponent, {
   // Global Prop
   'title': 'Global Title',
@@ -43,9 +43,9 @@ app.use(YourComponent, {
 })
 ```
 
-```ts
-// Vue 2.6/2.7
+- Vue 2
 
+```ts
 Vue.use(YourComponent, {
   // Global Prop
   'title': 'Global Title',
@@ -146,7 +146,7 @@ npm i vue-global-config
 ### CDN + UMD
 
 ```html
-<script src="https://unpkg.com/vue-global-config@0.3"></script>
+<script src="https://unpkg.com/vue-global-config@0.4"></script>
 <script>
   const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } = VueGlobalConfig
 </script>
