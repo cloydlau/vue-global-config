@@ -11,21 +11,26 @@ createApp(App)
   .use(YourComponent, {
     // Global Prop
     'title': 'Global Title',
+
     // Global Attr
     'data': [
       { key: 1, label: 'Global Option 1' },
       { key: 2, label: 'Global Option 2' },
     ],
+
     // Global Listener
     '@leftCheckChange': function () {
       console.log('Global LeftCheckChange')
     },
+
     // Global Hook
     '@vnodeMounted': function () {
       console.log('Global Mounted')
     },
+
     // Global Slot
     '#left-footer': () => h('Fragment', undefined, 'Global Slot'),
+
     // Global Scoped Slot
     '#default': ({ option }) => h('Fragment', undefined, `${option.label} (From Global Scoped Slot)`),
   })

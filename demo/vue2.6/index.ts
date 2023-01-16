@@ -12,21 +12,26 @@ Vue.use(ElementUI)
 Vue.use(YourComponent, {
   // Global Prop
   'title': 'Global Title',
+
   // Global Attr
   'data': [
     { key: 1, label: 'Global Option 1' },
     { key: 2, label: 'Global Option 2' },
   ],
+
   // Global Listener
   '@left-check-change': function () {
     console.log('Global LeftCheckChange')
   },
+
   // Global Hook
   '@hook:mounted': function () {
     console.log('Global Mounted')
   },
+
   // Global Slot
   '#left-footer': () => ({ render: h => h('span', undefined, 'Global Slot') }),
+
   // Global Scoped Slot
   '#default': ({ option }) => ({ render: h => h('span', undefined, `${option.label} (From Global Scoped Slot)`) }),
 })
