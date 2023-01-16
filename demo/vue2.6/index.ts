@@ -5,7 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
 
 import App from './App.vue'
-import YourComponent from './YourComponent'
+import YourComponent from './YourComponent.vue'
 
 Vue.use(VueCompositionAPI)
 Vue.use(ElementUI)

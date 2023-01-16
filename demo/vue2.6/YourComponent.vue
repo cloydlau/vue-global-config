@@ -29,11 +29,25 @@
 </template>
 
 <script>
-import { conclude, getLocalListeners, listenGlobalHooks } from '../../../src'
-import { globalAttrs, globalHooks, globalListeners, globalProps, globalSlots } from './index'
+import { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } from '../../src'
+
+const globalProps = {}
+const globalAttrs = {}
+const globalListeners = {}
+const globalHooks = {}
+const globalSlots = {}
 
 export default {
   name: 'YourComponent',
+  install(app, options = {}) {
+    const { props, attrs, listeners, hooks, slots } = resolveConfig(options, this.props)
+    Object.assign(globalProps, props)
+    Object.assign(globalAttrs, attrs)
+    Object.assign(globalListeners, listeners)
+    Object.assign(globalHooks, hooks)
+    Object.assign(globalSlots, slots)
+    app.component(this.name, this)
+  },
   props: ['title'],
   computed: {
     Listeners() {

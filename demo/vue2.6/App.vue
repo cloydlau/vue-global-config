@@ -44,14 +44,6 @@ export default {
       isMounted: true,
     }
   },
-  watch: {
-    enableLocalConfig(n) {
-      this.isMounted = false
-      this.$nextTick(() => {
-        this.isMounted = true
-      })
-    },
-  },
   computed: {
     localPropsAndAttrs() {
       return {
@@ -80,6 +72,14 @@ export default {
         },
       }
     },
-  }
+  },
+  watch: {
+    enableLocalConfig(n) {
+      this.isMounted = false
+      this.$nextTick(() => {
+        this.isMounted = true
+      })
+    },
+  },
 }
 </script>
