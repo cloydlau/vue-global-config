@@ -115,7 +115,6 @@ Entangled in global/local/default parameters, which one to choose? It should be 
     - Locally or globally registered component name
     - Imported SFC
   - Vue 2
-    - Render function (`h`)
     - Component definition (`{ render: h => h() }` / `{ template: '...' }`)
     - Component constructor (`Vue.extend()`)
     - Locally or globally registered component name
