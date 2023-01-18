@@ -257,7 +257,7 @@ The role of `conclude` is to help you figure out the final configuration.
 ```
 
 ```ts
-// 示例
+// Example
 
 import { conclude } from 'vue-global-config'
 
