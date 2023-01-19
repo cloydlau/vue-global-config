@@ -9,14 +9,14 @@
   "license": "MIT",
   "repository": "https://github.com/cloydlau/vue-global-config",
   "keywords": [
-    "global config",
-    "global registration",
-    "global configuration",
-    "global options",
-    "vue-demi",
     "vue",
-    "component",
-    "sfc"
+    "vue-demi",
+    "global config",
+    "global configuration",
+    "global option",
+    "global options",
+    "global slot",
+    "global slots"
   ],
   "exports": {
     ".": {
