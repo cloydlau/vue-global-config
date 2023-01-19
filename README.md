@@ -7,6 +7,8 @@
 <p align="center">
   Configure your Vue 2.6/2.7/3 components globally!
   <br>
+  <b>Global Props + Attrs + Listeners + Hooks + Slots.</b>
+  <br>
   <a href="https://juejin.cn/post/7189930273528774714">Blog: How to implement global Slots in Vue?</a>
 </p>
 
