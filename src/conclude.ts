@@ -11,15 +11,10 @@ enum MergeObjectOptions {
 
 type PropType<T> = PropConstructor<T> | PropConstructor<T>[]
 
-type PropConstructor<T = any> =
-  | { new(...args: any[]): T & {} }
-  | { (): T }
-  | PropMethod<T>
+type PropConstructor<T = any> = { new (...args: any[]): T & {} } | { (): T } | PropMethod<T>
 
-type PropMethod<T, TConstructor = any> = [T] extends [
-  ((...args: any) => any) | undefined,
-] // if is function with args, allowing non-required functions
-  ? { new(): TConstructor; (): T; readonly prototype: TConstructor } // Create Function like constructor
+type PropMethod<T, TConstructor = any> = [T] extends [((...args: any) => any) | undefined] // if is function with args, allowing non-required functions
+  ? { new (): TConstructor; (): T; readonly prototype: TConstructor } // Create Function like constructor
   : never
 
 /**
@@ -29,27 +24,22 @@ type PropMethod<T, TConstructor = any> = [T] extends [
  * \/\*#\_\_PURE\_\_\*\/
  * So that rollup can tree-shake them if necessary.
  */
-export function makeMap(
-  str: string,
-  expectsLowerCase?: boolean,
-): (key: string) => boolean {
+export function makeMap(str: string, expectsLowerCase?: boolean): (key: string) => boolean {
   const map: Record<string, boolean> = Object.create(null)
   const list: Array<string> = str.split(',')
   for (let i = 0; i < list.length; i++) {
     map[list[i]] = true
   }
-  return expectsLowerCase ? val => !!map[val.toLowerCase()] : val => !!map[val]
+  return expectsLowerCase ? (val) => !!map[val.toLowerCase()] : (val) => !!map[val]
 }
 
-const isSimpleType = /* #__PURE__ */ makeMap(
-  'String,Number,Boolean,Function,Symbol,BigInt',
-)
+const isSimpleType = /* #__PURE__ */ makeMap('String,Number,Boolean,Function,Symbol,BigInt')
 
 // Reason for not using `ctor.name`:
 // use function string name to check type constructors
 // so that it works across vms / iframes.
 function getType(ctor: any): string {
-  const match = ctor && ctor.toString().match(/^\s*function (\w+)/)
+  const match = ctor?.toString().match(/^\s*function (\w+)/)
   return match ? match[1] : ctor === null ? 'null' : ''
 }
 
@@ -85,7 +75,9 @@ function assertType(value: unknown, type: PropConstructor): AssertionResult {
 }
 
 function validateProp({
-  prop, type, validator,
+  prop,
+  type,
+  validator,
 }: {
   type: any
   prop: any
@@ -111,13 +103,16 @@ function validateProp({
   }
 }
 
-function MergeObject(sources: any[], {
-  mergeObject,
-  mergeFunction,
-}: {
-  mergeObject: string
-  mergeFunction: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
-}) {
+function MergeObject(
+  sources: any[],
+  {
+    mergeObject,
+    mergeFunction,
+  }: {
+    mergeObject: string
+    mergeFunction: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
+  },
+) {
   const reversedSource = []
   for (let i = sources.length - 1; i >= 0; i--) {
     reversedSource.push(sources[i])
@@ -125,9 +120,7 @@ function MergeObject(sources: any[], {
 
   const customizer = mergeFunction
     ? (objValue: any, srcValue: any) =>
-        (typeof objValue === 'function' && typeof srcValue === 'function')
-          ? mergeFunction(srcValue, objValue)
-          : undefined
+        typeof objValue === 'function' && typeof srcValue === 'function' ? mergeFunction(srcValue, objValue) : undefined
     : undefined
 
   // merge, assignIn will change the original object
@@ -136,14 +129,16 @@ function MergeObject(sources: any[], {
     : assignInWith(...(reversedSource as []), customizer)
 }
 
-function MergeFunction(sources: any[], {
-  mergeFunction,
-}: { mergeFunction: (accumulator: any, currentValue: any, index?: any, array?: any) => Function }) {
-  return sources.reduce(mergeFunction, () => { })
+function MergeFunction(
+  sources: any[],
+  { mergeFunction }: { mergeFunction: (accumulator: any, currentValue: any, index?: any, array?: any) => Function },
+) {
+  return sources.reduce(mergeFunction, () => {})
 }
 
 export default function conclude(
-  configSequence: any[], config: {
+  configSequence: any[],
+  config: {
     type?: PropType<any>
     default?: any
     defaultIsDynamic?: boolean
@@ -167,10 +162,7 @@ export default function conclude(
     mergeFunctionApplyOnlyToDefault = true,
   } = config
 
-  let {
-    mergeObject = MergeObjectOptions.deep,
-    mergeFunction = false,
-  } = config
+  let { mergeObject = MergeObjectOptions.deep, mergeFunction = false } = config
 
   const configSequenceCopy: any[] = []
   let result: any
@@ -195,9 +187,11 @@ export default function conclude(
       if (itemIsPlainObject) {
         prop = cloneDeep(prop)
         return camelizeObjectKeys
-          ? mapKeys(prop, (v: any, k: any) => camelCase(k, {
-            stripRegexp: /-/g, // Filter only short horizontal lines for kebab-case conversion to camelCase
-          }))
+          ? mapKeys(prop, (v: any, k: any) =>
+              camelCase(k, {
+                stripRegexp: /-/g, // Filter only short horizontal lines for kebab-case conversion to camelCase
+              }),
+            )
           : prop
       }
       return prop
@@ -211,7 +205,9 @@ export default function conclude(
   if (!defaultIsDynamic) {
     configSequenceCopy.push(handleProp(defaultValue))
   } else if (!(typeof defaultValue === 'function')) {
-    throw new TypeError(`Invalid option: config.default should be Function when config.defaultIsDynamic enabled, receiving: ${defaultValue}`)
+    throw new TypeError(
+      `Invalid option: config.default should be Function when config.defaultIsDynamic enabled, receiving: ${defaultValue}`,
+    )
   }
 
   if (!isPlainObjectArray) {
@@ -230,23 +226,29 @@ export default function conclude(
       if (i === configSequenceCopy.length - 1) {
         result = prop
       } else if (mergeObject) {
-        result = MergeObject(mergeObjectApplyOnlyToDefault
-          // Merge the prop with the highest weight directly with the default value
-          ? [prop, defaultValue]
-          // Merge in sequence (do it all at once, jump out of the loop)
-          // reverse will change the original object
-          : configSequenceCopy, {
-          mergeObject,
-          mergeFunction,
-        })
+        result = MergeObject(
+          mergeObjectApplyOnlyToDefault
+            ? // Merge the prop with the highest weight directly with the default value
+              [prop, defaultValue]
+            : // Merge in sequence (do it all at once, jump out of the loop)
+              // reverse will change the original object
+              configSequenceCopy,
+          {
+            mergeObject,
+            mergeFunction,
+          },
+        )
       } else if (mergeFunction) {
-        result = MergeFunction(mergeFunctionApplyOnlyToDefault
-          // Merge the prop with the highest weight directly with the default value
-          ? [prop, defaultValue]
-          // Merge in sequence (do it all at once, jump out of the loop)
-          : configSequenceCopy, {
-          mergeFunction,
-        })
+        result = MergeFunction(
+          mergeFunctionApplyOnlyToDefault
+            ? // Merge the prop with the highest weight directly with the default value
+              [prop, defaultValue]
+            : // Merge in sequence (do it all at once, jump out of the loop)
+              configSequenceCopy,
+          {
+            mergeFunction,
+          },
+        )
       } else {
         result = prop
       }
@@ -259,12 +261,11 @@ export default function conclude(
   }
 
   if (defaultIsDynamic) {
-    return conclude(
-      configSequence, {
-        ...config,
-        default: defaultValue(result),
-        defaultIsDynamic: false,
-      })
+    return conclude(configSequence, {
+      ...config,
+      default: defaultValue(result),
+      defaultIsDynamic: false,
+    })
   }
   return result
 }
