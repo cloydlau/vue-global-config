@@ -156,7 +156,7 @@ npm i vue-global-config
 </script>
 ```
 
-### CDN + UMD
+### CDN + IIFE
 
 ```html
 <script src="https://unpkg.com/vue-global-config@0.4"></script>
