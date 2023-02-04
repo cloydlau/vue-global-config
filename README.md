@@ -131,13 +131,16 @@ Entangled in global/local/default parameters, which one to choose? It should be 
 
 ## Install
 
+### Peer Dependencies
+
+- vue
+- ~~@vue/composition-api~~: Only for Vue 2.6 or earlier
+
 ### NPM
 
 ```shell
 npm i vue-global-config
 ```
-
-> ⚠ `@vue/composition-api` is required in Vue 2.6 or Earlier
 
 ### CDN + ESM
 
