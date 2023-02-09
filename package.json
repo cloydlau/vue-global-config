@@ -5,7 +5,7 @@
   "private": false,
   "packageManager": "pnpm@7.25.0",
   "description": "Configure your Vue 2.6/2.7/3 components globally.",
-  "author": "cloydlau",
+  "author": "Cloyd Lau",
   "license": "MIT",
   "repository": "https://github.com/cloydlau/vue-global-config",
   "keywords": [
