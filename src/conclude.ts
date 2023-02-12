@@ -95,7 +95,11 @@ function validateProp({
     }
 
     if (!isValid) {
-      throw new Error(`Invalid prop: type check failed, expecting [${expectedTypes.join(', ')}], receiving: ${prop}`)
+      throw new Error(
+        `Invalid prop: type check failed, expecting [${expectedTypes.join(
+          ', ',
+        )}], receiving: ${prop}`,
+      )
     }
   }
   if (validator && !validator(prop)) {
@@ -110,7 +114,9 @@ function MergeObject(
     mergeFunction,
   }: {
     mergeObject: string
-    mergeFunction: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
+    mergeFunction:
+      | false
+      | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
   },
 ) {
   const reversedSource = []
@@ -120,7 +126,9 @@ function MergeObject(
 
   const customizer = mergeFunction
     ? (objValue: any, srcValue: any) =>
-        typeof objValue === 'function' && typeof srcValue === 'function' ? mergeFunction(srcValue, objValue) : undefined
+        typeof objValue === 'function' && typeof srcValue === 'function'
+          ? mergeFunction(srcValue, objValue)
+          : undefined
     : undefined
 
   // merge, assignIn will change the original object
@@ -131,7 +139,9 @@ function MergeObject(
 
 function MergeFunction(
   sources: any[],
-  { mergeFunction }: { mergeFunction: (accumulator: any, currentValue: any, index?: any, array?: any) => Function },
+  {
+    mergeFunction,
+  }: { mergeFunction: (accumulator: any, currentValue: any, index?: any, array?: any) => Function },
 ) {
   return sources.reduce(mergeFunction, () => {})
 }
@@ -147,7 +157,9 @@ export default function conclude(
     camelizeObjectKeys?: boolean
     mergeObject?: string | false
     mergeObjectApplyOnlyToDefault?: boolean
-    mergeFunction?: false | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
+    mergeFunction?:
+      | false
+      | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
     mergeFunctionApplyOnlyToDefault?: boolean
   } = {},
 ): any {

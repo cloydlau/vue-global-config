@@ -4,7 +4,10 @@
 
 import type { ComponentPublicInstance } from 'vue-demi'
 
-export default function listenGlobalHooks(this: ComponentPublicInstance, globalHooks: Record<string, any>) {
+export default function listenGlobalHooks(
+  this: ComponentPublicInstance,
+  globalHooks: Record<string, any>,
+) {
   if (Object.getOwnPropertyNames(globalHooks || {}).length) {
     const originalEmit = this.$emit
     this.$emit = function (...args) {

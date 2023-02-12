@@ -1,4 +1,7 @@
-function objectFilter(obj: Record<string, any>, predicate: (key: string) => boolean): Record<string, any> {
+function objectFilter(
+  obj: Record<string, any>,
+  predicate: (key: string) => boolean,
+): Record<string, any> {
   return Object.keys(obj)
     .filter((key) => predicate(key))
     .reduce((prev: Record<string, any>, curr) => {
