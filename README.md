@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="https://bundlephobia.com/package/vue-global-config"><img alt="minzipped size" src="https://img.shields.io/bundlephobia/minzip/vue-global-config"></a>
-  <a href="https://rome.tools"><img alt="code style" src="https://img.shields.io/badge/code_style-Rome-FFC905.svg?logo=rome"></a>
+  <a href="https://standardjs.com"><img alt="code style" src="https://img.shields.io/badge/code_style-Standard-F3DF49.svg"></a>
   <a href="https://conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/commits-Conventional-FE5196.svg?logo=conventionalcommits&logoColor=white"></a>
   <a href="https://github.com/cloydlau/vue-global-config#develop"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p>
@@ -148,9 +148,9 @@ npm i vue-global-config
 <script type="importmap">
   {
     "imports": {
-      "vue": "https://unpkg.com/vue/dist/vue.esm-browser.prod.js",
-      "vue-demi": "https://unpkg.com/vue-demi/lib/v3/index.mjs",
-      "vue-global-config": "https://unpkg.com/vue-global-config/dist/vue-global-config.mjs"
+      "vue": "https://cdn.jsdelivr.net/npm/vue/dist/vue.esm-browser.prod.js",
+      "vue-demi": "https://cdn.jsdelivr.net/npm/vue-demi/lib/v3/index.mjs",
+      "vue-global-config": "https://cdn.jsdelivr.net/npm/vue-global-config/dist/vue-global-config.mjs"
     }
   }
 </script>
@@ -162,7 +162,7 @@ npm i vue-global-config
 ### CDN + IIFE
 
 ```html
-<script src="https://unpkg.com/vue-global-config@0.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-global-config@0.4"></script>
 <script>
   const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } = VueGlobalConfig
 </script>

@@ -3,7 +3,6 @@
   "PascalCasedName": "VueGlobalConfig",
   "version": "0.4.0",
   "private": false,
-  "packageManager": "pnpm@7.25.0",
   "description": "Configure your Vue 2.6/2.7/3 components globally.",
   "author": "Cloyd Lau",
   "license": "MIT",
@@ -55,11 +54,13 @@
     }
   },
   "dependencies": {
+    "@vue/composition-api": "^1.7.1",
     "change-case": "latest",
     "lodash-es": "latest",
     "vue-demi": "latest"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "latest",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@types/lodash-es": "latest",
@@ -70,6 +71,7 @@
     "@vue/test-utils": "latest",
     "case-police": "latest",
     "element-plus": "latest",
+    "eslint": "latest",
     "husky": "latest",
     "lint-staged": "latest",
     "rome": "latest",
@@ -83,8 +85,8 @@
     "vue-global-config": "latest"
   },
   "lint-staged": {
-    "{src,__tests__}/**.{js,ts}": "rome check",
-    "*.md": "case-police --fix"
+    "*.md": "case-police --fix",
+    "*": "eslint --fix"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

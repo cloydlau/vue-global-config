@@ -30,7 +30,7 @@ export function makeMap(str: string, expectsLowerCase?: boolean): (key: string) 
   for (let i = 0; i < list.length; i++) {
     map[list[i]] = true
   }
-  return expectsLowerCase ? (val) => !!map[val.toLowerCase()] : (val) => !!map[val]
+  return expectsLowerCase ? val => !!map[val.toLowerCase()] : val => !!map[val]
 }
 
 const isSimpleType = /* #__PURE__ */ makeMap('String,Number,Boolean,Function,Symbol,BigInt')
@@ -115,8 +115,8 @@ function MergeObject(
   }: {
     mergeObject: string
     mergeFunction:
-      | false
-      | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
+    | false
+    | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
   },
 ) {
   const reversedSource = []
@@ -126,7 +126,7 @@ function MergeObject(
 
   const customizer = mergeFunction
     ? (objValue: any, srcValue: any) =>
-        typeof objValue === 'function' && typeof srcValue === 'function'
+        (typeof objValue === 'function' && typeof srcValue === 'function')
           ? mergeFunction(srcValue, objValue)
           : undefined
     : undefined
@@ -158,8 +158,8 @@ export default function conclude(
     mergeObject?: string | false
     mergeObjectApplyOnlyToDefault?: boolean
     mergeFunction?:
-      | false
-      | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
+    | false
+    | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
     mergeFunctionApplyOnlyToDefault?: boolean
   } = {},
 ): any {
@@ -200,10 +200,10 @@ export default function conclude(
         prop = cloneDeep(prop)
         return camelizeObjectKeys
           ? mapKeys(prop, (v: any, k: any) =>
-              camelCase(k, {
-                stripRegexp: /-/g, // Filter only short horizontal lines for kebab-case conversion to camelCase
-              }),
-            )
+            camelCase(k, {
+              stripRegexp: /-/g, // Filter only short horizontal lines for kebab-case conversion to camelCase
+            }),
+          )
           : prop
       }
       return prop
@@ -240,11 +240,11 @@ export default function conclude(
       } else if (mergeObject) {
         result = MergeObject(
           mergeObjectApplyOnlyToDefault
-            ? // Merge the prop with the highest weight directly with the default value
-              [prop, defaultValue]
-            : // Merge in sequence (do it all at once, jump out of the loop)
-              // reverse will change the original object
-              configSequenceCopy,
+            // Merge the prop with the highest weight directly with the default value
+            ? [prop, defaultValue]
+            // Merge in sequence (do it all at once, jump out of the loop)
+            // reverse will change the original object
+            : configSequenceCopy,
           {
             mergeObject,
             mergeFunction,
@@ -253,10 +253,10 @@ export default function conclude(
       } else if (mergeFunction) {
         result = MergeFunction(
           mergeFunctionApplyOnlyToDefault
-            ? // Merge the prop with the highest weight directly with the default value
-              [prop, defaultValue]
-            : // Merge in sequence (do it all at once, jump out of the loop)
-              configSequenceCopy,
+            // Merge the prop with the highest weight directly with the default value
+            ? [prop, defaultValue]
+            // Merge in sequence (do it all at once, jump out of the loop)
+            : configSequenceCopy,
           {
             mergeFunction,
           },

@@ -3,7 +3,7 @@ function objectFilter(
   predicate: (key: string) => boolean,
 ): Record<string, any> {
   return Object.keys(obj)
-    .filter((key) => predicate(key))
+    .filter(key => predicate(key))
     .reduce((prev: Record<string, any>, curr) => {
       prev[curr] = obj[curr]
       return prev
@@ -11,5 +11,5 @@ function objectFilter(
 }
 
 export default function getLocalListeners(listeners: Record<string, any>) {
-  return objectFilter(listeners, (key) => !key.startsWith('hook:'))
+  return objectFilter(listeners, key => !key.startsWith('hook:'))
 }
