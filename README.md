@@ -480,12 +480,3 @@ In Vue 2, only Vue components can trigger a hook, HTML elements don't. So trigge
 Detailed changes for each release are documented in the [release notes](https://github.com/cloydlau/vue-global-config/releases).
 
 <br>
-
-## Develop
-
-1. [Install Deno](https://deno.land/manual/getting_started/installation)
-2. Run `npm i -g @cloydlau/scripts`
-3. Run `cl i` and choose pnpm
-4. Run `cl dev3` / `cl dev2.7` / `cl dev2.6`
-
-<br>
