@@ -22,6 +22,7 @@ const vueVersionToDeps: Record<VueVersion, Record<string, string>> = {
     '@vue/compiler-sfc': 'latest',
     '@vue/test-utils': 'latest',
     'vue': 'latest',
+    '@element-plus/icons-vue': 'latest',
     'element-plus': 'latest',
   },
   2.7: {
