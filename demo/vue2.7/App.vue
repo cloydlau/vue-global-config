@@ -1,41 +1,3 @@
-<template>
-  <el-dialog
-    visible
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
-    :show-close="false"
-    width="90%"
-  >
-    <p>
-      <el-switch
-        v-model="enableLocalConfig"
-        active-text="Enable Local Config"
-        inactive-text="Disable Local Config"
-      />
-    </p>
-    <YourComponent
-      v-if="isMounted"
-      v-bind="localPropsAndAttrs"
-      v-on="localListeners"
-    >
-      <!-- Local Slot -->
-      <template
-        v-if="enableLocalConfig"
-        #left-footer
-      >
-        Local Slot
-      </template>
-      <!-- Local Scoped Slot -->
-      <template
-        v-if="enableLocalConfig"
-        #default="{ option }"
-      >
-        {{ option.label }} (From Local Scoped Slot)
-      </template>
-    </YourComponent>
-  </el-dialog>
-</template>
-
 <script setup>
 import { computed, nextTick, ref, watch } from 'vue'
 
@@ -73,3 +35,41 @@ watch(enableLocalConfig, (n) => {
   })
 })
 </script>
+
+<template>
+  <el-dialog
+    visible
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :show-close="false"
+    width="90%"
+  >
+    <p>
+      <el-switch
+        v-model="enableLocalConfig"
+        active-text="Enable Local Config"
+        inactive-text="Disable Local Config"
+      />
+    </p>
+    <YourComponent
+      v-if="isMounted"
+      v-bind="localPropsAndAttrs"
+      v-on="localListeners"
+    >
+      <!-- Local Slot -->
+      <template
+        v-if="enableLocalConfig"
+        #left-footer
+      >
+        Local Slot
+      </template>
+      <!-- Local Scoped Slot -->
+      <template
+        v-if="enableLocalConfig"
+        #default="{ option }"
+      >
+        {{ option.label }} (From Local Scoped Slot)
+      </template>
+    </YourComponent>
+  </el-dialog>
+</template>

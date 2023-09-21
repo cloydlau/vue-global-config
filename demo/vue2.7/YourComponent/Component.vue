@@ -1,4 +1,31 @@
 <!-- eslint-disable vue/no-v-for-template-key-on-child -->
+<script lang="ts" setup>
+import { computed, useAttrs } from 'vue'
+import { conclude, getLocalListeners, listenGlobalHooks } from '../../../src'
+import { globalAttrs, globalHooks, globalListeners, globalProps, globalSlots } from './index'
+
+const props = defineProps(['title'])
+const Title = computed(() => conclude([props.title, globalProps.title]))
+const Attrs = computed(() => conclude([useAttrs(), globalAttrs]))
+</script>
+
+<script lang="ts">
+export default {
+  name: 'YourComponent',
+  computed: {
+    Listeners() {
+      return conclude([getLocalListeners(this.$listeners), globalListeners])
+    },
+    Slots() {
+      return conclude([this.$scopedSlots, globalSlots])
+    },
+  },
+  created() {
+    listenGlobalHooks.call(this, globalHooks)
+  },
+}
+</script>
+
 <template>
   <div>
     <h1>{{ Title }}</h1>
@@ -27,33 +54,6 @@
     </el-transfer>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { computed, useAttrs } from 'vue'
-import { conclude, getLocalListeners, listenGlobalHooks } from '../../../src'
-import { globalAttrs, globalHooks, globalListeners, globalProps, globalSlots } from './index'
-
-const props = defineProps(['title'])
-const Title = computed(() => conclude([props.title, globalProps.title]))
-const Attrs = computed(() => conclude([useAttrs(), globalAttrs]))
-</script>
-
-<script lang="ts">
-export default {
-  name: 'YourComponent',
-  computed: {
-    Listeners() {
-      return conclude([getLocalListeners(this.$listeners), globalListeners])
-    },
-    Slots() {
-      return conclude([this.$scopedSlots, globalSlots])
-    },
-  },
-  created() {
-    listenGlobalHooks.call(this, globalHooks)
-  },
-}
-</script>
 
 <style scoped>
 :deep(.el-transfer-panel) {

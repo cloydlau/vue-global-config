@@ -19,9 +19,9 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/vue-global-config.umd.js",
-      "import": "./dist/vue-global-config.mjs"
+      "types": "./dist/vue-global-config.d.ts",
+      "import": "./dist/vue-global-config.mjs",
+      "require": "./dist/vue-global-config.umd.js"
     },
     "./*": "./*"
   },
@@ -29,20 +29,19 @@
   "module": "./dist/vue-global-config.mjs",
   "unpkg": "./dist/vue-global-config.umd.js",
   "jsdelivr": "./dist/vue-global-config.umd.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/vue-global-config.d.ts",
   "files": [
     "dist",
     "docs"
   ],
   "scripts": {
-    "dev3": "cl switchVue 3 && vite --config ./demo/vue3/vite.config.ts --open",
-    "dev2.7": "cl switchVue 2.7 && vite --config ./demo/vue2.7/vite.config.ts --open",
-    "dev2.6": "cl switchVue 2.6 && vite --config ./demo/vue2.6/vite.config.ts --open",
+    "dev": "esno ./scripts/dev.mts",
     "doc": "vitepress dev --open /README",
     "build": "vite build",
-    "test": "vitest",
-    "coverage": "vitest run --coverage",
-    "release": "npx lint-staged && vitest run && pnpm build && cl release"
+    "serve": "vite preview",
+    "release": "esno ./scripts/release.mts",
+    "preinstall": "node -e \"if (process.env.INIT_CWD === process.cwd()) { process.exit(1) }\" || npx only-allow pnpm",
+    "postinstall": "node -e \"if (process.env.INIT_CWD === process.cwd()) { process.exit(1) }\" || npx simple-git-hooks"
   },
   "peerDependencies": {
     "@vue/composition-api": ">=1",
@@ -54,41 +53,46 @@
     }
   },
   "dependencies": {
-    "@vue/composition-api": "^1.7.1",
-    "change-case": "latest",
-    "lodash-es": "latest",
     "vue-demi": "latest"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "latest",
+    "@antfu/eslint-config": "0.42.1",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@types/lodash-es": "latest",
     "@types/node": "latest",
-    "@vitejs/plugin-vue": "latest",
-    "@vitest/coverage-c8": "latest",
-    "@vue/compiler-sfc": "latest",
-    "@vue/test-utils": "latest",
+    "@vitejs/plugin-vue2": "latest",
+    "@vue/test-utils": "legacy",
     "case-police": "latest",
-    "element-plus": "latest",
+    "change-case": "latest",
+    "cross-spawn": "latest",
+    "element-ui": "latest",
     "eslint": "latest",
-    "husky": "latest",
+    "esno": "latest",
+    "kolorist": "latest",
     "lint-staged": "latest",
-    "rome": "latest",
+    "lodash-es": "latest",
+    "magicast": "latest",
+    "prompts": "latest",
+    "semver": "latest",
+    "simple-git-hooks": "latest",
     "typescript": "latest",
     "unplugin-auto-import": "latest",
+    "unplugin-vue-components": "latest",
     "vite": "latest",
     "vite-plugin-dts": "latest",
     "vitepress": "latest",
     "vitest": "latest",
-    "vue": "latest",
-    "vue-global-config": "latest"
+    "vue": "~2.7.14",
+    "vue-global-config": "workspace:*",
+    "vue-template-compiler": "~2.7.14"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged --concurrent false",
+    "commit-msg": "npx --no -- commitlint --edit ${1}"
   },
   "lint-staged": {
     "*.md": "case-police --fix",
-    "*": "eslint --fix"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "*": "eslint --cache --fix"
   }
 }

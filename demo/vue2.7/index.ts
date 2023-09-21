@@ -28,7 +28,8 @@ Vue.use(YourComponent, {
   },
 
   // Global Slot
-  '#left-footer': () => ({ render: h => h('span', undefined, 'Global Slot') }),
+  // '#left-footer': () => ({ render: h => h('span', undefined, 'Global Slot') }),
+  '#left-footer': () => Vue.compile('<span>Global Slot From Vue.compile</span>'),
 
   // Global Scoped Slot
   '#default': ({ option }) => ({ render: h => h('span', undefined, `${option.label} (From Global Scoped Slot)`) }),

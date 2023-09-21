@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://npmjs.com/package/vue-global-config" target="_blank" rel="noopener noreferrer">
-    Vue Global Config <sup><img alt="version" src="https://versionbadg.es/cloydlau/vue-global-config.svg"></sup>
+    Vue Global Config <sup><img alt="version" src="https://img.shields.io/npm/v/vue-global-config.svg?style=flat-square&color=white&label="></sup>
   </a>
 </h1>
 
@@ -14,8 +14,8 @@
 
 <p align="center">
   <a href="https://bundlephobia.com/package/vue-global-config"><img alt="minzipped size" src="https://img.shields.io/bundlephobia/minzip/vue-global-config"></a>
-  <a href="https://standardjs.com"><img alt="code style" src="https://img.shields.io/badge/code_style-Standard-F3DF49.svg?logo=standardjs"></a>
   <a href="https://conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/commits-Conventional-FE5196.svg?logo=conventionalcommits"></a>
+  <a href="https://github.com/antfu/eslint-config"><img alt="code style" src="https://antfu.me/badge-code-style.svg"></a>
   <a href="https://github.com/cloydlau/vue-global-config#develop"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p>
 
@@ -119,7 +119,7 @@ Entangled in global/local/default parameters, which one to choose? It should be 
     - Locally or globally registered component name
     - Imported SFC
   - Vue 2
-    - Component definition (`{ render: h => h() }` / `{ template: '...' }`)
+    - Component definition (`{ render: h => h() }` / `{ template: '...' }` / `Vue.compile('<span>...</span>')`)
     - Component constructor (`Vue.extend()`)
     - Locally or globally registered component name
     - Imported SFC
@@ -252,11 +252,11 @@ The role of `conclude` is to help you figure out the final configuration.
  * @param {any} [config.default] - Default value (explicit)
  * @param {boolean} [config.defaultIsDynamic = false] - Dynamic generation of default values
  * @param {boolean} [config.required = false] - Requirement checking
- * @param {function} [config.validator] - Custom validator
+ * @param {Function} [config.validator] - Custom validator
  * @param {string} [config.camelizeObjectKeys = false] - Whether or not to camelize object keys
  * @param {false|string} [config.mergeObject = 'deep'] - The way to merge objects
  * @param {boolean} [config.mergeObjectApplyOnlyToDefault = false] - `mergeObject` only works on `default`
- * @param {false|((accumulator, currentValue, index?, array?) => Function)} [config.mergeFunction = false] - The way to fuse functions
+ * @param {false|((accumulator, currentValue, index?, array?) => )} [config.mergeFunction = false] - The way to fuse functions
  * @param {boolean} [config.mergeFunctionApplyOnlyToDefault = true] - `mergeFunction` only works on `default`
  * @returns {any} Final prop
  */

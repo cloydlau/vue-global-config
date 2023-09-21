@@ -11,9 +11,9 @@ function atToOn(eventName: string) {
 interface ResolvedResult {
   props: Record<string, any>
   attrs: Record<string, any>
-  listeners: Record<string, Function>
-  hooks: Record<string, Function>
-  slots: Record<string, Function>
+  listeners: Record<string, (...args: any) => unknown>
+  hooks: Record<string, (...args: any) => unknown>
+  slots: Record<string, (...args: any) => unknown>
 }
 
 export default function resolveConfig(
@@ -58,7 +58,7 @@ export default function resolveConfig(
        *     $scopedSlots：包含所有插槽，属性为函数类型，函数名为 normalized
        *   通过 <component :is=""> 接收插槽
        *     string：组件名
-       *      ComponentDefinition (直接书写或导入的 SFC)：POJO 类型
+       *     ComponentDefinition (直接书写或导入的 SFC、Vue.compile 的返回值)：POJO 类型
        *     ComponentConstructor (Vue.extend)：函数类型，函数名为 VueComponent
        * Vue 3
        *   通过 <slot> 接收插槽

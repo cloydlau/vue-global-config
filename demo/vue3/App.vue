@@ -1,3 +1,36 @@
+<script lang="ts" setup>
+import { computed, nextTick, ref, watch } from 'vue'
+
+const enableLocalConfig = ref(true)
+const isMounted = ref(true)
+const localConfig = computed(() => ({
+  ...enableLocalConfig.value && {
+    // Local Prop
+    title: 'Local Title',
+    // Local Attr
+    data: [
+      { key: 1, label: 'Local Option 1' },
+      { key: 2, label: 'Local Option 2' },
+    ],
+    // Local Listener
+    onLeftCheckChange() {
+      console.log('Local LeftCheckChange')
+    },
+    // Local Hook
+    onVnodeMounted() {
+      console.log('Local Mounted')
+    },
+  },
+}))
+
+watch(enableLocalConfig, (n) => {
+  isMounted.value = false
+  nextTick(() => {
+    isMounted.value = true
+  })
+})
+</script>
+
 <template>
   <el-dialog
     modelValue
@@ -35,36 +68,3 @@
     </YourComponent>
   </el-dialog>
 </template>
-
-<script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
-
-const enableLocalConfig = ref(true)
-const isMounted = ref(true)
-const localConfig = computed(() => ({
-  ...enableLocalConfig.value && {
-    // Local Prop
-    title: 'Local Title',
-    // Local Attr
-    data: [
-      { key: 1, label: 'Local Option 1' },
-      { key: 2, label: 'Local Option 2' },
-    ],
-    // Local Listener
-    onLeftCheckChange() {
-      console.log('Local LeftCheckChange')
-    },
-    // Local Hook
-    onVnodeMounted() {
-      console.log('Local Mounted')
-    },
-  },
-}))
-
-watch(enableLocalConfig, (n) => {
-  isMounted.value = false
-  nextTick(() => {
-    isMounted.value = true
-  })
-})
-</script>

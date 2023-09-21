@@ -1,3 +1,20 @@
+<script lang="ts" setup>
+import { computed, useAttrs, useSlots } from 'vue'
+import { conclude } from '../../../src'
+import { globalAttrs, globalHooks, globalListeners, globalProps, globalSlots } from './index'
+
+const props = defineProps(['title'])
+const Title = computed(() => conclude([props.title, globalProps.title]))
+const Attrs = computed(() => conclude([useAttrs(), globalAttrs, globalListeners]))
+const slots = useSlots()
+</script>
+
+<script lang="ts">
+export default {
+  name: 'YourComponent',
+}
+</script>
+
 <template>
   <div v-bind="globalHooks">
     <h1>{{ Title }}</h1>
@@ -25,23 +42,6 @@
     </el-transfer>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { computed, useAttrs, useSlots } from 'vue'
-import { conclude } from '../../../src'
-import { globalAttrs, globalHooks, globalListeners, globalProps, globalSlots } from './index'
-
-const props = defineProps(['title'])
-const Title = computed(() => conclude([props.title, globalProps.title]))
-const Attrs = computed(() => conclude([useAttrs(), globalAttrs, globalListeners]))
-const slots = useSlots()
-</script>
-
-<script lang="ts">
-export default {
-  name: 'YourComponent',
-}
-</script>
 
 <style scoped>
 :deep(.el-transfer-panel) {

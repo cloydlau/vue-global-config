@@ -1,33 +1,4 @@
 <!-- eslint-disable vue/no-v-for-template-key-on-child -->
-<template>
-  <div>
-    <h1>{{ Title }}</h1>
-
-    <el-transfer
-      v-bind="Attrs"
-      v-on="Listeners"
-    >
-      <template
-        v-for="(v, k) in Slots"
-        #[k]="slotProps"
-      >
-        <!-- Global Slots -->
-        <component
-          :is="v(slotProps)"
-          v-if="typeof v === 'function' && v.name.startsWith('#')"
-          :key="k"
-        />
-        <!-- Local Slots -->
-        <slot
-          v-else
-          :name="k"
-          v-bind="slotProps"
-        />
-      </template>
-    </el-transfer>
-  </div>
-</template>
-
 <script>
 import { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } from '../../src'
 
@@ -68,6 +39,35 @@ export default {
   },
 }
 </script>
+
+<template>
+  <div>
+    <h1>{{ Title }}</h1>
+
+    <el-transfer
+      v-bind="Attrs"
+      v-on="Listeners"
+    >
+      <template
+        v-for="(v, k) in Slots"
+        #[k]="slotProps"
+      >
+        <!-- Global Slots -->
+        <component
+          :is="v(slotProps)"
+          v-if="typeof v === 'function' && v.name.startsWith('#')"
+          :key="k"
+        />
+        <!-- Local Slots -->
+        <slot
+          v-else
+          :name="k"
+          v-bind="slotProps"
+        />
+      </template>
+    </el-transfer>
+  </div>
+</template>
 
 <style scoped>
 ::v-deep .el-transfer-panel {

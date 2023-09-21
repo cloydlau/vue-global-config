@@ -11,7 +11,7 @@ enum MergeObjectOptions {
 
 type PropType<T> = PropConstructor<T> | PropConstructor<T>[]
 
-type PropConstructor<T = any> = { new (...args: any[]): T & {} } | { (): T } | PropMethod<T>
+type PropConstructor<T = any> = { new (...args: any[]): T & object } | { (): T } | PropMethod<T>
 
 type PropMethod<T, TConstructor = any> = [T] extends [((...args: any) => any) | undefined] // if is function with args, allowing non-required functions
   ? { new (): TConstructor; (): T; readonly prototype: TConstructor } // Create Function like constructor
@@ -116,7 +116,7 @@ function MergeObject(
     mergeObject: string
     mergeFunction:
     | false
-    | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
+    | ((accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown)
   },
 ) {
   const reversedSource = []
@@ -141,7 +141,7 @@ function MergeFunction(
   sources: any[],
   {
     mergeFunction,
-  }: { mergeFunction: (accumulator: any, currentValue: any, index?: any, array?: any) => Function },
+  }: { mergeFunction: (accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown },
 ) {
   return sources.reduce(mergeFunction, () => {})
 }
@@ -159,7 +159,7 @@ export default function conclude(
     mergeObjectApplyOnlyToDefault?: boolean
     mergeFunction?:
     | false
-    | ((accumulator: any, currentValue: any, index?: any, array?: any) => Function)
+    | ((accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown)
     mergeFunctionApplyOnlyToDefault?: boolean
   } = {},
 ): any {
