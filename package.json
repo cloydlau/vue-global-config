@@ -1,7 +1,7 @@
 {
   "name": "vue-global-config",
   "PascalCasedName": "VueGlobalConfig",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": false,
   "description": "Configure your Vue 2.6/2.7/3 components globally.",
   "author": "Cloyd Lau",
@@ -37,6 +37,7 @@
   "scripts": {
     "dev": "esno ./scripts/dev.mts",
     "doc": "vitepress dev --open /README",
+    "test-unit": "vitest run",
     "build": "vite build",
     "serve": "vite preview",
     "release": "esno ./scripts/release.mts",
