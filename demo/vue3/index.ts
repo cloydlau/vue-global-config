@@ -1,13 +1,31 @@
 import { createApp, h } from 'vue'
-
 import 'element-plus/dist/index.css'
 import ElementPlus from 'element-plus'
-
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import { KiFormDialog, KiImage, KiImageUpload, KiPopButton, KiPopSwitch, KiSelect } from 'kikimore'
 import App from './App.vue'
 import YourComponent from './YourComponent'
 
-createApp(App)
+const app = createApp(App)
   .use(ElementPlus)
+  .use(KiFormDialog, {
+    // 全局配置
+  })
+  .use(KiImage, {
+    // 全局配置
+  })
+  .use(KiImageUpload, {
+    // 全局配置
+  })
+  .use(KiPopButton, {
+    // 全局配置
+  })
+  .use(KiPopSwitch, {
+    // 全局配置
+  })
+  .use(KiSelect, {
+    // 全局配置
+  })
   .use(YourComponent, {
     // Global Prop
     'title': 'Global Title',
@@ -34,4 +52,9 @@ createApp(App)
     // Global Scoped Slot
     '#default': ({ option }) => h('Fragment', undefined, `${option.label} (From Global Scoped Slot)`),
   })
-  .mount('#app')
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+
+app.mount('#app')

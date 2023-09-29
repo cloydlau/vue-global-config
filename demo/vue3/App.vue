@@ -32,15 +32,14 @@ watch(enableLocalConfig, (n) => {
 </script>
 
 <template>
-  <el-dialog
-    modelValue
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
-    :show-close="false"
-    width="90%"
+  <KiFormDialog
+    show
   >
     <p>
-      <el-switch
+      <KiImageUpload />
+    </p>
+    <p>
+      <KiPopSwitch
         v-model="enableLocalConfig"
         inline-prompt
         active-text="Enable Local Config"
@@ -66,5 +65,5 @@ watch(enableLocalConfig, (n) => {
         {{ option.label }} (From Local Scoped Slot)
       </template>
     </YourComponent>
-  </el-dialog>
+  </KiFormDialog>
 </template>

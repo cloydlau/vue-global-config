@@ -8,14 +8,15 @@
   "license": "MIT",
   "repository": "https://github.com/cloydlau/vue-global-config",
   "keywords": [
+    "config",
+    "configuration",
+    "global",
+    "option",
+    "options",
+    "slot",
+    "slots",
     "vue",
-    "vue-demi",
-    "global config",
-    "global configuration",
-    "global option",
-    "global options",
-    "global slot",
-    "global slots"
+    "vue-demi"
   ],
   "exports": {
     ".": {
@@ -57,17 +58,19 @@
     "vue-demi": "latest"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "0.42.1",
+    "@antfu/eslint-config": "~0.42.1",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
+    "@element-plus/icons-vue": "latest",
     "@types/lodash-es": "latest",
     "@types/node": "latest",
-    "@vitejs/plugin-vue2": "latest",
-    "@vue/test-utils": "legacy",
+    "@vitejs/plugin-vue": "latest",
+    "@vue/compiler-sfc": "latest",
+    "@vue/test-utils": "latest",
     "case-police": "latest",
     "change-case": "latest",
     "cross-spawn": "latest",
-    "element-ui": "latest",
+    "element-plus": "latest",
     "eslint": "latest",
     "esno": "latest",
     "kolorist": "latest",
@@ -84,9 +87,8 @@
     "vite-plugin-dts": "latest",
     "vitepress": "latest",
     "vitest": "latest",
-    "vue": "~2.7.14",
-    "vue-global-config": "workspace:*",
-    "vue-template-compiler": "~2.7.14"
+    "vue": "latest",
+    "vue-global-config": "latest"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged --concurrent false",
