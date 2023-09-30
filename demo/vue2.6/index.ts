@@ -1,14 +1,31 @@
 import Vue from 'vue'
 import VueCompositionAPI from '@vue/composition-api'
-
 import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
-
+import { KiFormDialog, KiImage, KiImageUpload, KiPopButton, KiPopSwitch, KiSelect } from 'kikimore'
 import App from './App.vue'
 import YourComponent from './YourComponent.vue'
 
 Vue.use(VueCompositionAPI)
 Vue.use(ElementUI)
+Vue.use(KiFormDialog, {
+  // 全局配置
+})
+Vue.use(KiImage, {
+  // 全局配置
+})
+Vue.use(KiImageUpload, {
+  // 全局配置
+})
+Vue.use(KiPopButton, {
+  // 全局配置
+})
+Vue.use(KiPopSwitch, {
+  // 全局配置
+})
+Vue.use(KiSelect, {
+  // 全局配置
+})
 Vue.use(YourComponent, {
   // Global Prop
   'title': 'Global Title',

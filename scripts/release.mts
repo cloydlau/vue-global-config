@@ -1,4 +1,4 @@
-// pnpm add prompts semver cross-spawn kolorist del -D -w
+// pnpm add esno prompts semver cross-spawn kolorist del -D -w
 
 import fs from 'node:fs'
 import prompts from 'prompts'
@@ -79,12 +79,23 @@ async function release() {
 
   let targetVersion = t
 
+  const parsedCurrentVersion = semver.parse(currentVersion) as SemVer
+
   if (t.startsWith('pre')) {
+    // 只升 prerelease 版本时，已经是 beta 阶段就不可能再回到 alpha 阶段
+    let prereleaseTypes = ['alpha', 'beta', 'rc']
+    if (t === 'prerelease') {
+      const i = prereleaseTypes.indexOf(parsedCurrentVersion.prerelease[0])
+      if (i !== -1) {
+        prereleaseTypes = prereleaseTypes.slice(i)
+      }
+    }
+
     targetVersion = (await prompts({
       type: 'select',
       name: 'value',
       message: 'Select prerelease type',
-      choices: Array.from(['alpha', 'beta', 'rc'], title => ({
+      choices: Array.from(prereleaseTypes, title => ({
         title,
         value: semver.inc(currentVersion, t, title),
       })),
@@ -111,8 +122,7 @@ async function release() {
     return
   }
 
-  if (!['patch', 'prerelease'].includes(t)) {
-    const parsedCurrentVersion = semver.parse(currentVersion) as SemVer
+  if (['minor', 'major'].includes(t)) {
     const parsedTargetVersion = semver.parse(targetVersion) as SemVer
     const pattern = new RegExp(`${name}@${parsedCurrentVersion.major}.${parsedCurrentVersion.minor}`, 'g')
     const replacement = `${name}@${parsedTargetVersion.major}.${parsedTargetVersion.minor}`

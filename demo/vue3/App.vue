@@ -36,6 +36,12 @@ watch(enableLocalConfig, (n) => {
     show
   >
     <p>
+      <KiImage
+        modelValue="https://picsum.photos/100/100"
+        qrcode
+      />
+    </p>
+    <p>
       <KiImageUpload />
     </p>
     <p>

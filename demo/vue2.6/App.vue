@@ -47,16 +47,22 @@ export default {
 </script>
 
 <template>
-  <el-dialog
-    visible
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
-    :show-close="false"
-    width="90%"
+  <KiFormDialog
+    show
   >
     <p>
-      <el-switch
+      <KiImage
+        value="https://picsum.photos/100/100"
+        qrcode
+      />
+    </p>
+    <p>
+      <KiImageUpload />
+    </p>
+    <p>
+      <KiPopSwitch
         v-model="enableLocalConfig"
+        inline-prompt
         active-text="Enable Local Config"
         inactive-text="Disable Local Config"
       />
@@ -81,5 +87,5 @@ export default {
         {{ option.label }} (From Local Scoped Slot)
       </template>
     </YourComponent>
-  </el-dialog>
+  </KiFormDialog>
 </template>
