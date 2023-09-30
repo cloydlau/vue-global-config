@@ -80,6 +80,7 @@
     "lint-staged": "latest",
     "lodash-es": "latest",
     "magicast": "latest",
+    "open": "latest",
     "prompts": "latest",
     "semver": "latest",
     "simple-git-hooks": "latest",
