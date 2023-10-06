@@ -1,5 +1,5 @@
 import type { Plugin, install } from 'vue-demi'
-import { resolveConfig } from '../../../src'
+import { resolveConfig } from 'vue-global-config'
 import Component from './Component.vue'
 
 type SFCWithInstall<T> = T & Plugin & { install: typeof install }

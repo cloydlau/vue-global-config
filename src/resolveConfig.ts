@@ -1,11 +1,13 @@
 import { isVue3 } from 'vue-demi'
+import { camelCase } from 'change-case'
 
 function atToOn(eventName: string) {
-  const keyArray = Array.from(eventName)
-  keyArray[0] = keyArray[0].toUpperCase()
-  keyArray.unshift('n')
-  keyArray.unshift('o')
-  return keyArray.join('')
+  const arr = Array.from(camelCase(eventName, {
+    stripRegexp: /-/g, // Filter only short horizontal lines for kebab-case conversion to camelCase
+  }) as string)
+  arr[0] = arr[0].toUpperCase()
+  arr.unshift('o', 'n')
+  return arr.join('')
 }
 
 interface ResolvedResult {
@@ -34,19 +36,21 @@ export default function resolveConfig(
     if (k.startsWith('@')) {
       const eventName = k.substring(1)
       if (isVue3) {
-        if (eventName.startsWith('vnode')) {
+        // Vue 3
+        // @xxx → onXxx
+        if (eventName.startsWith('vue:')) {
+          res.hooks[atToOn(eventName.replace('vue:', 'vnode-'))] = config[k]
+        } else if (eventName.startsWith('vnode')) {
           res.hooks[atToOn(eventName)] = config[k]
         } else {
-          // Vue 3
-          // @xxx → onXxx
           res.listeners[atToOn(eventName)] = config[k]
         }
       } else {
+        // Vue 2
+        // @xxx → xxx
         if (eventName.startsWith('hook:')) {
           res.hooks[eventName] = config[k]
         } else {
-          // Vue 2
-          // @xxx → xxx
           res.listeners[eventName] = config[k]
         }
       }

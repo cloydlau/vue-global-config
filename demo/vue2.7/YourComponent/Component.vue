@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-v-for-template-key-on-child -->
 <script lang="ts" setup>
 import { computed, useAttrs } from 'vue'
-import { conclude, getLocalListeners, listenGlobalHooks } from '../../../src'
+import { conclude, getLocalListeners, listenGlobalHooks } from 'vue-global-config'
 import { globalAttrs, globalHooks, globalListeners, globalProps, globalSlots } from './index'
 
 const props = defineProps(['title'])

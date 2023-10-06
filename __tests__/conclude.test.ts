@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import conclude from '../src/conclude'
+import { conclude } from 'vue-global-config'
 
 describe('conclude', () => {
   describe('非plain object', () => {
