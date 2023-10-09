@@ -4,7 +4,10 @@
   "version": "0.4.2",
   "private": false,
   "description": "Configure your Vue 2.6/2.7/3 components globally.",
-  "author": "Cloyd Lau (https://github.com/cloydlau)",
+  "author": {
+    "name": "Cloyd Lau",
+    "url": "https://github.com/cloydlau"
+  },
   "license": "MIT",
   "repository": "https://github.com/cloydlau/vue-global-config",
   "keywords": [
@@ -56,7 +59,7 @@
     }
   },
   "dependencies": {
-    "vue-demi": "latest"
+    "vue-demi": "^0.14.6"
   },
   "devDependencies": {
     "@antfu/eslint-config": "~0.42.1",
