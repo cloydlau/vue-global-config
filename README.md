@@ -477,6 +477,6 @@ In Vue 2, only Vue components can trigger a hook, HTML elements don't. So trigge
 
 ## Changelog
 
-Detailed changes for each release are documented in the [release notes](https://github.com/cloydlau/vue-global-config/releases).
+Detailed changes for each release are documented in the [release notes](https://github.com/cloydlau/vue-global-config/releases)
 
 <br>
