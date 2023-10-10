@@ -46,7 +46,7 @@ export default defineConfig({
   plugins: [{
     name: 'html-transform',
     transformIndexHtml(html: string) {
-      return html.replace(/\{\{NAME\}\}/, name).replace(/\{\{VUE_VERSION\}\}/g, String(major === 3 ? major : `${major}.${minor}`))
+      return html.replace(/\{\{ NAME \}\}/, name).replace(/\{\{ VUE_VERSION \}\}/g, String(major === 3 ? major : `${major}.${minor}`))
     },
   }, dts({ rollupTypes: true }), AutoImport({
     // targets to transform
