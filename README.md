@@ -355,7 +355,13 @@ When off, `mergeFunction`'s rules are applied to all function type prop weights.
 
 #### config.default
 
-Explicitly specifies the default value. If `mergeObjectApplyOnlyToDefault` or `mergeFunctionApplyOnlyToDefault` is not enabled, there is no need to use this parameter, just put the default value at the end of `configSequence`.
+Explicitly specify the default value.
+
+Useful when `mergeObjectApplyOnlyToDefault`, `mergeFunctionApplyOnlyToDefault` or `defaultIsDynamic` is enabled.
+
+When `defaultIsDynamic` is enabled, `config.default` should be a Function and its return value will be used for default value.
+
+Otherwise just put the default value at the end of `configSequence`.
 
 #### config.camelizeObjectKeys
 
