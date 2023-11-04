@@ -95,7 +95,7 @@ function validateProp({
     }
 
     if (!isValid) {
-      throw new Error(
+      throw new TypeError(
         `Invalid prop: type check failed, expecting [${expectedTypes.join(
           ', ',
         )}], receiving: ${prop}`,
