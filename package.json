@@ -40,6 +40,7 @@
   ],
   "scripts": {
     "dev": "esno ./scripts/dev.mts",
+    "up": "nu -L !@antfu/eslint-config && ni",
     "doc": "vitepress dev --open /README",
     "test-unit": "vitest run",
     "build": "vite build",
@@ -87,6 +88,7 @@
     "only-allow": "latest",
     "open": "latest",
     "prompts": "latest",
+    "rollup-plugin-visualizer": "latest",
     "semver": "latest",
     "simple-git-hooks": "latest",
     "typescript": "latest",
@@ -94,7 +96,7 @@
     "unplugin-vue-components": "latest",
     "vite": "latest",
     "vite-plugin-dts": "latest",
-    "vitepress": "latest",
+    "vitepress": "1.0.0-rc.25",
     "vitest": "latest",
     "vue": "latest",
     "vue-global-config": "workspace:*"

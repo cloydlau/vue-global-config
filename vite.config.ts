@@ -6,6 +6,7 @@ import { parse } from 'semver'
 import type { SemVer } from 'semver'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { PascalCasedName, name } from './package.json'
 
 const { major, minor } = parse(version) as SemVer
@@ -43,22 +44,29 @@ export default defineConfig({
       },
     },
   },
-  plugins: [{
-    name: 'html-transform',
-    transformIndexHtml(html: string) {
-      return html.replace(/\{\{ NAME \}\}/, name).replace(/\{\{ VUE_VERSION \}\}/g, String(major === 3 ? major : `${major}.${minor}`))
+  plugins: [
+    {
+      name: 'html-transform',
+      transformIndexHtml(html: string) {
+        return html.replace(/\{\{ NAME \}\}/, name).replace(/\{\{ VUE_VERSION \}\}/g, String(major === 3 ? major : `${major}.${minor}`))
+      },
     },
-  }, dts({ rollupTypes: true }), AutoImport({
+    dts({ rollupTypes: true }),
+    AutoImport({
     // targets to transform
-    include: [
-      /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
-      /\.vue$/, /\.vue\?vue/, // .vue
-      /\.md$/, // .md
-    ],
-    // global imports to register
-    imports: [
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue$/, /\.vue\?vue/, // .vue
+        /\.md$/, // .md
+      ],
+      // global imports to register
+      imports: [
       // presets
-      (major === 3 || (major === 2 && minor >= 7)) ? 'vue' : '@vue/composition-api',
-    ],
-  }), Components(), vue()],
+        (major === 3 || (major === 2 && minor >= 7)) ? 'vue' : '@vue/composition-api',
+      ],
+    }),
+    Components(),
+    { ...visualizer(), apply: 'build' },
+    vue(),
+  ],
 })
