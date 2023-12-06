@@ -28,7 +28,7 @@ export default function resolveConfig(
     slots: {},
   }
 
-  const propsList = Array.isArray(props) ? props : Object.keys(props)
+  const propsList = (Array.isArray(props) ? props : Object.keys(props)).map(v => kebabToCamel(v))
 
   for (const k in config) {
     if (k.startsWith('@')) {
@@ -74,7 +74,7 @@ export default function resolveConfig(
       if (slotName) {
         res.slots[slotName] = config[k]
       }
-    } else if (propsList.includes(k)) {
+    } else if (propsList.includes(kebabToCamel(k))) {
       res.props[k] = config[k]
     } else {
       res.attrs[k] = config[k]
