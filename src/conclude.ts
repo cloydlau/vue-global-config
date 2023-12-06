@@ -1,5 +1,5 @@
 import { assignInWith, cloneDeep, isObject, isPlainObject, mapKeys, mergeWith } from 'lodash-es'
-import { camelCase } from 'change-case'
+import { kebabToCamel } from './utils'
 
 // isPlainObject: Vue and Vue instances return `false`
 // cloneDeep does not fully support Vue instances
@@ -199,11 +199,7 @@ export default function conclude(
       if (itemIsPlainObject) {
         prop = cloneDeep(prop)
         return camelizeObjectKeys
-          ? mapKeys(prop, (v: any, k: any) =>
-            camelCase(k, {
-              stripRegexp: /-/g, // Filter only short horizontal lines for kebab-case conversion to camelCase
-            }),
-          )
+          ? mapKeys(prop, (v: any, k: any) => kebabToCamel(k))
           : prop
       }
       return prop

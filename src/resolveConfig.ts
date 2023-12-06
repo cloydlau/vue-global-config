@@ -1,10 +1,8 @@
 import { isVue3 } from 'vue-demi'
-import { camelCase } from 'change-case'
+import { kebabToCamel } from './utils'
 
 function atToOn(eventName: string) {
-  const arr = Array.from(camelCase(eventName, {
-    stripRegexp: /-/g, // Filter only short horizontal lines for kebab-case conversion to camelCase
-  }) as string)
+  const arr = Array.from(kebabToCamel(eventName) as string)
   arr[0] = arr[0].toUpperCase()
   arr.unshift('o', 'n')
   return arr.join('')
