@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, useAttrs, useSlots } from 'vue'
-import { conclude } from 'vue-global-config'
+import { conclude } from '../../../src'
 import { globalAttrs, globalHooks, globalListeners, globalProps, globalSlots } from './index'
 
 const props = defineProps(['title'])

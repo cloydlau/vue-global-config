@@ -22,7 +22,7 @@ export default defineConfig({
   }, */
   optimizeDeps: {
     exclude: ['vue-demi'],
-    include: ['kikimore > qrcode', 'kikimore > sweetalert2', 'kikimore > upng-js'],
+    include: ['faim > mime', 'faim > qrcode', 'faim > sweetalert2', 'faim > upng-js'],
   },
   build: {
     lib: {

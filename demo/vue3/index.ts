@@ -2,28 +2,28 @@ import { createApp, h } from 'vue'
 import 'element-plus/dist/index.css'
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import { KiFormDialog, KiImage, KiImageUpload, KiPopButton, KiPopSwitch, KiSelect } from 'kikimore'
+import { FaFormDialog, FaImage, FaImageUpload, FaPopButton, FaPopSwitch, FaSelect } from 'faim'
 import App from './App.vue'
 import YourComponent from './YourComponent'
 
 const app = createApp(App)
   .use(ElementPlus)
-  .use(KiFormDialog, {
+  .use(FaFormDialog, {
     // 全局配置
   })
-  .use(KiImage, {
+  .use(FaImage, {
     // 全局配置
   })
-  .use(KiImageUpload, {
+  .use(FaImageUpload, {
     // 全局配置
   })
-  .use(KiPopButton, {
+  .use(FaPopButton, {
     // 全局配置
   })
-  .use(KiPopSwitch, {
+  .use(FaPopSwitch, {
     // 全局配置
   })
-  .use(KiSelect, {
+  .use(FaSelect, {
     // 全局配置
   })
   .use(YourComponent, {

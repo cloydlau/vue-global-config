@@ -17,11 +17,6 @@ async function release() {
     return
   }
 
-  console.log(cyan('Upgrading dependencies...'))
-  if (spawn.sync('pnpm', ['up'], { stdio: 'inherit' }).status === 1) {
-    return
-  }
-
   console.log(cyan('Linting staged...'))
   if (spawn.sync('npx', ['lint-staged'], { stdio: 'inherit' }).status === 1) {
     return

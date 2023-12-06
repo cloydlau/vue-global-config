@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-v-for-template-key-on-child -->
 <script>
-import { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } from 'vue-global-config'
+import { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } from '../../src'
 
 const globalProps = {}
 const globalAttrs = {}

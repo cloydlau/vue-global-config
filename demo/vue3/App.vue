@@ -32,20 +32,20 @@ watch(enableLocalConfig, (n) => {
 </script>
 
 <template>
-  <KiFormDialog
+  <FaFormDialog
     show
   >
     <p>
-      <KiImage
+      <FaImage
         modelValue="https://picsum.photos/100/100"
         qrcode
       />
     </p>
     <p>
-      <KiImageUpload />
+      <FaImageUpload />
     </p>
     <p>
-      <KiPopSwitch
+      <FaPopSwitch
         v-model="enableLocalConfig"
         inline-prompt
         active-text="Enable Local Config"
@@ -71,5 +71,5 @@ watch(enableLocalConfig, (n) => {
         {{ option.label }} (From Local Scoped Slot)
       </template>
     </YourComponent>
-  </KiFormDialog>
+  </FaFormDialog>
 </template>

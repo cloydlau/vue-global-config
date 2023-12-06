@@ -1,27 +1,27 @@
 import Vue from 'vue'
 import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
-import { KiFormDialog, KiImage, KiImageUpload, KiPopButton, KiPopSwitch, KiSelect } from 'kikimore'
+import { FaFormDialog, FaImage, FaImageUpload, FaPopButton, FaPopSwitch, FaSelect } from 'faim'
 import App from './App.vue'
 import YourComponent from './YourComponent'
 
 Vue.use(ElementUI)
-Vue.use(KiFormDialog, {
+Vue.use(FaFormDialog, {
   // 全局配置
 })
-Vue.use(KiImage, {
+Vue.use(FaImage, {
   // 全局配置
 })
-Vue.use(KiImageUpload, {
+Vue.use(FaImageUpload, {
   // 全局配置
 })
-Vue.use(KiPopButton, {
+Vue.use(FaPopButton, {
   // 全局配置
 })
-Vue.use(KiPopSwitch, {
+Vue.use(FaPopSwitch, {
   // 全局配置
 })
-Vue.use(KiSelect, {
+Vue.use(FaSelect, {
   // 全局配置
 })
 Vue.use(YourComponent, {
