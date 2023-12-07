@@ -3298,7 +3298,7 @@ packages:
       viewerjs: 1.11.6
       vue: 3.3.10(typescript@5.3.3)
       vue-demi: 0.14.6(@vue/composition-api@1.7.2)(vue@3.3.10)
-      vue-global-config: 0.4.3(@vue/composition-api@1.7.2)(vue@3.3.10)
+      vue-global-config: 0.4.5(@vue/composition-api@1.7.2)(vue@3.3.10)
     transitivePeerDependencies:
       - '@vue/composition-api'
     dev: true
@@ -5882,8 +5882,8 @@ packages:
       - supports-color
     dev: true
 
-  /vue-global-config@0.4.3(@vue/composition-api@1.7.2)(vue@3.3.10):
-    resolution: {integrity: sha512-0O4I1OWxoZ31gM+AnuaSInXPIo6ROdedIyWWe32lI7Kyx2rnSTVfp8QskD9gCao/gD9QBKV5vinOPJgFbiNqVg==}
+  /vue-global-config@0.4.5(@vue/composition-api@1.7.2)(vue@3.3.10):
+    resolution: {integrity: sha512-kXjKGM6W9OLSFwGTeKb1NGDJlg1XwcwH4Aq7Xrn1JSCKP7CVu3O4kUFiFc3L11R/+P3cg9HriWaYLcWb0DlNyw==}
     requiresBuild: true
     peerDependencies:
       '@vue/composition-api': '>=1'

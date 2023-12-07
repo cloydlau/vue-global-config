@@ -162,7 +162,7 @@ npm i vue-global-config
 ### CDN + IIFE
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue-global-config@0.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-global-config@0.5"></script>
 <script>
   const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } = VueGlobalConfig
 </script>
