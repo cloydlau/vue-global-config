@@ -74,10 +74,13 @@ export default function resolveConfig(
       if (slotName) {
         res.slots[slotName] = config[k]
       }
-    } else if (propsList.includes(kebabToCamel(k))) {
-      res.props[k] = config[k]
     } else {
-      res.attrs[k] = config[k]
+      const camelizedKey = kebabToCamel(k)
+      if (propsList.includes(camelizedKey)) {
+        res.props[k] = camelizedKey
+      } else {
+        res.attrs[k] = config[k]
+      }
     }
   }
 
