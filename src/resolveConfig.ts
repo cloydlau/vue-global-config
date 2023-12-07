@@ -77,7 +77,7 @@ export default function resolveConfig(
     } else {
       const camelizedKey = kebabToCamel(k)
       if (propsList.includes(camelizedKey)) {
-        res.props[k] = camelizedKey
+        res.props[camelizedKey] = config[k]
       } else {
         res.attrs[k] = config[k]
       }
