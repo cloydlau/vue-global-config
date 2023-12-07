@@ -184,7 +184,7 @@ npm i vue-global-config
 
 ### resolveConfig
 
-Get global props, attrs, listeners & hooks by analysing global parameters passed by component user.
+Get global props, attrs, listeners, hooks and slots by analysing global parameters passed by component user.
 
 #### Param
 
@@ -200,7 +200,7 @@ Get global props, attrs, listeners & hooks by analysing global parameters passed
  *   listeners: Record<string, (...args: any) => unknown>,
  *   hooks: Record<string, (...args: any) => unknown>
  *   slots: Record<string, (...args: any) => unknown>
- * }} global props, attrs, listeners & hooks
+ * }} global props, attrs, listeners, hooks and slots
  */
 ```
 
