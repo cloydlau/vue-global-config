@@ -9,16 +9,22 @@ function atToOn(eventName: string) {
 }
 
 interface ResolvedResult {
-  props: Record<string, any>
-  attrs: Record<string, any>
+  props: Record<keyof any, any>
+  attrs: Record<keyof any, any>
   listeners: Record<string, (...args: any) => unknown>
   hooks: Record<string, (...args: any) => unknown>
   slots: Record<string, (...args: any) => unknown>
 }
 
 export default function resolveConfig(
-  config: Record<string, any>,
-  props: string[] | Record<string, any> = [],
+  config: Record<keyof any, any>,
+  {
+    props = [],
+    camelizePropNames = false,
+  }: {
+    props?: string[] | Record<keyof any, any>
+    camelizePropNames?: boolean
+  } = {},
 ): ResolvedResult {
   const res: ResolvedResult = {
     props: {},
@@ -28,7 +34,17 @@ export default function resolveConfig(
     slots: {},
   }
 
-  const propsList = (Array.isArray(props) ? props : Object.keys(props)).map(v => kebabToCamel(v))
+  let propsList
+  if (Array.isArray(props)) {
+    propsList = camelizePropNames ? props.map(v => kebabToCamel(v)) : props
+  } else if (camelizePropNames) {
+    propsList = []
+    for (const k in props) {
+      propsList.push(kebabToCamel(k))
+    }
+  } else {
+    propsList = Object.keys(props)
+  }
 
   for (const k in config) {
     if (k.startsWith('@')) {
@@ -75,9 +91,9 @@ export default function resolveConfig(
         res.slots[slotName] = config[k]
       }
     } else {
-      const camelizedKey = kebabToCamel(k)
-      if (propsList.includes(camelizedKey)) {
-        res.props[camelizedKey] = config[k]
+      const propName = camelizePropNames ? kebabToCamel(k) : k
+      if (propsList.includes(propName)) {
+        res.props[propName] = config[k]
       } else {
         res.attrs[k] = config[k]
       }

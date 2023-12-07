@@ -148,7 +148,7 @@ function MergeFunction(
 
 export default function conclude(
   configSequence: any[],
-  config: {
+  options: {
     type?: PropType<any>
     default?: any
     defaultIsDynamic?: boolean
@@ -172,9 +172,9 @@ export default function conclude(
     camelizeObjectKeys = false,
     mergeObjectApplyOnlyToDefault = false,
     mergeFunctionApplyOnlyToDefault = true,
-  } = config
+  } = options
 
-  let { mergeObject = MergeObjectOptions.deep, mergeFunction = false } = config
+  let { mergeObject = MergeObjectOptions.deep, mergeFunction = false } = options
 
   const configSequenceCopy: any[] = []
   let result: any
@@ -214,7 +214,7 @@ export default function conclude(
     configSequenceCopy.push(handleProp(defaultValue))
   } else if (!(typeof defaultValue === 'function')) {
     throw new TypeError(
-      `Invalid option: config.default should be Function when config.defaultIsDynamic enabled, receiving: ${defaultValue}`,
+      `Invalid option: options.default should be Function when options.defaultIsDynamic enabled, receiving: ${defaultValue}`,
     )
   }
 
@@ -270,7 +270,7 @@ export default function conclude(
 
   if (defaultIsDynamic) {
     return conclude(configSequence, {
-      ...config,
+      ...options,
       default: defaultValue(result),
       defaultIsDynamic: false,
     })

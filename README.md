@@ -190,13 +190,16 @@ Get global props, attrs, listeners & hooks by analysing global parameters passed
 
 ```ts
 /**
- * @param {object} globalConfig - global parameters
- * @param {string[] | object} [localProps] - local props, for the purpose of differentiating between props and attrs
+ * @param {Record<keyof any, any>} globalConfig - global parameters
+ * @param {Record<keyof any, any>} [options] - Options
+ * @param {string[] | Record<keyof any, any>} [options.props = []] - local props, for the purpose of differentiating between props and attrs
+ * @param {boolean} [options.camelizePropNames = false] - whether to camelize prop names
  * @returns {{
- *   props: object,
- *   attrs: object,
- *   listeners: object,
- *   hooks: object
+ *   props: Record<keyof any, any>,
+ *   attrs: Record<keyof any, any>,
+ *   listeners: Record<string, (...args: any) => unknown>,
+ *   hooks: Record<string, (...args: any) => unknown>
+ *   slots: Record<string, (...args: any) => unknown>
  * }} global props, attrs, listeners & hooks
  */
 ```
@@ -215,6 +218,7 @@ resolveConfig({
   'placeholder': 'some attr',
   '@blur': function () {},
   '@hook:mounted': function () {},
+  '#left-footer': () => h('Fragment', undefined, 'Global Slot'),
 })
 ```
 
@@ -247,17 +251,17 @@ The role of `conclude` is to help you figure out the final configuration.
 ```ts
 /**
  * @param {any[]} configSequence - Config sequence (priority from highest to lowest, last is the default value)
- * @param {object} [config] - Configuration
- * @param {PropType<any>} [config.type] - Data type checking
- * @param {any} [config.default] - Default value (explicit)
- * @param {boolean} [config.defaultIsDynamic = false] - Dynamic generation of default values
- * @param {boolean} [config.required = false] - Requirement checking
- * @param {Function} [config.validator] - Custom validator
- * @param {string} [config.camelizeObjectKeys = false] - Whether or not to camelize object keys
- * @param {false|string} [config.mergeObject = 'deep'] - The way to merge objects
- * @param {boolean} [config.mergeObjectApplyOnlyToDefault = false] - `mergeObject` only works on `default`
- * @param {false|((accumulator, currentValue, index?, array?) => )} [config.mergeFunction = false] - The way to fuse functions
- * @param {boolean} [config.mergeFunctionApplyOnlyToDefault = true] - `mergeFunction` only works on `default`
+ * @param {Record<keyof any, any>} [options] - Options
+ * @param {PropType<any>} [options.type] - Data type checking
+ * @param {any} [options.default] - Default value (explicit)
+ * @param {boolean} [options.defaultIsDynamic = false] - Dynamic generation of default values
+ * @param {boolean} [options.required = false] - Requirement checking
+ * @param {(prop: any) => boolean} [options.validator] - Custom validator
+ * @param {string} [options.camelizeObjectKeys = false] - whether to camelize object keys
+ * @param {false|string} [options.mergeObject = 'deep'] - The way to merge objects
+ * @param {boolean} [options.mergeObjectApplyOnlyToDefault = false] - `mergeObject` only works on `default`
+ * @param {false|((accumulator, currentValue, index?, array?) => )} [options.mergeFunction = false] - The way to fuse functions
+ * @param {boolean} [options.mergeFunctionApplyOnlyToDefault = true] - `mergeFunction` only works on `default`
  * @returns {any} Final prop
  */
 ```

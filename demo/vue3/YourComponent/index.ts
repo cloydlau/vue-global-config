@@ -4,7 +4,7 @@ import Component from './Component.vue'
 
 type SFCWithInstall<T> = T & Plugin & { install: typeof install }
 
-function withInstall<T, E extends Record<string, any>>(main: T, extra?: E) {
+function withInstall<T, E extends Record<keyof any, any>>(main: T, extra?: E) {
   (main as SFCWithInstall<T>).install = (app): void => {
     for (const comp of [main, ...Object.values(extra ?? {})]) {
       app?.component(comp.name, comp)
@@ -19,11 +19,11 @@ function withInstall<T, E extends Record<string, any>>(main: T, extra?: E) {
   return main as SFCWithInstall<T> & E
 }
 
-const globalProps: Record<string, any> = {}
-const globalAttrs: Record<string, any> = {}
-const globalListeners: Record<string, any> = {}
-const globalHooks: Record<string, any> = {}
-const globalSlots: Record<string, any> = {}
+const globalProps: Record<keyof any, any> = {}
+const globalAttrs: Record<keyof any, any> = {}
+const globalListeners: Record<keyof any, any> = {}
+const globalHooks: Record<keyof any, any> = {}
+const globalSlots: Record<keyof any, any> = {}
 
 const ComponentWithInstall = withInstall(Component)
 
