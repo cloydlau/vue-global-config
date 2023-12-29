@@ -50,17 +50,16 @@ export default function resolveConfig(
     if (k.startsWith('@')) {
       const eventName = k.substring(1)
       if (isVue3) {
-        // Vue 3
-        // @xxx → onXxx
+        // @xxx → onVnodeXxx
         if (eventName.startsWith('vue:')) {
           res.hooks[atToOn(eventName.replace('vue:', 'vnode-'))] = config[k]
         } else if (eventName.startsWith('vnode')) {
-          res.hooks[atToOn(eventName)] = config[k]
+          throw new Error('@vnode-* hooks are no longer supported. Use the vue: prefix instead. For example, @vnode-mounted should be changed to @vue:mounted. @vnode-* hooks support has been removed in Vue 3.4.')
+        // @xxx → onXxx
         } else {
           res.listeners[atToOn(eventName)] = config[k]
         }
       } else {
-        // Vue 2
         // @xxx → xxx
         if (eventName.startsWith('hook:')) {
           res.hooks[eventName] = config[k]

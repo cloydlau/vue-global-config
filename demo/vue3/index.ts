@@ -47,16 +47,6 @@ const app = createApp(App)
     },
 
     // Global Hook
-    '@vnode-mounted': function () {
-      console.log('Global Mounted (from @vnode-mounted)')
-    },
-
-    // Global Hook
-    '@vnodeMounted': function () {
-      console.log('Global Mounted (from @vnodeMounted)')
-    },
-
-    // Global Hook
     'onVnodeMounted': function () {
       console.log('Global Mounted (from onVnodeMounted)')
     },

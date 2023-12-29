@@ -109,7 +109,7 @@ Entangled in global/local/default parameters, which one to choose? It should be 
     - Support triggering either global listener or local listener
     - Support current instance (`this`) access
 - Support global **Hooks** (internal API)
-    - Such as `@vue:mounted`/`@vnode-mounted`/`@vnodeMounted`/`onVnodeMounted` in Vue 3, see https://github.com/vuejs/core/issues/4457
+    - Such as `@vue:mounted`/`onVnodeMounted` in Vue 3, see https://github.com/vuejs/core/issues/4457
     - Such as `@hook:mounted` in Vue 2, see https://github.com/vuejs/vue/issues/10312
     - Support current instance (`this`) access
 - Support global **Slots** & **Scoped Slots**
