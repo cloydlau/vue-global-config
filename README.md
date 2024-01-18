@@ -105,13 +105,13 @@ Entangled in global/local/default parameters, which one to choose? It should be 
 - Support global **Props**
 - Support global **Attrs**
 - Support global **Listeners**
-    - Support triggering both global listener and local listener
-    - Support triggering either global listener or local listener
-    - Support current instance (`this`) access
+  - Support triggering both global listener and local listener
+  - Support triggering either global listener or local listener
+  - Support current instance (`this`) access
 - Support global **Hooks** (internal API)
-    - Such as `@vue:mounted`/`onVnodeMounted` in Vue 3, see https://github.com/vuejs/core/issues/4457
-    - Such as `@hook:mounted` in Vue 2, see https://github.com/vuejs/vue/issues/10312
-    - Support current instance (`this`) access
+  - Such as `@vue:mounted`/`onVnodeMounted` in Vue 3, see https://github.com/vuejs/core/issues/4457
+  - Such as `@hook:mounted` in Vue 2, see https://github.com/vuejs/vue/issues/10312
+  - Support current instance (`this`) access
 - Support global **Slots** & **Scoped Slots**
   - Vue 3
     - Render function (`h`/`createVNode`)
@@ -155,7 +155,12 @@ npm i vue-global-config
   }
 </script>
 <script type="module">
-  import { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } from 'vue-global-config'
+  import {
+    conclude,
+    getLocalListeners,
+    listenGlobalHooks,
+    resolveConfig,
+  } from 'vue-global-config'
 </script>
 ```
 
@@ -164,7 +169,8 @@ npm i vue-global-config
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-global-config@0.6"></script>
 <script>
-  const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } = VueGlobalConfig
+  const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } =
+    VueGlobalConfig
 </script>
 ```
 

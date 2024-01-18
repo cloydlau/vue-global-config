@@ -40,12 +40,13 @@
   ],
   "scripts": {
     "dev": "esno ./scripts/dev.mts",
-    "up": "nu -L !@antfu/eslint-config && ni",
     "doc": "vitepress dev --open /README",
     "test-unit": "vitest run",
     "build": "vite build",
     "serve": "vite preview",
     "release": "esno ./scripts/release.mts",
+    "lint": "eslint \"**/*.{vue,js,ts,mjs,mts,jsx,tsx,md,json}\"",
+    "lint:fix": "eslint \"**/*.{vue,js,ts,mjs,mts,jsx,tsx,md,json}\" --fix",
     "pnpm:devPreinstall": "node ./scripts/devPreinstall.mjs",
     "preinstall": "node -e \"if (process.env.INIT_CWD === process.cwd()) { process.exit(1) }\" || npx only-allow pnpm",
     "postinstall": "node -e \"if (process.env.INIT_CWD === process.cwd()) { process.exit(1) }\" || npx simple-git-hooks"
@@ -67,7 +68,7 @@
     "vue-demi": "^0.14.6"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "~0.42.1",
+    "@antfu/eslint-config": "latest",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@element-plus/icons-vue": "latest",
@@ -81,7 +82,9 @@
     "cross-spawn": "latest",
     "del": "latest",
     "element-plus": "latest",
-    "eslint": "latest",
+    "eslint": "npm:eslint-ts-patch@latest",
+    "eslint-plugin-format": "latest",
+    "eslint-ts-patch": "latest",
     "esno": "latest",
     "faim": "latest",
     "kolorist": "latest",
@@ -99,7 +102,7 @@
     "unplugin-vue-components": "latest",
     "vite": "latest",
     "vite-plugin-dts": "latest",
-    "vitepress": "1.0.0-rc.33",
+    "vitepress": "latest",
     "vitest": "latest",
     "vue": "latest",
     "vue-global-config": "workspace:*"

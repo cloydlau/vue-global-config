@@ -14,7 +14,7 @@ type PropType<T> = PropConstructor<T> | PropConstructor<T>[]
 type PropConstructor<T = any> = { new (...args: any[]): T & object } | { (): T } | PropMethod<T>
 
 type PropMethod<T, TConstructor = any> = [T] extends [((...args: any) => any) | undefined] // if is function with args, allowing non-required functions
-  ? { new (): TConstructor; (): T; readonly prototype: TConstructor } // Create Function like constructor
+  ? { new (): TConstructor, (): T, readonly prototype: TConstructor } // Create Function like constructor
   : never
 
 /**
@@ -115,8 +115,8 @@ function MergeObject(
   }: {
     mergeObject: string
     mergeFunction:
-    | false
-    | ((accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown)
+      | false
+      | ((accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown)
   },
 ) {
   const reversedSource = []
@@ -158,8 +158,8 @@ export default function conclude(
     mergeObject?: string | false
     mergeObjectApplyOnlyToDefault?: boolean
     mergeFunction?:
-    | false
-    | ((accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown)
+      | false
+      | ((accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown)
     mergeFunctionApplyOnlyToDefault?: boolean
   } = {},
 ): any {
