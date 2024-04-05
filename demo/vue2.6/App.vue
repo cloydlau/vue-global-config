@@ -36,7 +36,7 @@ export default {
     },
   },
   watch: {
-    enableLocalConfig(n) {
+    enableLocalConfig() {
       this.isMounted = false
       this.$nextTick(() => {
         this.isMounted = true

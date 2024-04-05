@@ -37,12 +37,14 @@ export default function resolveConfig(
   let propsList
   if (Array.isArray(props)) {
     propsList = camelizePropNames ? props.map(v => kebabToCamel(v)) : props
-  } else if (camelizePropNames) {
+  }
+  else if (camelizePropNames) {
     propsList = []
     for (const k in props) {
       propsList.push(kebabToCamel(k))
     }
-  } else {
+  }
+  else {
     propsList = Object.keys(props)
   }
 
@@ -53,21 +55,26 @@ export default function resolveConfig(
         // @xxx → onVnodeXxx
         if (eventName.startsWith('vue:')) {
           res.hooks[atToOn(eventName.replace('vue:', 'vnode-'))] = config[k]
-        } else if (eventName.startsWith('vnode')) {
+        }
+        else if (eventName.startsWith('vnode')) {
           throw new Error('@vnode-* hooks are no longer supported. Use the vue: prefix instead. For example, @vnode-mounted should be changed to @vue:mounted. @vnode-* hooks support has been removed in Vue 3.4.')
         // @xxx → onXxx
-        } else {
+        }
+        else {
           res.listeners[atToOn(eventName)] = config[k]
         }
-      } else {
+      }
+      else {
         // @xxx → xxx
         if (eventName.startsWith('hook:')) {
           res.hooks[eventName] = config[k]
-        } else {
+        }
+        else {
           res.listeners[eventName] = config[k]
         }
       }
-    } else if (k.startsWith('#')) {
+    }
+    else if (k.startsWith('#')) {
       /**
        * Vue 2.6/2.7
        *   通过 <slot> 接收插槽
@@ -89,11 +96,13 @@ export default function resolveConfig(
       if (slotName) {
         res.slots[slotName] = config[k]
       }
-    } else {
+    }
+    else {
       const propName = camelizePropNames ? kebabToCamel(k) : k
       if (propsList.includes(propName)) {
         res.props[propName] = config[k]
-      } else {
+      }
+      else {
         res.attrs[k] = config[k]
       }
     }

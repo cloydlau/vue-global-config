@@ -23,7 +23,7 @@ const localConfig = computed(() => ({
   },
 }))
 
-watch(enableLocalConfig, (n) => {
+watch(enableLocalConfig, () => {
   isMounted.value = false
   nextTick(() => {
     isMounted.value = true

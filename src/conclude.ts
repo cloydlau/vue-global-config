@@ -59,13 +59,17 @@ function assertType(value: unknown, type: PropConstructor): AssertionResult {
     if (!valid && t === 'object') {
       valid = value instanceof type
     }
-  } else if (expectedType === 'Object') {
+  }
+  else if (expectedType === 'Object') {
     valid = isObject(value)
-  } else if (expectedType === 'Array') {
+  }
+  else if (expectedType === 'Array') {
     valid = Array.isArray(value)
-  } else if (expectedType === 'null') {
+  }
+  else if (expectedType === 'null') {
     valid = value === null
-  } else {
+  }
+  else {
     valid = value instanceof type
   }
   return {
@@ -212,7 +216,8 @@ export default function conclude(
 
   if (!defaultIsDynamic) {
     configSequenceCopy.push(handleProp(defaultValue))
-  } else if (!(typeof defaultValue === 'function')) {
+  }
+  else if (!(typeof defaultValue === 'function')) {
     throw new TypeError(
       `Invalid option: options.default should be Function when options.defaultIsDynamic enabled, receiving: ${defaultValue}`,
     )
@@ -233,7 +238,8 @@ export default function conclude(
     if (prop !== undefined) {
       if (i === configSequenceCopy.length - 1) {
         result = prop
-      } else if (mergeObject) {
+      }
+      else if (mergeObject) {
         result = MergeObject(
           mergeObjectApplyOnlyToDefault
             // Merge the prop with the highest weight directly with the default value
@@ -246,7 +252,8 @@ export default function conclude(
             mergeFunction,
           },
         )
-      } else if (mergeFunction) {
+      }
+      else if (mergeFunction) {
         result = MergeFunction(
           mergeFunctionApplyOnlyToDefault
             // Merge the prop with the highest weight directly with the default value
@@ -257,7 +264,8 @@ export default function conclude(
             mergeFunction,
           },
         )
-      } else {
+      }
+      else {
         result = prop
       }
       break
