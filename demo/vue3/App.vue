@@ -37,7 +37,7 @@ watch(enableLocalConfig, () => {
   >
     <p>
       <FaImage
-        modelValue="https://picsum.photos/100/100"
+        model-value="https://picsum.photos/100/100"
         qrcode
       />
     </p>
