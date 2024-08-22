@@ -3,7 +3,7 @@
   "PascalCasedName": "VueGlobalConfig",
   "version": "0.6.1",
   "private": false,
-  "description": "Configure your Vue 2.6/2.7/3 components globally.",
+  "description": "Configure your Vue 2/3 components globally.",
   "author": {
     "name": "Cloyd Lau",
     "url": "https://github.com/cloydlau"

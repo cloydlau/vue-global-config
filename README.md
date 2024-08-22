@@ -5,7 +5,7 @@
 </h1>
 
 <p align="center">
-  Configure your Vue 2.6/2.7/3 components globally!
+  Configure your Vue 2/3 components globally!
   <br>
   <b>Global Props + Attrs + Listeners + Hooks + Slots.</b>
   <br>
