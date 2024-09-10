@@ -1,15 +1,16 @@
-import Vue from 'vue'
 import VueCompositionAPI from '@vue/composition-api'
-import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
 import { FaFormDialog, FaImage, FaImageUpload, FaPopButton, FaPopSwitch, FaSelect } from 'faim'
+import Vue from 'vue'
 import App from './App.vue'
 import YourComponent from './YourComponent.vue'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(VueCompositionAPI)
 Vue.use(ElementUI)
 Vue.use(FaFormDialog, {
   // 全局配置
+  width: `${window.outerWidth / 2}px`,
 })
 Vue.use(FaImage, {
   // 全局配置

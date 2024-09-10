@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { conclude } from 'vue-global-config'
+import { conclude } from '../src'
 
 describe('conclude', () => {
   describe('非plain object', () => {
@@ -193,8 +193,8 @@ describe('conclude', () => {
         () => 2,
       ], {
         default: () => 3,
-        mergeFunction: (accumulator, item) => () => {
-          return (accumulator() ?? 0) + (item?.() ?? 0)
+        mergeFunction: (accumulator, currentValue) => () => {
+          return (accumulator() ?? 0) + (currentValue?.() ?? 0)
         },
         mergeFunctionApplyOnlyToDefault: false,
       })()).toEqual(6)
@@ -205,8 +205,8 @@ describe('conclude', () => {
         () => 2,
       ], {
         default: () => 3,
-        mergeFunction: (accumulator, item) => () => {
-          return (accumulator() ?? 0) + (item?.() ?? 0)
+        mergeFunction: (accumulator, currentValue) => () => {
+          return (accumulator() ?? 0) + (currentValue?.() ?? 0)
         },
       })()).toEqual(4)
     })
@@ -217,12 +217,38 @@ describe('conclude', () => {
         { a: 1 },
       ], {
         default: { onChange: () => 3 },
-        mergeFunction: (accumulator, item) => () => {
-          return (accumulator() ?? 0) + (item?.() ?? 0)
+        mergeFunction: (accumulator, currentValue) => () => {
+          return (accumulator() ?? 0) + (currentValue?.() ?? 0)
         },
       })
       expect(FINAL_PROP.onChange()).toEqual(4)
       expect(FINAL_PROP.a).toEqual(1)
+    })
+    it('mergeObjectCustomizer', () => {
+      // const mergeFunction = (accumulator, currentValue) => () => accumulator() + currentValue()
+      const FINAL_PROP = conclude([
+        {
+          parser: {
+            parse: () => 1,
+            stringify: () => 1,
+          },
+        },
+        {
+          parser: {
+            parse: () => 2,
+            stringify: () => 2,
+          },
+        },
+      ], {
+        // mergeFunction,
+        mergeObjectCustomizer: (objValue: any, srcValue: any, key: string) => {
+          if (key === 'parser') {
+            return objValue
+          }
+        },
+      })
+      expect(FINAL_PROP.parser.parse()).toEqual(2)
+      expect(FINAL_PROP.parser.stringify()).toEqual(2)
     })
     it('驼峰和短横线并存', () => {
       expect(conclude([{ 'aB': 1, 'a-b': 2 }, { 'a-b': 4, 'aB': 3 }], {

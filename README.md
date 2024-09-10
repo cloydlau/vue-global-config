@@ -156,12 +156,7 @@ npm i vue-global-config
   }
 </script>
 <script type="module">
-  import {
-    conclude,
-    getLocalListeners,
-    listenGlobalHooks,
-    resolveConfig,
-  } from 'vue-global-config'
+  import { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } from 'vue-global-config'
 </script>
 ```
 
@@ -170,8 +165,7 @@ npm i vue-global-config
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-global-config@0.6"></script>
 <script>
-  const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } =
-    VueGlobalConfig
+  const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } = VueGlobalConfig
 </script>
 ```
 
@@ -264,10 +258,11 @@ The role of `conclude` is to help you figure out the final configuration.
  * @param {boolean} [options.defaultIsDynamic = false] - Dynamic generation of default values
  * @param {boolean} [options.required = false] - Requirement checking
  * @param {(prop: any) => boolean} [options.validator] - Custom validator
- * @param {string} [options.camelizeObjectKeys = false] - whether to camelize object keys
+ * @param {string} [options.camelizeObjectKeys = false] - Whether to camelize object keys
  * @param {false|string} [options.mergeObject = 'deep'] - The way to merge objects
+ * @param {(objValue: any, srcValue: any, key: string, object: Record<string, any>, source: Record<string, any>, stack: object) => any} [options.mergeObjectCustomizer] - To produce the merged values of the destination and source properties. Returning undefined to maintain the default behavior
  * @param {boolean} [options.mergeObjectApplyOnlyToDefault = false] - `mergeObject` only works on `default`
- * @param {false|((accumulator, currentValue, index?, array?) => )} [options.mergeFunction = false] - The way to fuse functions
+ * @param {false|((accumulator, currentValue, currentIndex?, array?) => )} [options.mergeFunction = false] - The way to merge functions
  * @param {boolean} [options.mergeFunctionApplyOnlyToDefault = true] - `mergeFunction` only works on `default`
  * @returns {any} Final prop
  */
@@ -294,6 +289,10 @@ Same as [Vue's prop validation](https://vuejs.org/guide/components/props.html#pr
 - `'deep'`: Deep merge, where the object key of a high-weight prop overwrites the same-name key of a low-weight prop, containing nested objects (the default value)
 - `'shallow'`: Shallow merge, where the object key of a high weight prop overwrites the key of the same name of a low weight prop, without nested objects
 - `false`: No merging, direct overwriting, objects of high weight prop will directly overwrite objects of low weight prop, consistent with the behavior of value types
+
+#### config.mergeObjectCustomizer
+
+The `customizer` argument of [mergeWith](https://lodash.com/docs#mergeWith) (`mergeObject: 'deep'`) or [assignInWith](https://lodash.com/docs#assignInWith) (`mergeObject: 'shallow'`) for customizing assigned values.
 
 #### config.mergeObjectApplyOnlyToDefault
 
@@ -342,9 +341,9 @@ conclude([
   default: () => {
     console.log('I am default option')
   },
-  mergeFunction: (accumulator, item) => (...args) => {
+  mergeFunction: (accumulator, currentValue) => (...args) => {
     accumulator(...args)
-    item?.(...args)
+    currentValue?.(...args)
   },
   mergeFunctionApplyOnlyToDefault: false,
 })()

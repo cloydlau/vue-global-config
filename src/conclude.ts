@@ -115,12 +115,14 @@ function MergeObject(
   sources: any[],
   {
     mergeObject,
+    mergeObjectCustomizer,
     mergeFunction,
   }: {
     mergeObject: string
-    mergeFunction:
+    mergeObjectCustomizer?: (objValue: any, srcValue: any, key: string, object: Record<string, any>, source: Record<string, any>, stack: object) => any
+    mergeFunction?:
       | false
-      | ((accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown)
+      | ((accumulator: any, currentValue: any, currentIndex?: any, array?: any) => (...args: any) => unknown)
   },
 ) {
   const reversedSource = []
@@ -128,14 +130,16 @@ function MergeObject(
     reversedSource.push(sources[i])
   }
 
-  const customizer = mergeFunction
-    ? (objValue: any, srcValue: any) =>
-        (typeof objValue === 'function' && typeof srcValue === 'function')
-          ? mergeFunction(srcValue, objValue)
-          : undefined
-    : undefined
+  const customizer = mergeObjectCustomizer || (
+    mergeFunction
+      ? (objValue: any, srcValue: any) =>
+          (typeof objValue === 'function' && typeof srcValue === 'function')
+            ? (mergeFunction as (accumulator: any, currentValue: any, currentIndex?: any, array?: any) => (...args: any) => unknown)?.(srcValue, objValue)
+            : undefined
+      : undefined
+  )
 
-  // merge, assignIn will change the original object
+  // merge, assignIn will mutate the original object
   return mergeObject === MergeObjectOptions.deep
     ? mergeWith(...(reversedSource as []), customizer)
     : assignInWith(...(reversedSource as []), customizer)
@@ -145,7 +149,10 @@ function MergeFunction(
   sources: any[],
   {
     mergeFunction,
-  }: { mergeFunction: (accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown },
+  }:
+  {
+    mergeFunction: (accumulator: any, currentValue: any, currentIndex?: any, array?: any) => (...args: any) => unknown
+  },
 ) {
   return sources.reduce(mergeFunction, () => {})
 }
@@ -160,10 +167,11 @@ export default function conclude(
     validator?: (prop: any) => boolean
     camelizeObjectKeys?: boolean
     mergeObject?: string | false
+    mergeObjectCustomizer?: (objValue: any, srcValue: any, key: string, object: Record<string, any>, source: Record<string, any>, stack: object) => any
     mergeObjectApplyOnlyToDefault?: boolean
     mergeFunction?:
       | false
-      | ((accumulator: any, currentValue: any, index?: any, array?: any) => (...args: any) => unknown)
+      | ((accumulator: any, currentValue: any, currentIndex?: any, array?: any) => (...args: any) => unknown)
     mergeFunctionApplyOnlyToDefault?: boolean
   } = {},
 ): any {
@@ -178,7 +186,7 @@ export default function conclude(
     mergeFunctionApplyOnlyToDefault = true,
   } = options
 
-  let { mergeObject = MergeObjectOptions.deep, mergeFunction = false } = options
+  let { mergeObject = MergeObjectOptions.deep, mergeObjectCustomizer, mergeFunction = false } = options
 
   const configSequenceCopy: any[] = []
   let result: any
@@ -249,6 +257,7 @@ export default function conclude(
             : configSequenceCopy,
           {
             mergeObject,
+            mergeObjectCustomizer,
             mergeFunction,
           },
         )

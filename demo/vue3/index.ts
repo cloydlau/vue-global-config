@@ -1,15 +1,16 @@
-import { createApp, h } from 'vue'
-import 'element-plus/dist/index.css'
-import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import ElementPlus from 'element-plus'
 import { FaFormDialog, FaImage, FaImageUpload, FaPopButton, FaPopSwitch, FaSelect } from 'faim'
+import { createApp } from 'vue'
 import App from './App.vue'
 import YourComponent from './YourComponent'
+import 'element-plus/dist/index.css'
 
 const app = createApp(App)
   .use(ElementPlus)
   .use(FaFormDialog, {
     // 全局配置
+    width: `${window.outerWidth / 2}px`,
   })
   .use(FaImage, {
     // 全局配置

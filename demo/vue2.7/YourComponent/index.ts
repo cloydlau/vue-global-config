@@ -1,4 +1,4 @@
-import type { Plugin, install } from 'vue-demi'
+import type { install, Plugin } from 'vue-demi'
 import { resolveConfig } from '../../../src'
 import Component from './Component.vue'
 
@@ -37,5 +37,5 @@ ComponentWithInstall.install = (app: any, options = {}) => {
   app.component(ComponentWithInstall.name, ComponentWithInstall)
 }
 
-export { globalProps, globalAttrs, globalListeners, globalHooks, globalSlots }
+export { globalAttrs, globalHooks, globalListeners, globalProps, globalSlots }
 export default ComponentWithInstall
