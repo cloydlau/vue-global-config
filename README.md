@@ -158,7 +158,12 @@ npm i vue-global-config
   }
 </script>
 <script type="module">
-  import { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } from 'vue-global-config'
+  import {
+    conclude,
+    getLocalListeners,
+    listenGlobalHooks,
+    resolveConfig,
+  } from 'vue-global-config'
 </script>
 ```
 
@@ -167,7 +172,8 @@ npm i vue-global-config
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-global-config@0.6"></script>
 <script>
-  const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } = VueGlobalConfig
+  const { conclude, getLocalListeners, listenGlobalHooks, resolveConfig } =
+    VueGlobalConfig
 </script>
 ```
 
@@ -189,7 +195,7 @@ npm i vue-global-config
 
 Get global props, attrs, listeners, hooks and slots by analysing global parameters passed by component user.
 
-#### Param
+#### Params
 
 ```ts
 /**
@@ -249,7 +255,7 @@ The role of `conclude` is to help you figure out the final configuration.
 - Support for unifying the keys of objects into camel names
 - Support for dynamic generation of default values
 
-#### Param
+#### Params
 
 ```ts
 /**
