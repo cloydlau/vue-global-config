@@ -1,12 +1,11 @@
+import type { SemVer } from 'semver'
 import vue from '@vitejs/plugin-vue'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { parse } from 'semver'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 import { version } from 'vue'
-import type { SemVer } from 'semver'
 import { name, PascalCasedName } from './package.json'
 
 const { major, minor } = parse(version) as SemVer
@@ -51,9 +50,8 @@ export default defineConfig({
         return html.replace(/\{\{ NAME \}\}/, name).replace(/\{\{ VUE_VERSION \}\}/g, String(major === 3 ? major : `${major}.${minor}`))
       },
     },
-    dts({ rollupTypes: true }),
     AutoImport({
-    // targets to transform
+      // targets to transform
       include: [
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
         /\.vue$/,
