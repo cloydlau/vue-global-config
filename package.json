@@ -2,7 +2,7 @@
   "name": "vue-global-config",
   "PascalCasedName": "VueGlobalConfig",
   "type": "commonjs",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "private": false,
   "description": "Configure your Vue 2/3 components globally.",
   "author": {
