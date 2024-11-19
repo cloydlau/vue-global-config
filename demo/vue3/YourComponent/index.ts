@@ -28,7 +28,7 @@ const globalSlots: Record<keyof any, any> = {}
 const ComponentWithInstall = withInstall(Component)
 
 ComponentWithInstall.install = (app: any, options = {}) => {
-  const { props, attrs, listeners, hooks, slots } = resolveConfig(options, Component.props)
+  const { props, attrs, listeners, hooks, slots } = resolveConfig(options, { props: Component.props })
   Object.assign(globalProps, props)
   Object.assign(globalAttrs, attrs)
   Object.assign(globalListeners, listeners)

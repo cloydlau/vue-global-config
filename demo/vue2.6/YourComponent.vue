@@ -11,7 +11,7 @@ const globalSlots = {}
 export default {
   name: 'YourComponent',
   install(app, options = {}) {
-    const { props, attrs, listeners, hooks, slots } = resolveConfig(options, this.props)
+    const { props, attrs, listeners, hooks, slots } = resolveConfig(options, { props: this.props })
     Object.assign(globalProps, props)
     Object.assign(globalAttrs, attrs)
     Object.assign(globalListeners, listeners)
